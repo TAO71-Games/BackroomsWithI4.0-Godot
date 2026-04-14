@@ -1,0 +1,80 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cui7ljqqftgkv"
+path="res://.godot/imported/TheHub_Chunk.glb-83e90be68583845d1d5c8c41456b854a.scn"
+
+[deps]
+
+source_file="res://Meshes/TheHub_Chunk.glb"
+dest_files=["res://.godot/imported/TheHub_Chunk.glb-83e90be68583845d1d5c8c41456b854a.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"Light": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/TheHub/TheHub_Light.tres",
+"use_external/path": "uid://2i6iywbyet60"
+},
+"Metal": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/MetalWalkway012/MetalWalkway012_2K-JPG.tres",
+"use_external/path": "uid://bg8xc8g4enc8v"
+},
+"Road": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/Road007/Road007_4K-JPG.tres",
+"use_external/path": "uid://bagskqgqr213r"
+},
+"Sidewalk": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/Tiles038/Tiles038_4K-JPG.tres",
+"use_external/path": "uid://d3e6w3tgubyvs"
+},
+"Sign 1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/TheHub/Signal1_Texture/Signal1.tres",
+"use_external/path": "uid://j0kd8ctrxvmc"
+},
+"Sing 2": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/TheHub/Signal2_Texture/Signal2.tres",
+"use_external/path": "uid://bp1xvkrw4ld63"
+},
+"Tunel": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/Concrete031/Concrete031_4K-JPG.tres",
+"use_external/path": "uid://b7fedp37km3o5"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1

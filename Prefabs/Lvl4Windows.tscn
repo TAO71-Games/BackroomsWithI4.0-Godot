@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bkyrh6ch3o2pf"]
+
+[ext_resource type="PackedScene" uid="uid://b12nnmdg04mdy" path="res://Meshes/Lvl4Wall.glb" id="1_hxo6j"]
+[ext_resource type="Material" uid="uid://bfsmdx7raep8a" path="res://Textures/Glass_1.tres" id="2_hj6c6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ibwjp"]
+size = Vector3(10, 4, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hj6c6"]
+size = Vector3(9, 4, 0.075)
+
+[node name="Lvl4Windows" type="Node3D" unique_id=1011078434]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=959061646]
+
+[node name="Wall" type="CollisionShape3D" parent="StaticBody3D" unique_id=1822451354]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_ibwjp")
+debug_color = Color(1, 0.6, 0.69803923, 0.41960785)
+
+[node name="Lvl4Wall" parent="." unique_id=1111549946 instance=ExtResource("1_hxo6j")]
+
+[node name="Window" type="MeshInstance3D" parent="." unique_id=1272203416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("BoxMesh_hj6c6")
+surface_material_override/0 = ExtResource("2_hj6c6")

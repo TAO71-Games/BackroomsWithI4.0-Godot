@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bp1xvkrw4ld63"]
+
+[ext_resource type="Texture2D" uid="uid://b2f48tc0hpcpa" path="res://Textures/TheHub/Signal2_Texture/Signal2_Color.jpeg" id="1_vup4u"]
+[ext_resource type="Texture2D" uid="uid://br0y5fy26fk8p" path="res://Textures/TheHub/Signal2_Texture/Signal2_Emission.jpeg" id="2_5eaum"]
+[ext_resource type="Texture2D" uid="uid://bvuaxfkqdtwg8" path="res://Textures/TheHub/Signal2_Texture/Signal2_NormalGL.jpeg" id="3_dybtu"]
+
+[resource]
+albedo_texture = ExtResource("1_vup4u")
+metallic = 1.0
+metallic_specular = 1.0
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 0.65
+emission_operator = 1
+emission_texture = ExtResource("2_5eaum")
+normal_enabled = true
+normal_texture = ExtResource("3_dybtu")

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://du4qj6k5pomli"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_psebh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_psebh"]
+size = Vector3(0.5, 0.25, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0qi2x"]
+albedo_color = Color(0, 0, 0, 1)
+metallic = 1.0
+metallic_specular = 1.0
+
+[node name="PlayerSkin" type="Node3D" unique_id=186075011]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=945060863]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_psebh")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=888063268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.5)
+mesh = SubResource("BoxMesh_psebh")
+surface_material_override/0 = SubResource("StandardMaterial3D_0qi2x")

@@ -1,0 +1,11 @@
+{
+    "worlds": {
+        "Level 4": {
+            "custom_maps": null,
+            "custom_seed": null,
+            "chunk_data": {}
+        }
+    },
+    "players": {},
+    "objects": []
+}
