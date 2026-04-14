@@ -1,0 +1,18 @@
+{
+    "server": {
+        "host": "0.0.0.0",
+        "port": 65287,
+	"max_players": 1000
+    },
+    "default_object_permissions": {
+	"groups": 3,
+	"everyone": 0,
+	"tags": {
+	    "food": {
+		"groups": 3,
+		"everyone": 1,
+		"force": false
+	    }
+	}
+    }
+}

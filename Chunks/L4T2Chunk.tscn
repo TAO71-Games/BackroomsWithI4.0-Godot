@@ -1,0 +1,150 @@
+[gd_scene format=3 uid="uid://3sdmy3x0nly7"]
+
+[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/WorldGen/WorldGen_Chunk.gd" id="1_840bg"]
+[ext_resource type="Script" uid="uid://cxtgu1qc3g1ie" path="res://Scripts/WorldGen/WorldGen_Chunk_SideObject.gd" id="2_17f1q"]
+[ext_resource type="PackedScene" uid="uid://bkyrh6ch3o2pf" path="res://Prefabs/Lvl4Windows.tscn" id="3_840bg"]
+[ext_resource type="Script" uid="uid://lxrqyunvc3fd" path="res://Scripts/WorldGen/WorldGen_RandomObject.gd" id="4_ciw46"]
+[ext_resource type="Material" uid="uid://c6ahtt5ufc7mv" path="res://Textures/Fabric039/Fabric039_4K-JPG.tres" id="4_mgtyh"]
+[ext_resource type="Material" uid="uid://d0ierphi8iorm" path="res://Textures/OfficeCeiling006/OfficeCeiling006_4K-JPG.tres" id="5_3yb0d"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_3yb0d"]
+size = Vector2(1.15, 1.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ciw46"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_psx24"]
+size = Vector2(10, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xramr"]
+size = Vector3(10, 0.25, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_840bg"]
+size = Vector3(10, 0.01, 10)
+
+[node name="L4T2Chunk" type="Node3D" unique_id=1881792407 node_paths=PackedStringArray("ChunkScripts")]
+script = ExtResource("1_840bg")
+ChunkScripts = [NodePath("Wall_Front"), NodePath("Wall_Back"), NodePath("Wall_Left"), NodePath("Wall_Right"), NodePath("Lights/Light"), NodePath("Lights/Light2"), NodePath("Lights/Light3"), NodePath("Lights/Light4")]
+
+[node name="Wall_Front" parent="." unique_id=1011078434 node_paths=PackedStringArray("ObjectsToActivate") instance=ExtResource("3_840bg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.751)
+script = ExtResource("2_17f1q")
+ChunkSide = 2
+ObjectsToActivate = [NodePath(".")]
+
+[node name="Wall_Back" parent="." unique_id=794499300 node_paths=PackedStringArray("ObjectsToActivate") instance=ExtResource("3_840bg")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -4.751)
+script = ExtResource("2_17f1q")
+ChunkSide = 3
+ObjectsToActivate = [NodePath(".")]
+
+[node name="Wall_Left" parent="." unique_id=1175237956 node_paths=PackedStringArray("ObjectsToActivate") instance=ExtResource("3_840bg")]
+transform = Transform3D(-2.1855693e-07, 0, 1, 0, 1, 0, -1, 0, -2.1855693e-07, 4.751, 0, 0)
+script = ExtResource("2_17f1q")
+ObjectsToActivate = [NodePath(".")]
+
+[node name="Wall_Right" parent="." unique_id=1056545553 node_paths=PackedStringArray("ObjectsToActivate") instance=ExtResource("3_840bg")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -4.751, 0, 0)
+script = ExtResource("2_17f1q")
+ChunkSide = 1
+ObjectsToActivate = [NodePath(".")]
+
+[node name="Lights" type="Node3D" parent="." unique_id=479616247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+
+[node name="Light" type="Node3D" parent="Lights" unique_id=2090279209 node_paths=PackedStringArray("ObjectsToActivate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.875, 0, 3.125)
+script = ExtResource("4_ciw46")
+ObjectsToActivate = [NodePath(".")]
+Probability = 0.05
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lights/Light" unique_id=953195218]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_3yb0d")
+surface_material_override/0 = SubResource("StandardMaterial3D_ciw46")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Light" unique_id=853814107]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+light_energy = 2.0
+light_indirect_energy = 2.0
+light_volumetric_fog_energy = 2.0
+distance_fade_enabled = true
+omni_range = 8.0
+
+[node name="Light2" type="Node3D" parent="Lights" unique_id=219580358 node_paths=PackedStringArray("ObjectsToActivate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.125, 0, 3.125)
+script = ExtResource("4_ciw46")
+ObjectsToActivate = [NodePath(".")]
+Probability = 0.05
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lights/Light2" unique_id=1044588313]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_3yb0d")
+surface_material_override/0 = SubResource("StandardMaterial3D_ciw46")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Light2" unique_id=2022289112]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+light_energy = 2.0
+light_indirect_energy = 2.0
+light_volumetric_fog_energy = 2.0
+distance_fade_enabled = true
+omni_range = 8.0
+
+[node name="Light3" type="Node3D" parent="Lights" unique_id=1747955814 node_paths=PackedStringArray("ObjectsToActivate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.875, 0, -1.875)
+script = ExtResource("4_ciw46")
+ObjectsToActivate = [NodePath(".")]
+Probability = 0.05
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lights/Light3" unique_id=1990051585]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_3yb0d")
+surface_material_override/0 = SubResource("StandardMaterial3D_ciw46")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Light3" unique_id=1438428411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+light_energy = 2.0
+light_indirect_energy = 2.0
+light_volumetric_fog_energy = 2.0
+distance_fade_enabled = true
+omni_range = 8.0
+
+[node name="Light4" type="Node3D" parent="Lights" unique_id=1096480859 node_paths=PackedStringArray("ObjectsToActivate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.125, 0, -1.875)
+script = ExtResource("4_ciw46")
+ObjectsToActivate = [NodePath(".")]
+Probability = 0.05
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lights/Light4" unique_id=465867023]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_3yb0d")
+surface_material_override/0 = SubResource("StandardMaterial3D_ciw46")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Light4" unique_id=772775864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+light_energy = 2.0
+light_indirect_energy = 2.0
+light_volumetric_fog_energy = 2.0
+distance_fade_enabled = true
+omni_range = 8.0
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=1959883585]
+material_override = ExtResource("4_mgtyh")
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_psx24")
+
+[node name="Ceiling" type="MeshInstance3D" parent="." unique_id=2116568729]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.876, 0)
+material_override = ExtResource("5_3yb0d")
+mesh = SubResource("BoxMesh_xramr")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1997268386]
+
+[node name="Floor" type="CollisionShape3D" parent="StaticBody3D" unique_id=383333063]
+shape = SubResource("BoxShape3D_840bg")
+
+[node name="Ceiling" type="CollisionShape3D" parent="StaticBody3D" unique_id=1567630293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+shape = SubResource("BoxShape3D_840bg")

@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://cnrnmh0w5ewfm"]
+
+[ext_resource type="Script" uid="uid://dce8t4p5kh1b8" path="res://Scripts/WorldGen/Levels/TheHub_Door.gd" id="1_n44da"]
+[ext_resource type="PackedScene" uid="uid://70orurvc7nd" path="res://Chunks/TheHub_Previews/Lvl4.tscn" id="2_f3gbo"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gi3jd"]
+size = Vector3(1.1, 2.2, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_84lx4"]
+size = Vector3(1.1, 2.2, 0.15)
+
+[node name="Door" type="Node3D" unique_id=655882244 node_paths=PackedStringArray("Texts", "RotationObj")]
+script = ExtResource("1_n44da")
+SpawnOnLevel = Dictionary[int, PackedScene]({
+4: ExtResource("2_f3gbo")
+})
+RequiresLevelKey = Dictionary[int, bool]({
+1: false,
+2: false,
+3: false,
+4: false
+})
+Texts = [NodePath("Door/LevelText")]
+RotationObj = NodePath("Door")
+
+[node name="Door" type="Node3D" parent="." unique_id=1153820554]
+transform = Transform3D(1.0000001, 0, 2.9802322e-08, 0, 1, 0, -2.9802322e-08, 0, 1.0000001, 0.5, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Door" unique_id=492654505]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+mesh = SubResource("BoxMesh_gi3jd")
+
+[node name="LevelText" type="Label3D" parent="Door" unique_id=1991156912]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -0.5, 0.35, -0.076)
+text = "Level ????"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Door" unique_id=193618924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door/StaticBody3D" unique_id=932346139]
+shape = SubResource("BoxShape3D_84lx4")
+debug_color = Color(1, 1, 0, 0.41960785)

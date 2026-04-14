@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cc67oy6kk31s7"]
+
+[ext_resource type="Script" uid="uid://dyu5hb6nhw88n" path="res://Scripts/Character/InventoryItem.gd" id="1_o3ftk"]
+[ext_resource type="PackedScene" uid="uid://b8uqxenjo2d7n" path="res://Meshes/LevelKey/LevelKey.glb" id="2_ph63l"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yk364"]
+size = Vector3(0.2, 0.05, 0.5)
+
+[node name="LevelKey" type="Node3D" unique_id=72710303]
+script = ExtResource("1_o3ftk")
+Name = "Level key"
+Tags = Array[String](["level_key"])
+
+[node name="LevelKey" parent="." unique_id=641909259 instance=ExtResource("2_ph63l")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=168450081]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=463043956]
+shape = SubResource("BoxShape3D_yk364")

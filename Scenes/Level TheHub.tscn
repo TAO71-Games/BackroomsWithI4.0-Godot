@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bceh5xt123txb"]
+
+[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/WorldGen/WorldGen.gd" id="1_sty34"]
+[ext_resource type="PackedScene" uid="uid://metvq0i54e2q" path="res://Chunks/LHT1Chunk.tscn" id="2_nb3b8"]
+[ext_resource type="PackedScene" uid="uid://cr0taqx4d6l1m" path="res://Prefabs/Player.tscn" id="3_85dbq"]
+
+[sub_resource type="Environment" id="Environment_sty34"]
+background_mode = 1
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.25
+volumetric_fog_density = 0.0025
+volumetric_fog_albedo = Color(0.52243817, 0.33598495, 0.07997725, 1)
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_nb3b8"]
+
+[node name="LevelTheHub" type="Node3D" unique_id=1533685544]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=763948751]
+environment = SubResource("Environment_sty34")
+camera_attributes = SubResource("CameraAttributesPractical_nb3b8")
+
+[node name="World" type="Node3D" parent="." unique_id=432439578 node_paths=PackedStringArray("Player")]
+script = ExtResource("1_sty34")
+ChunkSize = Vector3i(55, 25, 100)
+Chunks = Array[PackedScene]([ExtResource("2_nb3b8")])
+GenerateZ = false
+MultipleFloors = false
+Player = NodePath("../Player")
+PlayerSpawnMin = Vector3i(-10, 0, -10)
+PlayerSpawnMax = Vector3i(10, 0, 10)
+PlayerDieFalling = true
+PlayerDieFallingDistance = 20.0
+Multiplayer = false
+
+[node name="Player" parent="." unique_id=632983521 instance=ExtResource("3_85dbq")]
+WaterDecreaseMultiplier = 0.15
+FoodDecreaseMultiplier = 0.1

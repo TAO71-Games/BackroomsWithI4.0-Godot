@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cr0taqx4d6l1m"]
+
+[ext_resource type="Script" uid="uid://bb6ahd78hh4w6" path="res://Scripts/Character/CharacterMovement.gd" id="1_x3d5u"]
+[ext_resource type="PackedScene" uid="uid://du4qj6k5pomli" path="res://Prefabs/PlayerSkin.tscn" id="2_b43ah"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yg3f5"]
+radius = 0.45
+
+[node name="Player" type="CharacterBody3D" unique_id=632983521 node_paths=PackedStringArray("Head")]
+script = ExtResource("1_x3d5u")
+Head = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1256130155]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.5)
+
+[node name="PlayerSkin" parent="." unique_id=186075011 instance=ExtResource("2_b43ah")]
+transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 0, 0, 0)
+
+[node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=1095730833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_yg3f5")

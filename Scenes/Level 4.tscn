@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cyphh6vjjn2b0"]
+
+[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/WorldGen/WorldGen.gd" id="1_psx24"]
+[ext_resource type="PackedScene" uid="uid://cb6dcbs5lm0w6" path="res://Chunks/L4T1Chunk.tscn" id="2_xramr"]
+[ext_resource type="PackedScene" uid="uid://cr0taqx4d6l1m" path="res://Prefabs/Player.tscn" id="3_02u5l"]
+[ext_resource type="PackedScene" uid="uid://3sdmy3x0nly7" path="res://Chunks/L4T2Chunk.tscn" id="3_yg3f5"]
+[ext_resource type="PackedScene" uid="uid://vvlanawg1eup" path="res://Chunks/L4T3Chunk.tscn" id="4_853rs"]
+[ext_resource type="Texture2D" uid="uid://b4ne2k6bhkygq" path="res://Textures/NoiseMaps/NoiseMapL4V1.png" id="4_bfc4r"]
+
+[node name="Level 4" type="Node3D" unique_id=291746162]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2142870487]
+transform = Transform3D(0.93301266, 0.23478948, 0.27269265, -0.3535535, 0.739199, 0.5732234, -0.066987306, -0.631236, 0.77269256, 0, 6, 0)
+shadow_enabled = true
+shadow_opacity = 0.8
+
+[node name="World" type="Node3D" parent="." unique_id=167701895 node_paths=PackedStringArray("Player")]
+script = ExtResource("1_psx24")
+ChunkSize = Vector3i(10, 4, 10)
+Chunks = Array[PackedScene]([ExtResource("2_xramr"), ExtResource("3_yg3f5"), ExtResource("4_853rs")])
+Maps = Array[Texture2D]([ExtResource("4_bfc4r")])
+MultipleFloors = false
+Player = NodePath("../Player")
+PlayerSpawnMin = Vector3i(0, 1, 0)
+PlayerSpawnMax = Vector3i(1000, 1, 1000)
+Multiplayer = false
+
+[node name="Player" parent="." unique_id=632983521 instance=ExtResource("3_02u5l")]
+GravityMultiplier = null
+WaterDecreaseMultiplier = null
+FoodDecreaseMultiplier = null
+TiredStaminaRecover = null
+WalkStaminaLoss = null
+RunStaminaLoss = null

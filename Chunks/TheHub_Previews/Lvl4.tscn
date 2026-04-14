@@ -1,0 +1,206 @@
+[gd_scene format=3 uid="uid://70orurvc7nd"]
+
+[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/WorldGen/WorldGen_Chunk.gd" id="1_ssiog"]
+[ext_resource type="PackedScene" uid="uid://3sdmy3x0nly7" path="res://Chunks/L4T2Chunk.tscn" id="2_epx7w"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ssiog"]
+size = Vector3(30, 4, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_epx7w"]
+size = Vector3(5, 4, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ssiog"]
+albedo_color = Color(0.21176471, 0.24313726, 0.24313726, 1)
+metallic = 1.0
+metallic_specular = 0.0
+emission_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_epx7w"]
+size = Vector2(20, 4)
+
+[sub_resource type="QuadMesh" id="QuadMesh_fgu07"]
+size = Vector2(30, 4)
+
+[node name="Lvl4" type="Node3D" unique_id=528624087 node_paths=PackedStringArray("ChunkScripts")]
+script = ExtResource("1_ssiog")
+ChunkScripts = [NodePath("L4T2Chunk"), NodePath("L4T2Chunk2"), NodePath("L4T2Chunk3"), NodePath("L4T2Chunk4"), NodePath("L4T2Chunk5"), NodePath("L4T2Chunk6")]
+
+[node name="L4T2Chunk" parent="." unique_id=1881792407 node_paths=PackedStringArray("ChunkScripts") instance=ExtResource("2_epx7w")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 15)
+ChunkScripts = [NodePath("Lights/Light"), NodePath("Lights/Light2"), NodePath("Lights/Light3"), NodePath("Lights/Light4")]
+
+[node name="Wall_Front" parent="L4T2Chunk" index="0" unique_id=1011078434]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Back" parent="L4T2Chunk" index="1" unique_id=794499300]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Left" parent="L4T2Chunk" index="2" unique_id=1175237956]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Right" parent="L4T2Chunk" index="3" unique_id=1056545553]
+process_mode = 4
+visible = false
+script = null
+
+[node name="L4T2Chunk2" parent="." unique_id=178169373 node_paths=PackedStringArray("ChunkScripts") instance=ExtResource("2_epx7w")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 5)
+ChunkScripts = [NodePath("Lights/Light"), NodePath("Lights/Light2"), NodePath("Lights/Light3"), NodePath("Lights/Light4")]
+
+[node name="Wall_Front" parent="L4T2Chunk2" index="0" unique_id=1011078434]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Back" parent="L4T2Chunk2" index="1" unique_id=794499300]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Left" parent="L4T2Chunk2" index="2" unique_id=1175237956]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Right" parent="L4T2Chunk2" index="3" unique_id=1056545553]
+process_mode = 4
+visible = false
+script = null
+
+[node name="L4T2Chunk3" parent="." unique_id=748989419 node_paths=PackedStringArray("ChunkScripts") instance=ExtResource("2_epx7w")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10, 0, 15)
+ChunkScripts = [NodePath("Lights/Light"), NodePath("Lights/Light2"), NodePath("Lights/Light3"), NodePath("Lights/Light4")]
+
+[node name="Wall_Front" parent="L4T2Chunk3" index="0" unique_id=1011078434]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Back" parent="L4T2Chunk3" index="1" unique_id=794499300]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Left" parent="L4T2Chunk3" index="2" unique_id=1175237956]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Right" parent="L4T2Chunk3" index="3" unique_id=1056545553]
+process_mode = 4
+visible = false
+script = null
+
+[node name="L4T2Chunk4" parent="." unique_id=319411198 node_paths=PackedStringArray("ChunkScripts") instance=ExtResource("2_epx7w")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10, 0, 5)
+ChunkScripts = [NodePath("Lights/Light"), NodePath("Lights/Light2"), NodePath("Lights/Light3"), NodePath("Lights/Light4")]
+
+[node name="Wall_Front" parent="L4T2Chunk4" index="0" unique_id=1011078434]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Back" parent="L4T2Chunk4" index="1" unique_id=794499300]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Left" parent="L4T2Chunk4" index="2" unique_id=1175237956]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Right" parent="L4T2Chunk4" index="3" unique_id=1056545553]
+process_mode = 4
+visible = false
+script = null
+
+[node name="L4T2Chunk5" parent="." unique_id=1597450691 node_paths=PackedStringArray("ChunkScripts") instance=ExtResource("2_epx7w")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10, 0, 15)
+ChunkScripts = [NodePath("Lights/Light"), NodePath("Lights/Light2"), NodePath("Lights/Light3"), NodePath("Lights/Light4")]
+
+[node name="Wall_Front" parent="L4T2Chunk5" index="0" unique_id=1011078434]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Back" parent="L4T2Chunk5" index="1" unique_id=794499300]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Left" parent="L4T2Chunk5" index="2" unique_id=1175237956]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Right" parent="L4T2Chunk5" index="3" unique_id=1056545553]
+process_mode = 4
+visible = false
+script = null
+
+[node name="L4T2Chunk6" parent="." unique_id=160363912 node_paths=PackedStringArray("ChunkScripts") instance=ExtResource("2_epx7w")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10, 0, 5)
+ChunkScripts = [NodePath("Lights/Light"), NodePath("Lights/Light2"), NodePath("Lights/Light3"), NodePath("Lights/Light4")]
+
+[node name="Wall_Front" parent="L4T2Chunk6" index="0" unique_id=1011078434]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Back" parent="L4T2Chunk6" index="1" unique_id=794499300]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Left" parent="L4T2Chunk6" index="2" unique_id=1175237956]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Wall_Right" parent="L4T2Chunk6" index="3" unique_id=1056545553]
+process_mode = 4
+visible = false
+script = null
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1527559726]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=859140139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 12.5)
+shape = SubResource("BoxShape3D_ssiog")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D" unique_id=1776154019]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 2, 2.5)
+shape = SubResource("BoxShape3D_epx7w")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Area3D" unique_id=1533611399]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 2, 2.5)
+shape = SubResource("BoxShape3D_epx7w")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=992056369]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 15, 2, 10)
+material_override = SubResource("StandardMaterial3D_ssiog")
+mesh = SubResource("QuadMesh_epx7w")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1221304750]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -15, 2, 10)
+material_override = SubResource("StandardMaterial3D_ssiog")
+mesh = SubResource("QuadMesh_epx7w")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=1658343557]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2, 20)
+material_override = SubResource("StandardMaterial3D_ssiog")
+mesh = SubResource("QuadMesh_fgu07")
+
+[editable path="L4T2Chunk"]
+[editable path="L4T2Chunk2"]
+[editable path="L4T2Chunk3"]
+[editable path="L4T2Chunk4"]
+[editable path="L4T2Chunk5"]
+[editable path="L4T2Chunk6"]
