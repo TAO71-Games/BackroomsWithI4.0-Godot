@@ -33,7 +33,7 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 	- [ ] I4.0
 - Items
 	- [ ] Almond water
-	- [ ] Level keys
+	- [X] Level keys
 	- Radio
 		- [ ] Portable radio
 		- [ ] Radio station
