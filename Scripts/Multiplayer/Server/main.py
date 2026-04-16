@@ -6,56 +6,6 @@ import socket
 import hashlib
 import random
 
-"""
-
-Example of info:
-```jsonc
-{
-    "worlds": {
-        "Level 0": {
-            "custom_maps": null,  // null = use original game data; array[string] = file to noise map textures
-            "custom_seed": null,  // null or < 0 = random seed; >= 0 = fixed seed,
-            "chunk_data": {  // Do not modify this
-                0: {  // Chunk ID 0
-                    "disable_ids": []  // Will not spawn the items where it's ID is in here. IDs are calculated in-game based on the chunk position and object index
-                }
-            }
-        }
-    },
-    "players": {
-        "PLAYER_NAME": {
-            "auth_hash": "HASH",  // Password (encrypted into a hash)
-            "position": [0, 0, 0],  // Player position
-            "rotation": [0, 0, 0],  // Player rotation
-            "scale": [1, 1, 1],  // Player scale
-            "groups": [],  // Groups where this user is a member
-            "items": [],  // Items (IDs) in inventory
-            "health": 100,
-            "water": 100,
-            "food": 100,
-            "stamina": 100,
-            "session_id": null  // Changes every time the user connects. Ensures that the user can't connect multiple times simultaneously
-        }
-    },
-    "objects": [
-        {
-            "id": 0,
-            "level": "",  // Level where the object is right now
-            "tags": [],
-            "seed": 0,  // Some objects might be different depending on the seed. This is just to ensure the object stays the same
-            "skin": "",  // PackedScene path
-            "owner": null,  // null = no owner, string = player name who owns the object
-            "permissions": {  // 0 = none, 1 = can interact, 2 = can move
-                "groups": 3,
-                "everyone": 0
-            }
-        }
-    ]
-}
-```
-
-"""
-
 def SendData(Socket: socket.socket, Data: str) -> None:
     data = []
 
