@@ -29,7 +29,7 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 		- [ ] Female
 		- [ ] Baby
 	- [ ] Skin stealer
-		- [ ] Voice cloning & AI
+		- [ ] Voice cloning TTS, STT, Chatbot
 	- [ ] I4.0
 - Items
 	- [ ] Almond water
@@ -46,7 +46,7 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 	- [ ] Wiki
 	- [ ] Multiplayer
 		- [ ] Text chat
-		- [ ] Voice chat
+		- [ ] Voice chat (proximity chat)
 			- [ ] Voice filters
 
 ## Tools used

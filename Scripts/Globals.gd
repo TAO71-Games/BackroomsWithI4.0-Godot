@@ -11,7 +11,9 @@ const Multiplayer_Debug_Users: Dictionary[String, String] = {
 static var ViewDistance: int = 50
 static var Sensibility: float = 3
 static var GenerationTime: float = 2
-static var Multiplayer_Host: String = "127.0.0.1"
-static var Multiplayer_Port: int = 65287
+
+static var Multiplayer_Server: String = "ws://127.0.0.1:65287"
+static var Multiplayer_UpdateTime: float = 0.25
+
 static var User_Username: String = "Player"
 static var User_Password: String = ""

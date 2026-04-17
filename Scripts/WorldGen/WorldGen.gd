@@ -205,6 +205,11 @@ func SpawnPlayer() -> void:
 	Player.global_position = spawnPos + PlayerSpawnOffset
 	Player.Spawned = true
 
+func UpdateMultiplayer() -> void:
+	MultiplayerConnection.SetPlayerPosition(Player.global_position)
+	MultiplayerConnection.SetPlayerRotation(Player.global_rotation)
+	MultiplayerConnection.SetPlayerScale(Player.scale)
+
 func _ready() -> void:
 	FNL.noise_type = FastNoiseLite.TYPE_PERLIN
 	FNL.frequency = 0.02
@@ -233,50 +238,42 @@ func _ready() -> void:
 	elif (Multiplayer):
 		if (LevelName not in MultiplayerConnection.VisitedLevels):
 			MultiplayerConnection.VisitedLevels.append(LevelName)
-		
-		if (MultiplayerConnection.Socket.get_status() != StreamPeerTCP.STATUS_CONNECTED):
+		if (!MultiplayerConnection.IsConnected()):
 			if (Globals.Multiplayer_Debug):
 				var randomUser = Globals.Multiplayer_Debug_Users.keys()[randi() % Globals.Multiplayer_Debug_Users.size()]
 				
 				Globals.User_Username = randomUser
 				Globals.User_Password = Globals.Multiplayer_Debug_Users[randomUser]
 			
-			MultiplayerConnection.Connect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
-			
-			while (MultiplayerConnection.Socket.get_status() == StreamPeerTCP.STATUS_CONNECTING):
-				MultiplayerConnection.Socket.poll()
-				print("CONNECTING...")
-				
-				await get_tree().create_timer(2).timeout
-			
-			var loginResult = MultiplayerConnection.SendAndReceive("connect", [Globals.User_Username, Globals.User_Password])
-			
-			if (loginResult["code"] != "OK"):
-				pass  # TODO: Error when logging in (probably incorrect credentials)
+			MultiplayerConnection.Connect(Globals.Multiplayer_Server)
 		
-		var authResult = MultiplayerConnection.SendAndReceive("is_authorized")
-		
-		if (authResult["args"][0]):
-			print("AUTHORIZED")
+		if (MultiplayerConnection.IsAuthorized(false)):
 			Generate = true
-		else:
-			print("NO AUTHORIZED")
-			pass  # TODO: Not authorized
+		elif (!MultiplayerConnection.Login(Globals.User_Username, Globals.User_Password, false)):
+			pass  # TODO: Error when logging in (probably incorrect credentials)
+	
+	print(Generate)
 	
 	if (Generate):
 		UpdateChunks()
 		SpawnPlayer()
 	
-	var timer = Timer.new()
-	timer.autostart = true
-	timer.one_shot = false
-	timer.wait_time = clampi(Globals.GenerationTime, 0.5, 20)
-	timer.timeout.connect(UpdateChunks)
-	add_child(timer)
-	timer.start()
+	var genTimer = Timer.new()
+	genTimer.autostart = true
+	genTimer.one_shot = false
+	genTimer.wait_time = clampf(Globals.GenerationTime, 0.5, 20)
+	genTimer.timeout.connect(UpdateChunks)
+	add_child(genTimer)
+	
+	var multiplayerTimer = Timer.new()
+	multiplayerTimer.autostart = true
+	multiplayerTimer.one_shot = false
+	multiplayerTimer.wait_time = clampf(Globals.Multiplayer_UpdateTime, 0.05, 1)
+	multiplayerTimer.timeout.connect(UpdateMultiplayer)
+	add_child(multiplayerTimer)
 
-func _process(_Delta: float) -> void:
-	MultiplayerConnection.Socket.poll()
+#func _process(_Delta: float) -> void:
+#	MultiplayerConnection.Socket.poll()
 
 func _physics_process(_Delta: float) -> void:
 	if (PlayerDieFalling && Player.position.y <= -PlayerDieFallingDistance):
