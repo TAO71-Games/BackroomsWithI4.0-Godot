@@ -3,27 +3,39 @@ import os
 import json
 import time
 import argparse
-import socket
+import threading
+import asyncio
+import websockets
 import hashlib
 import classes
 
-def SendData(Socket: socket.socket, Data: str) -> None:
-    data = []
+import traceback
 
-    while (len(Data) >= 8192):
-        data.append(Data[:8192])
-        Data = Data[8192:]
+async def SendData(Socket: websockets.WebSocketServerProtocol, Data: str) -> None:
+    data = Data
+    chunks = []
+
+    while (len(data) > 8192):
+        chunks.append(data[:8192])
+        data = data[8192:]
+
+    chunks.append(data)
     
-    for d in data:
-        Socket.send(d.encode("utf-8"))
+    for d in chunks:
+        print(f"> {d}")
+        await Socket.send(d)
 
-    Socket.send("--END--".encode("utf-8"))
+    print("> --END--")
+    await Socket.send("--END--")
 
-def RecvData(Socket: socket.socket) -> str:
+async def RecvData(Socket: websockets.WebSocketServerProtocol) -> str:
     recvData = ""
 
     while (True):
-        recv = Socket.recv(8192).decode("utf-8").strip()
+        recv = await Socket.recv(decode = True)
+        recv = recv.strip()
+
+        print(f"< {recv}")
 
         if (len(recv) == 0):
             return ""
@@ -32,28 +44,26 @@ def RecvData(Socket: socket.socket) -> str:
 
         if (recv.endswith("--END--")):
             break
-    
+
     return recvData.strip()
 
-def ClientReceive(Socket: socket.socket, Address: tuple[str, int], Data: str, Player: classes.Player) -> None:
+async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, Player: classes.Player) -> None:
     global LoggedPlayers
 
     if (len(Data) == 0):
         raise ValueError("No data. Probably connection closed.")
 
     try:
-        parserdData: dict[str, Any] = json.loads(Data)
-        action: str = parsedData["action"]
-        arguments: list[Any] = parsedData["args"]
+        parsedData: dict[str, Any] = json.loads(Data)
+        action: str = parsedData["action"] if ("action" in parsedData) else ""
+        arguments: list[Any] = parsedData["arguments"] if ("arguments" in parsedData) else []
         result_code: str = "OK"
         result_args: list[Any] = []
 
-        if (Player in LoggedPlayers and LoggedPlayers[Player] != Socket):
-            result_args.append("Multiple instances are not allowed.")  # Make sure there are only one instance of a player
-        elif (actio == "is_authorized"):
+        if (action == "is_authorized"):
             result_args.append(Player in LoggedPlayers)
-        elif (action == "connect"):
-            time.sleep(0.1)
+        elif (action == "connect" and Player not in LoggedPlayers):
+            await asyncio.sleep(0.1)
 
             username = arguments[0]
             passwdHash = hashlib.sha3_512(arguments[1].encode("utf-8")).hexdigest()
@@ -73,10 +83,10 @@ def ClientReceive(Socket: socket.socket, Address: tuple[str, int], Data: str, Pl
                 result_code = "FAILED"
                 result_args.append("Incorrect credentials.")
             else:
-                INFO["players"] = Player
+                INFO["players"].append(Player)
                 LoggedPlayers.append(Player)
         elif (Player not in LoggedPlayers):
-            pass  # Make sure the player exists
+            result_args.append("Player is not logged in.")  # Make sure the player exists
         elif (action == "set_pos"):
             x, y, z = arguments[0], arguments[1], arguments[2]
             Player.Position = (x, y, z)
@@ -91,27 +101,31 @@ def ClientReceive(Socket: socket.socket, Address: tuple[str, int], Data: str, Pl
         else:
             state = "NOT FOUND"
 
-        Socket.send(json.dumps({"code": result_code, "args": result_args}))
-    except:
-        pass
+        await SendData(Socket, json.dumps({"code": result_code, "args": result_args}))
+    except Exception as ex:
+        await SendData(Socket, json.dumps({"code": "FAILED", "args": "Unknown error."}))
+        #print(ex)
+        traceback.print_exception(ex)
 
-def ClientConnected(Socket: socket.socket, Address: tuple[str, int]) -> None:
-    global PlayersCount, LoggesPlayers
-    PlayersCount += 1
-    player = classes.Player(PlayersCount)
+async def ClientConnected(Socket: websockets.WebSocketServerProtocol) -> None:
+    global Clients, LoggedPlayers
+
+    Clients.append(Socket)
+    player = classes.Player(len(Clients))
 
     try:
         while (True):
             try:
-                data = RecvData(Socket)
-                ClientReceive(Socket, Address, data, player)
+                data = await RecvData(Socket)
+                await ClientReceive(Socket, data, player)
             except:
                 break
     finally:
         if (player in LoggedPlayers):
-            LoggesPlayers.pop(player)
+            LoggedPlayers.remove(player)
 
-        Socket.close()
+        Clients.remove(Socket)
+        await Socket.close()
 
 def EnsureFilesAndData() -> None:
     if (not os.path.exists(args.CONFIG_FILE)):
@@ -142,6 +156,33 @@ def ReadInfo() -> dict[str, Any]:
 
     return info
 
+async def __start_server__() -> None:
+    global Server, ServerStarted
+
+    Server = await websockets.serve(
+        handler = ClientConnected,
+        host = CONFIG["server"]["host"],
+        port = CONFIG["server"]["port"],
+        max_size = 8192,
+        ssl = None
+    )
+    ServerStarted = True
+    print(f"Server started at '{CONFIG['server']['host']}:{CONFIG['server']['port']}'.", flush = True)
+
+    while (ServerStarted):
+        await asyncio.sleep(0.1)
+
+    await __stop_server__()
+
+async def __stop_server__() -> None:
+    global Server, Clients
+
+    for client in Clients:
+        await client.Close()
+
+    Server.close(True)
+    await Server.wait_closed()
+
 DEFAULT_CONFIG_FILE: str = "./default_config.json"
 DEFAULT_INFO_FILE: str = "./default_info.json"
 
@@ -161,26 +202,18 @@ EnsureFilesAndData()
 CONFIG = ReadConfig()
 INFO = ReadInfo()
 
-PlayersCount: int = 0
-LoggedPlayers: dict[classes.Player, socket.socket] = {}
+LoggedPlayers: list[classes.Player] = []
+Clients: list[websockets.WebSocketServerProtocol] = []
 
 if (__name__ == "__main__"):
-    Server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    Server.bind((CONFIG["server"]["host"], CONFIG["server"]["port"]))
-    Server.listen()
+    asyncio.set_event_loop(asyncio.new_event_loop())
 
-    print(f"Server started at '{CONFIG['server']['host']}:{CONFIG['server']['port']}'.", flush = True)
+    try:
+        asyncio.get_event_loop().run_until_complete(__start_server__())
+    except KeyboardInterrupt:
+        pass
+    finally:
+        print("\nClosing server...", flush = True)
+        ServerStarted = False
 
-    while (True):
-        try:
-            clientSocket, clientAddr = Server.accept()
-            ClientConnected(clientSocket, clientAddr)
-        except KeyboardInterrupt:
-            break
-
-    print("\nClosing server...", flush = True)
-
-    Server.shutdown(socket.SHUT_RDWR)
-    Server.close()
-
-    print("Server closed.", flush = True)
+        print("Server closed.", flush = True)
