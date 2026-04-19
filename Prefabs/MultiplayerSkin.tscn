@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://p0a57l34k4ke"]
+
+[ext_resource type="PackedScene" uid="uid://du4qj6k5pomli" path="res://Prefabs/PlayerSkin.tscn" id="1_tkcd7"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s4o3v"]
+
+[node name="MultiplayerSkin" type="Node3D" unique_id=1899084581]
+
+[node name="PlayerSkin" parent="." unique_id=186075011 instance=ExtResource("1_tkcd7")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1751172512]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1782511460]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_s4o3v")

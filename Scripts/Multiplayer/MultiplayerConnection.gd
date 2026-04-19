@@ -1,5 +1,6 @@
 class_name MultiplayerConnection extends Node
 
+static var __expecting_response__: bool = false
 static var VisitedLevels: Array[String] = []
 static var Socket: WebSocketPeer = WebSocketPeer.new()
 
@@ -12,16 +13,22 @@ static func Connect(URI: String) -> void:
 	while (Socket.get_ready_state() == WebSocketPeer.STATE_CONNECTING):
 		print("Connecting...")
 		Socket.poll()
+		
+		OS.delay_msec(100)
 	
 	if (IsConnected()):
 		print("Connected!")
 	else:
-		print("Error connecting.")
+		print("Error connecting to '" + Globals.Multiplayer_Server + "'.")
 
 static func Disconnect() -> void:
 	Socket.close()
 
-static func SendAndReceive(Action: String, Arguments: Array = [], AllowErrors: bool = true) -> Dictionary:
+static func SendAndReceive(
+	Action: String,
+	Arguments: Array = [],
+	AllowErrors: bool = true
+) -> Dictionary:
 	if (!IsConnected()):
 		push_error("Socket is not connected!")
 		
@@ -89,10 +96,16 @@ static func IsConnected() -> bool:
 
 static func IsAuthorized(AllowErrors: bool = true) -> bool:
 	var authResult = MultiplayerConnection.SendAndReceive("is_authorized", [], AllowErrors)
+	
+	if (authResult["code"] != "OK"):
+		push_error("Result code != OK")
+		return false
+	
 	return authResult["args"][0]
 
 static func Login(Username: String, Password: String, AllowErrors: bool = true) -> bool:
 	var loginResult = MultiplayerConnection.SendAndReceive("connect", [Username, Password], AllowErrors)
+	print(loginResult)
 	return loginResult["code"] == "OK"
 
 static func SetPlayerPosition(V: Vector3, AllowErrors: bool = true) -> void:
@@ -106,3 +119,12 @@ static func SetPlayerScale(V: Vector3, AllowErrors: bool = true) -> void:
 
 static func SetCurrentLevel(Name: String, AllowErrors: bool = true) -> void:
 	MultiplayerConnection.SendAndReceive("set_lvl", [Name], AllowErrors)
+
+static func GetAllPlayers(AllowErrors: bool = true) -> Array:
+	var players = MultiplayerConnection.SendAndReceive("get_all_players", [], AllowErrors)
+	
+	if (players["code"] != "OK"):
+		push_error("Result code != OK")
+		return []
+	
+	return players["args"][0]

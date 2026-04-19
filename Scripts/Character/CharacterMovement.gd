@@ -45,8 +45,8 @@ var JumpTimer: Timer = Timer.new()
 
 func __cast_ray__(From: Vector3, Direction: Vector3, Length: float) -> CollisionObject3D:
 	var hit = get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
-		Head.global_position,
-		Head.global_position - Head.global_basis.z * INTERACTION_MAX_LENGTH
+		From,
+		From - Direction * Length
 	))
 	
 	if (hit):
