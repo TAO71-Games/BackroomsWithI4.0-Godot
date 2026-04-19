@@ -2,6 +2,7 @@ class_name CharacterMovement extends CharacterBody3D
 
 const INTERACTION_MAX_LENGTH: float = 5
 const INTERACTION_PARENT_LENGTH: int = 4
+var WHISTLING_SOUNDS: Array[AudioStream] = [load("res://Audio/Whistling 1.wav")]
 
 @export_category("Gravity")
 @export var GravityMultiplier: float = 1
@@ -26,11 +27,11 @@ var Food: float = 100
 
 @export_category("Stamina")
 var Stamina: float = 100
-@export var TiredStaminaRecover: float = 4
+@export var StaminaRecover: float = 2.5
+@export var TiredStaminaRecover: float = 8
 @export var WalkStaminaLoss: float = 0.5
 @export var RunStaminaLoss: float = 1.5
 var Tired: bool = false
-const StaminaRecover: float = 10
 
 @export_category("Inventory")
 var InventoryOpen: bool = false
@@ -38,6 +39,7 @@ var InventoryItems: Array[InventoryItem] = []
 
 @export_category("Other")
 @export var Head: Node3D = null
+@export var AudioSource: AudioStreamPlayer3D = null
 var MouseCaptured: bool = true
 var Spawned: bool = false
 var Running: bool = false
@@ -113,6 +115,10 @@ func _process(Delta: float) -> void:
 	if (Input.is_action_just_pressed("act_interact") && MouseCaptured):
 		RequestInteract()
 	
+	if (Input.is_action_just_pressed("act_whistling") && MouseCaptured && !AudioSource.playing):
+		AudioSource.stream = WHISTLING_SOUNDS[randi() % WHISTLING_SOUNDS.size()]
+		AudioSource.play()
+	
 	if (MouseCaptured):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
@@ -162,8 +168,13 @@ func _physics_process(Delta: float) -> void:
 	if (direction):
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
+		
+		Stamina -= (RunStaminaLoss if (Running) else WalkStaminaLoss) * Delta
 	else:
 		velocity.x = move_toward(velocity.x, 0, RunSpeed)
 		velocity.z = move_toward(velocity.z, 0, RunSpeed)
+		
+		Stamina += (TiredStaminaRecover if (Tired) else StaminaRecover) * Delta
 	
+	Stamina = clampf(Stamina, 0, 100)
 	move_and_slide()

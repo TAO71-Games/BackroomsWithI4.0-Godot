@@ -100,6 +100,8 @@ async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, P
             Player.Scale = (x, y, z)
         elif (action == "set_lvl"):
             Player.CurrentLevel = arguments[0]
+        elif (action == "get_lvls_data"):
+            result_args.append([lvl.GetDictionary_Player() for lvl in INFO["worlds"]])
         elif (action == "get_all_players"):
             result_args.append([p.GetDictionary_Player() for p in LoggedPlayers])
         else:

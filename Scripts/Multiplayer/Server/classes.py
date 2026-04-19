@@ -36,12 +36,24 @@ class MapChunk():
         self.Position: tuple[int, int, int] = Position
         self.DisabledIDs: list[str] = []  # Disabled items, entities, etc.
 
+    def GetDictionary_Player(self) -> dict[str, Any]:
+        return copy.deepcopy(self.__dict__)
+
 class Map():
     def __init__(self, Name: str, Seed: int = -1) -> None:
         self.Name = Name
         self.NoiseMaps: list[str] | None = None  # null = use the ones set in the game
         self.Seed: int = Seed if (Seed >= 0) else GetRandomID()
         self.ChunkData: list[MapChunk] = []
+
+    def GetDictionary_Player(self) -> dict[str, Any]:
+        d = copy.deepcopy(self.__dict__)
+
+        for k, v in d.items():
+            if ("GetDictionary_Player" in v):
+                d[k] = v.GetDictionary_Player()
+
+        return d
 
 class GameEntity():
     def __init__(self, ID: int, IDPreffix: str = "GENT") -> None:
