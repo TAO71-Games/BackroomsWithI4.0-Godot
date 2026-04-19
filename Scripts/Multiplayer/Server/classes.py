@@ -94,9 +94,16 @@ class Player(GameEntity):
         self.Items: list[str] = []
         self.ItemInHand: int | None = None  # Index of self.Items
 
-    def GetDictionary_Player() -> dict[str, Any]:
+    def GetDictionary_Player(self) -> dict[str, Any]:
         d = copy.deepcopy(self.__dict__)
         d.pop("AuthHash")
+        d.pop("Water")
+        d.pop("Food")
+        d.pop("Health")
+        d.pop("ID")
+        d.pop("IDPreffix")
+        d.pop("Stamina")
+        d.pop("Items")
 
         return d
 

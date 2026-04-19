@@ -22,10 +22,9 @@ async def SendData(Socket: websockets.WebSocketServerProtocol, Data: str) -> Non
     chunks.append(data)
     
     for d in chunks:
-        print(f"> {d}")
         await Socket.send(d)
 
-    print("> --END--")
+    #print("> --END--")
     await Socket.send("--END--")
 
 async def RecvData(Socket: websockets.WebSocketServerProtocol) -> str:
@@ -35,7 +34,7 @@ async def RecvData(Socket: websockets.WebSocketServerProtocol) -> str:
         recv = await Socket.recv(decode = True)
         recv = recv.strip()
 
-        print(f"< {recv}")
+        #print(f"< {recv}")
 
         if (len(recv) == 0):
             return ""
@@ -74,7 +73,7 @@ async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, P
                     playerFound = True
 
                     if (player.AuthHash == passwdHash):
-                        Player = classes.Player.FromDict(player)
+                        Player = player
                         LoggedPlayers.append(Player)
 
                     break
@@ -83,6 +82,9 @@ async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, P
                 result_code = "FAILED"
                 result_args.append("Incorrect credentials.")
             else:
+                Player.Username = username
+                Player.AuthHash = passwdHash
+
                 INFO["players"].append(Player)
                 LoggedPlayers.append(Player)
         elif (Player not in LoggedPlayers):
@@ -98,6 +100,8 @@ async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, P
             Player.Scale = (x, y, z)
         elif (action == "set_lvl"):
             Player.CurrentLevel = arguments[0]
+        elif (action == "get_all_players"):
+            result_args.append([p.GetDictionary_Player() for p in LoggedPlayers])
         else:
             state = "NOT FOUND"
 

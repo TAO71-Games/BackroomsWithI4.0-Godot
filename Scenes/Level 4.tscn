@@ -18,16 +18,13 @@ shadow_opacity = 0.8
 script = ExtResource("1_psx24")
 ChunkSize = Vector3i(10, 4, 10)
 Chunks = Array[PackedScene]([ExtResource("2_xramr"), ExtResource("3_yg3f5"), ExtResource("4_853rs")])
+LevelName = "Level 4"
 Maps = Array[Texture2D]([ExtResource("4_bfc4r")])
 MultipleFloors = false
 Player = NodePath("../Player")
 PlayerSpawnMin = Vector3i(0, 1, 0)
-PlayerSpawnMax = Vector3i(1000, 1, 1000)
+PlayerSpawnMax = Vector3i(10, 1, 10)
+PlayerSpawnFullRandom = false
+PlayerDieFalling = true
 
 [node name="Player" parent="." unique_id=632983521 instance=ExtResource("3_02u5l")]
-GravityMultiplier = null
-WaterDecreaseMultiplier = null
-FoodDecreaseMultiplier = null
-TiredStaminaRecover = null
-WalkStaminaLoss = null
-RunStaminaLoss = null

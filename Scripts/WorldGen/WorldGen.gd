@@ -1,5 +1,7 @@
 class_name WorldGen extends Node3D
 
+var MULTIPLAYER_PLAYER_SKIN: PackedScene = load("res://Prefabs/MultiplayerSkin.tscn")
+
 @export_category("Chunk options")
 @export var DisabledChunkPositions: Array[WorldGen_DisabledChunkPosition] = []
 @export var ChunkSize: Vector3i = Vector3i.ONE
@@ -27,6 +29,7 @@ var LoadedMaps: Dictionary[int, Texture2D] = {}
 var PlayerSpawns: Array[Vector3] = []
 @export var PlayerDieFalling: bool = false
 @export var PlayerDieFallingDistance: float = 100
+var SpawnedMultiplayerPlayers: Dictionary[String, Node3D] = {}
 
 @export_category("Other options")
 @export var Multiplayer: bool = true
@@ -206,17 +209,45 @@ func SpawnPlayer() -> void:
 	Player.Spawned = true
 
 func UpdateMultiplayer() -> void:
+	MultiplayerConnection.SetCurrentLevel(LevelName)
 	MultiplayerConnection.SetPlayerPosition(Player.global_position)
 	MultiplayerConnection.SetPlayerRotation(Player.global_rotation)
 	MultiplayerConnection.SetPlayerScale(Player.scale)
+	
+	var players = MultiplayerConnection.GetAllPlayers()
+	
+	for p in players:
+		if (p["Username"] == Globals.User_Username || p["CurrentLevel"] != LevelName):
+			continue
+		
+		if (p["Username"] not in SpawnedMultiplayerPlayers):
+			var playerNodeInWorld = MULTIPLAYER_PLAYER_SKIN.instantiate()
+			add_child(playerNodeInWorld)
+			
+			p["NodeInWorld"] = playerNodeInWorld
+			SpawnedMultiplayerPlayers[p["Username"]] = playerNodeInWorld
+		
+		SpawnedMultiplayerPlayers[p["Username"]].global_position = Vector3(
+			p["Position"][0],
+			p["Position"][1],
+			p["Position"][2]
+		)
+		SpawnedMultiplayerPlayers[p["Username"]].global_rotation = Vector3(
+			p["Rotation"][0],
+			p["Rotation"][1],
+			p["Rotation"][2]
+		)
+		SpawnedMultiplayerPlayers[p["Username"]].scale = Vector3(
+			p["Scale"][0],
+			p["Scale"][1],
+			p["Scale"][2]
+		)
 
 func _ready() -> void:
 	FNL.noise_type = FastNoiseLite.TYPE_PERLIN
 	FNL.frequency = 0.02
 	FNL.fractal_type = FastNoiseLite.FRACTAL_FBM
 	FNL.fractal_octaves = 5
-	
-	SetSeed(randi())
 	
 	InstancedChunkParent = Node3D.new()
 	InstancedChunkParent.name = "Instanced"
@@ -235,6 +266,7 @@ func _ready() -> void:
 	
 	if (!Multiplayer && !Generate):
 		Generate = true
+		SetSeed(randi())
 	elif (Multiplayer):
 		if (LevelName not in MultiplayerConnection.VisitedLevels):
 			MultiplayerConnection.VisitedLevels.append(LevelName)
@@ -247,12 +279,11 @@ func _ready() -> void:
 			
 			MultiplayerConnection.Connect(Globals.Multiplayer_Server)
 		
-		if (MultiplayerConnection.IsAuthorized(false)):
+		if (MultiplayerConnection.IsAuthorized(false) || MultiplayerConnection.Login(Globals.User_Username, Globals.User_Password, false)):
 			Generate = true
-		elif (!MultiplayerConnection.Login(Globals.User_Username, Globals.User_Password, false)):
+		else:
+			print("NOT LOGGED IN.")
 			pass  # TODO: Error when logging in (probably incorrect credentials)
-	
-	print(Generate)
 	
 	if (Generate):
 		UpdateChunks()
@@ -265,15 +296,17 @@ func _ready() -> void:
 	genTimer.timeout.connect(UpdateChunks)
 	add_child(genTimer)
 	
-	var multiplayerTimer = Timer.new()
-	multiplayerTimer.autostart = true
-	multiplayerTimer.one_shot = false
-	multiplayerTimer.wait_time = clampf(Globals.Multiplayer_UpdateTime, 0.05, 1)
-	multiplayerTimer.timeout.connect(UpdateMultiplayer)
-	add_child(multiplayerTimer)
+	if (Globals.Multiplayer_UpdateTime >= 0.1):
+		var multiplayerTimer = Timer.new()
+		multiplayerTimer.autostart = true
+		multiplayerTimer.one_shot = false
+		multiplayerTimer.wait_time = clampf(Globals.Multiplayer_UpdateTime, 0.05, 1)
+		multiplayerTimer.timeout.connect(UpdateMultiplayer)
+		add_child(multiplayerTimer)
 
-#func _process(_Delta: float) -> void:
-#	MultiplayerConnection.Socket.poll()
+func _process(_Delta: float) -> void:
+	if (Globals.Multiplayer_UpdateTime < 0.1):
+		UpdateMultiplayer()
 
 func _physics_process(_Delta: float) -> void:
 	if (PlayerDieFalling && Player.position.y <= -PlayerDieFallingDistance):
