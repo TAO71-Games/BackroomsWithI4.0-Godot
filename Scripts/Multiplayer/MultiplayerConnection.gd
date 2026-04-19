@@ -128,3 +128,12 @@ static func GetAllPlayers(AllowErrors: bool = true) -> Array:
 		return []
 	
 	return players["args"][0]
+
+static func GetLevelsData(AllowErrors: bool = true) -> Array:
+	var levels = MultiplayerConnection.SendAndReceive("get_lvls_data", [], AllowErrors)
+	
+	if (levels["code"] != "OK"):
+		push_error("Result code != OK")
+		return []
+	
+	return levels["args"][0]

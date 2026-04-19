@@ -284,6 +284,23 @@ func _ready() -> void:
 		else:
 			print("NOT LOGGED IN.")
 			pass  # TODO: Error when logging in (probably incorrect credentials)
+		
+		var levelsData = MultiplayerConnection.GetLevelsData(false)
+		var levelFound = false
+		
+		for level in levelsData:
+			if (level["Name"] == LevelName):
+				levelFound = true
+				
+				if (level["NoiseMaps"] != null):
+					pass  # TODO: Download noise maps from server and set
+				
+				SetSeed(level["Seed"])
+				# TODO: Set chunks disabled IDs
+		
+		if (!levelFound):
+			push_error("Level NOT found in server. Setting random seed.")
+			SetSeed(randi())
 	
 	if (Generate):
 		UpdateChunks()
