@@ -39,9 +39,13 @@ var Tired: bool = false
 var InventoryOpen: bool = false
 var InventoryItems: Array[InventoryItem] = []
 
+@export_category("Sound")
+var SoundsPlaying: Array[String] = []
+@export var AudioFootstepsSource: AudioStreamPlayer3D = null
+@export var AudioWhistleSource: AudioStreamPlayer3D = null
+
 @export_category("Other")
 @export var Head: Node3D = null
-@export var AudioSource: AudioStreamPlayer3D = null
 var MouseCaptured: bool = true
 var Spawned: bool = false
 var Running: bool = false
@@ -98,6 +102,11 @@ func RequestInteract() -> void:
 	if (interactibleObj != null && "Interact" in interactibleObj):
 		interactibleObj.Interact()
 
+func UpdateMultiplayer() -> void:
+	MultiplayerConnection.SetPlayerPosition(global_position)
+	MultiplayerConnection.SetPlayerRotation(global_rotation)
+	MultiplayerConnection.SetPlayerScale(scale)
+
 func _ready() -> void:
 	add_child(JumpTimer)
 	JumpTimer.autostart = false
@@ -123,9 +132,9 @@ func _process(Delta: float) -> void:
 	if (Input.is_action_just_pressed("act_interact") && MouseCaptured):
 		RequestInteract()
 	
-	if (Input.is_action_just_pressed("act_whistling") && MouseCaptured && !AudioSource.playing):
-		AudioSource.stream = WHISTLING_SOUNDS[randi() % WHISTLING_SOUNDS.size()]
-		AudioSource.play()
+	if (Input.is_action_just_pressed("act_whistling") && MouseCaptured && !AudioWhistleSource.playing):
+		AudioWhistleSource.stream = WHISTLING_SOUNDS[randi() % WHISTLING_SOUNDS.size()]
+		AudioWhistleSource.play()
 	
 	if (MouseCaptured):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

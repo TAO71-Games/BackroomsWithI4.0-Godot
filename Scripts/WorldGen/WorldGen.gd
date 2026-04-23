@@ -212,10 +212,8 @@ func UpdateMultiplayer() -> void:
 	if (!Multiplayer):
 		return
 	
+	Player.UpdateMultiplayer()
 	MultiplayerConnection.SetCurrentLevel(LevelName)
-	MultiplayerConnection.SetPlayerPosition(Player.global_position)
-	MultiplayerConnection.SetPlayerRotation(Player.global_rotation)
-	MultiplayerConnection.SetPlayerScale(Player.scale)
 	
 	var players = MultiplayerConnection.GetAllPlayers()
 	
@@ -247,6 +245,7 @@ func UpdateMultiplayer() -> void:
 		)
 		SpawnedMultiplayerPlayers[p["Username"]].SetCrouched(p["Crouched"])
 		SpawnedMultiplayerPlayers[p["Username"]].SetNameTag(p["Username"])
+		SpawnedMultiplayerPlayers[p["Username"]].UpdateParameters()
 
 func _ready() -> void:
 	FNL.noise_type = FastNoiseLite.TYPE_PERLIN
@@ -292,6 +291,9 @@ func _ready() -> void:
 		
 		var levelsData = MultiplayerConnection.GetLevelsData(false)
 		var levelFound = false
+		
+		print(levelsData)
+		print(LevelName)
 		
 		for level in levelsData:
 			if (level["Name"] == LevelName):

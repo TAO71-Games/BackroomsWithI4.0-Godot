@@ -14,7 +14,7 @@ static var ViewDistance: int = 50
 static var Sensibility: float = 3
 static var GenerationTime: float = 2
 
-static var Multiplayer_Server: String = "ws://main.tao71.org:65287"
+static var Multiplayer_Server: String = "ws://192.168.1.101:65287"
 static var Multiplayer_UpdateTime: float = 0
 
 static var User_Username: String = "Player"

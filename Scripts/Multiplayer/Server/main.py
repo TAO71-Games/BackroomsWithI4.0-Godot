@@ -1,17 +1,15 @@
 from typing import Any
+from websockets.asyncio.server import ServerConnection as WSConnection
 import os
 import json
-import time
 import argparse
-import threading
 import asyncio
 import websockets
 import hashlib
 import classes
+import config
 
-import traceback
-
-async def SendData(Socket: websockets.WebSocketServerProtocol, Data: str) -> None:
+async def SendData(Socket: WSConnection, Data: str) -> None:
     data = Data
     chunks = []
 
@@ -27,7 +25,7 @@ async def SendData(Socket: websockets.WebSocketServerProtocol, Data: str) -> Non
     #print("> --END--")
     await Socket.send("--END--")
 
-async def RecvData(Socket: websockets.WebSocketServerProtocol) -> str:
+async def RecvData(Socket: WSConnection) -> str:
     recvData = ""
 
     while (True):
@@ -46,7 +44,7 @@ async def RecvData(Socket: websockets.WebSocketServerProtocol) -> str:
 
     return recvData.strip()
 
-async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, Player: classes.Player) -> None:
+async def ClientReceive(Socket: WSConnection, Data: str, Player: classes.Player) -> None:
     global LoggedPlayers
 
     if (len(Data) == 0):
@@ -68,7 +66,7 @@ async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, P
             passwdHash = hashlib.sha3_512(arguments[1].encode("utf-8")).hexdigest()
             playerFound = False
 
-            for player in INFO["players"]:
+            for player in INFO.Players:
                 if (player.Username == username):
                     playerFound = True
 
@@ -85,7 +83,7 @@ async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, P
                 Player.Username = username
                 Player.AuthHash = passwdHash
 
-                INFO["players"].append(Player)
+                INFO.Players.append(Player)
                 LoggedPlayers.append(Player)
         elif (Player not in LoggedPlayers):
             result_args.append("Player is not logged in.")  # Make sure the player exists
@@ -103,19 +101,17 @@ async def ClientReceive(Socket: websockets.WebSocketServerProtocol, Data: str, P
         elif (action == "set_lvl"):
             Player.CurrentLevel = arguments[0]
         elif (action == "get_lvls_data"):
-            result_args.append([lvl.GetDictionary_Player() for lvl in INFO["worlds"]])
+            result_args.append([lvl.GetDictionary_Player() for lvl in INFO.Worlds])
         elif (action == "get_all_players"):
             result_args.append([p.GetDictionary_Player() for p in LoggedPlayers])
         else:
-            state = "NOT FOUND"
+            result_code = "NOT FOUND"
 
         await SendData(Socket, json.dumps({"code": result_code, "args": result_args}))
-    except Exception as ex:
+    except:
         await SendData(Socket, json.dumps({"code": "FAILED", "args": "Unknown error."}))
-        #print(ex)
-        traceback.print_exception(ex)
 
-async def ClientConnected(Socket: websockets.WebSocketServerProtocol) -> None:
+async def ClientConnected(Socket: WSConnection) -> None:
     global Clients, LoggedPlayers
 
     Clients.append(Socket)
@@ -144,38 +140,30 @@ def EnsureFilesAndData() -> None:
         with open(args.INFO_FILE, "x") as f:
             f.write(json.dumps(DEFAULT_INFO, indent = 4))
 
-def ReadConfig() -> dict[str, Any]:
+def ReadConfig() -> config.Config:
     with open(args.CONFIG_FILE, "r") as f:
         conf = json.loads(f.read())
 
-    for k, v in DEFAULT_CONFIG.items():
-        if (k not in conf):
-            conf[k] = v
+    return config.Config.FromDict(conf)
 
-    return conf
-
-def ReadInfo() -> dict[str, Any]:
+def ReadInfo() -> config.Info:
     with open(args.INFO_FILE, "r") as f:
         info = json.loads(f.read())
 
-    for k, v in DEFAULT_INFO.items():
-        if (k not in info):
-            info[k] = v
-
-    return info
+    return config.Info.FromDict(info)
 
 async def __start_server__() -> None:
     global Server, ServerStarted
 
     Server = await websockets.serve(
         handler = ClientConnected,
-        host = CONFIG["server"]["host"],
-        port = CONFIG["server"]["port"],
+        host = CONFIG.Server["Host"],
+        port = CONFIG.Server["Port"],
         max_size = 8192,
         ssl = None
     )
     ServerStarted = True
-    print(f"Server started at '{CONFIG['server']['host']}:{CONFIG['server']['port']}'.", flush = True)
+    print(f"Server started at '{CONFIG.Server['Host']}:{CONFIG.Server['Port']}'.", flush = True)
 
     while (ServerStarted):
         await asyncio.sleep(0.1)
@@ -209,9 +197,10 @@ args = parser.parse_args()
 EnsureFilesAndData()
 CONFIG = ReadConfig()
 INFO = ReadInfo()
+print([w.GetDictionary_Save() for w in INFO.Worlds])
 
 LoggedPlayers: list[classes.Player] = []
-Clients: list[websockets.WebSocketServerProtocol] = []
+Clients: list[WSConnection] = []
 
 if (__name__ == "__main__"):
     asyncio.set_event_loop(asyncio.new_event_loop())
