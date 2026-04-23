@@ -11,6 +11,10 @@ class_name MultiplayerCharacter extends Node3D
 @export var Hand: Node3D = null
 var ItemInHand: Node3D = null
 
+@export_category("Movement")
+var IsMoving: bool = false
+var LastPosition: Vector3 = Vector3.ZERO
+
 func SetCrouched(Value: bool) -> void:
 	for element in StandingElements:
 		if (element is CollisionShape3D):
@@ -31,7 +35,7 @@ func SetCrouched(Value: bool) -> void:
 			element.process_mode = Node.PROCESS_MODE_INHERIT
 			element.show()
 		else:
-			element.process_mode = Node.NOTIFICATION_DISABLED
+			element.process_mode = Node.PROCESS_MODE_DISABLED
 			element.hide()
 
 func SetItemInHand(Item: PackedScene) -> void:
@@ -44,3 +48,7 @@ func SetItemInHand(Item: PackedScene) -> void:
 
 func SetNameTag(Name: String) -> void:
 	NameTag.text = Name
+
+func UpdateParameters() -> void:
+	IsMoving = global_position != LastPosition
+	LastPosition = global_position

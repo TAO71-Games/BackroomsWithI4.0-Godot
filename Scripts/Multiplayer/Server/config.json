@@ -1,8 +1,8 @@
 {
-    "server": {
-        "host": "0.0.0.0",
-        "port": 65287,
-        "max_players": 1000
+    "Server": {
+        "Host": "0.0.0.0",
+        "Port": 65287,
+	    "MaxPlayers": 1000
     },
-    "player_admin_tag": "admin"
+    "PlayerAdminTag": "admin"
 }

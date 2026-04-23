@@ -1,5 +1,12 @@
 {
-    "worlds": [],
-    "players": [],
-    "objects": []
+    "Worlds": [
+        {
+            "Name": "Level 4",
+            "NoiseMaps": null,
+            "Seed": 29832,
+            "ChunkData": []
+        }
+    ],
+    "Players": [],
+    "Objects": []
 }
