@@ -131,26 +131,33 @@ async def ClientConnected(Socket: WSConnection) -> None:
         Clients.remove(Socket)
         await Socket.close()
 
-def EnsureFilesAndData() -> None:
-    if (not os.path.exists(args.CONFIG_FILE)):
-        with open(args.CONFIG_FILE, "x") as f:
-            f.write(json.dumps(DEFAULT_CONFIG, indent = 4))
-
-    if (not os.path.exists(args.INFO_FILE)):
-        with open(args.INFO_FILE, "x") as f:
-            f.write(json.dumps(DEFAULT_INFO, indent = 4))
-
 def ReadConfig() -> config.Config:
-    with open(args.CONFIG_FILE, "r") as f:
-        conf = json.loads(f.read())
+    if (os.path.exists(args.CONFIG_FILE)):
+        with open(args.CONFIG_FILE, "r") as f:
+            conf = json.loads(f.read())
+        
+        return config.Config.FromDict(conf)
+    
+    conf = config.Config()
 
-    return config.Config.FromDict(conf)
+    with open(args.CONFIG_FILE, "x") as f:
+        f.write(json.dumps(conf.ToDict(), indent = 4))
+    
+    return conf
 
 def ReadInfo() -> config.Info:
-    with open(args.INFO_FILE, "r") as f:
-        info = json.loads(f.read())
+    if (os.path.exists(args.INFO_FILE)):
+        with open(args.INFO_FILE, "r") as f:
+            info = json.loads(f.read())
+        
+        return config.Info.FromDict(info)
+    
+    info = config.Info()
 
-    return config.Info.FromDict(info)
+    with open(args.INFO_FILE, "x") as f:
+        f.write(json.dumps(info.ToDict(), indent = 4))
+    
+    return info
 
 async def __start_server__() -> None:
     global Server, ServerStarted
@@ -179,25 +186,14 @@ async def __stop_server__() -> None:
     Server.close(True)
     await Server.wait_closed()
 
-DEFAULT_CONFIG_FILE: str = "./default_config.json"
-DEFAULT_INFO_FILE: str = "./default_info.json"
-
-with open(DEFAULT_CONFIG_FILE, "r") as f:
-    DEFAULT_CONFIG: dict[str, Any] = json.loads(f.read())
-
-with open(DEFAULT_INFO_FILE, "r") as f:
-    DEFAULT_INFO: dict[str, Any] = json.loads(f.read())
-
 parser = argparse.ArgumentParser(prog = "BWI Server", description = "Start a BWI server.")
 parser.add_argument("--config", dest = "CONFIG_FILE", type = str, default = "./config.json", required = False, help = "Configuration file.")
 parser.add_argument("--info", dest = "INFO_FILE", type = str, default = "./info.json", required = False, help = "Information file.")
 
 args = parser.parse_args()
 
-EnsureFilesAndData()
 CONFIG = ReadConfig()
 INFO = ReadInfo()
-print([w.GetDictionary_Save() for w in INFO.Worlds])
 
 LoggedPlayers: list[classes.Player] = []
 Clients: list[WSConnection] = []

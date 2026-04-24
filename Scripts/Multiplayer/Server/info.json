@@ -1,12 +1,7 @@
 {
-    "Worlds": [
-        {
-            "Name": "Level 4",
-            "NoiseMaps": null,
-            "Seed": 29832,
-            "ChunkData": []
-        }
-    ],
+    "Worlds": [],
     "Players": [],
-    "Objects": []
+    "Objects": [],
+    "ChatMessages": [],
+    "__type__": "Info"
 }

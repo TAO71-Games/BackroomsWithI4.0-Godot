@@ -8,6 +8,7 @@ class_name WorldGen_RandomObject extends Node
 @export var Probability: float = 0
 var Activated: bool = false
 var RNG: RandomNumberGenerator = RandomNumberGenerator.new()
+static var asldk = false
 
 func SetSeed(Seed: int) -> void:
 	RNG.seed = Seed

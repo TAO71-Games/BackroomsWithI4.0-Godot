@@ -292,9 +292,6 @@ func _ready() -> void:
 		var levelsData = MultiplayerConnection.GetLevelsData(false)
 		var levelFound = false
 		
-		print(levelsData)
-		print(LevelName)
-		
 		for level in levelsData:
 			if (level["Name"] == LevelName):
 				levelFound = true
