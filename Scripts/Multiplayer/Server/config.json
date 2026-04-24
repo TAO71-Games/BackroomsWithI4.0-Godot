@@ -2,7 +2,8 @@
     "Server": {
         "Host": "0.0.0.0",
         "Port": 65287,
-	    "MaxPlayers": 1000
+        "MaxPlayers": 1000
     },
-    "PlayerAdminTag": "admin"
+    "PlayerAdminTag": "admin",
+    "__type__": "Config"
 }

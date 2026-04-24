@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Self
+from typing import Any, Self, Iterable
 import random
 import copy
 
@@ -32,19 +32,24 @@ class Permission(Enum):
     INTERACT_MOVE = 3
 
 class BaseGameElement():
+    __registry__ = {}
+
+    def __init_subclass__(cls, **kwargs) -> None:
+        super().__init_subclass__(**kwargs)
+        cls.__registry__[cls.__name__] = cls
+
     def __init__(self) -> None:
         pass
 
     def GetDictionary_Save(self) -> dict[str, Any]:
         d = copy.deepcopy(self.__dict__)
+        d["__type__"] = self.__class__.__name__
 
         for k, v in d.items():
-            if ("GetDictionary_Save" in v):
+            if (isinstance(v, list)):
+                d[k] = [i.GetDictionary_Save() if (hasattr(i, "GetDictionary_Save")) else i for i in v]
+            elif (hasattr(v, "GetDictionary_Save")):
                 d[k] = v.GetDictionary_Save()
-            elif ("GetDictionary_Player" in v):
-                d[k] = v.GetDictionary_Player()
-            else:
-                d[k] = v
 
         return d
 
@@ -52,23 +57,39 @@ class BaseGameElement():
         d = copy.deepcopy(self.__dict__)
 
         for k, v in d.items():
-            if ("GetDictionary_Player" in v):
+            if (isinstance(v, list)):
+                d[k] = [i.GetDictionary_Player() if (hasattr(i, "GetDictionary_Player")) else i for i in v]
+            elif (hasattr(v, "GetDictionary_Player")):
                 d[k] = v.GetDictionary_Player()
-            elif ("GetDictionary_Save" in v):
-                d[k] = v.GetDictionary_Save()
-            else:
-                d[k] = v
 
         return d
 
     @classmethod
     def FromDict(cls, D: dict[str, Any]) -> Self:
-        instance = cls.__new__(cls)
+        targetCls = cls.__registry__.get(D.get("__type__", cls.__name__), cls)
+        instance = targetCls.__new__(targetCls)
 
-        for paramName, paramValue in D.items():
-            setattr(instance, paramName, paramValue)
+        for k, v in D.items():
+            if (k == "__type__"):
+                continue
+
+            if (isinstance(v, list)):
+                v = [BaseGameElement.FromDict(i) if (isinstance(i, dict) and "__type__" in i) else i for i in v]
+            elif (isinstance(v, dict) and "__type__" in v):
+                v = BaseGameElement.FromDict(v)
+            
+            setattr(instance, k, v)
         
         return instance
+
+class ChatMessage(BaseGameElement):
+    def __init__(self, Username: str, Content: list[dict[str, str]] | str) -> None:
+        self.Username = Username
+
+        if (isinstance(Content, list)):
+            self.Content = Content
+        else:
+            self.Content = [{"type": "text", "text": str(self.Content)}]
 
 class MapChunk(BaseGameElement):
     def __init__(self, Position: tuple[int, int, int]) -> None:

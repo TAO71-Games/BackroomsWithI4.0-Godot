@@ -24,8 +24,8 @@ func Init() -> void:
 		if ("BASE_CHUNK" in script):
 			script.BASE_CHUNK = self
 		
-		if ("Init" in script):
-			script.Init()
-		
 		if ("SetSeed" in script):
 			script.SetSeed(RNG.randi())
+		
+		if ("Init" in script):
+			script.Init()

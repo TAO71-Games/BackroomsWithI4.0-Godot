@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://cxtgu1qc3g1ie" path="res://Scripts/WorldGen/WorldGen_Chunk_SideObject.gd" id="3_b0j68"]
 [ext_resource type="Script" uid="uid://lxrqyunvc3fd" path="res://Scripts/WorldGen/WorldGen_RandomObject.gd" id="4_akf4n"]
 [ext_resource type="Material" uid="uid://c6ahtt5ufc7mv" path="res://Textures/Fabric039/Fabric039_4K-JPG.tres" id="5_wkoa0"]
-[ext_resource type="Material" uid="uid://d0ierphi8iorm" path="res://Textures/OfficeCeiling006/OfficeCeiling006_4K-JPG.tres" id="6_rg5ul"]
+[ext_resource type="Material" uid="uid://doym3skxnovnp" path="res://Textures/Wallpaper001B/Wallpaper001B_2K-JPG.tres" id="6_osi8p"]
 [ext_resource type="PackedScene" uid="uid://bqukxtkm3a3o3" path="res://Meshes/CRT_Monitor/crt_monitor.glb" id="7_osi8p"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_3yb0d"]
@@ -20,7 +20,7 @@ emission_energy_multiplier = 2.0
 size = Vector2(10, 10)
 
 [sub_resource type="BoxMesh" id="BoxMesh_osi8p"]
-size = Vector3(9.999, 0.25, 9.999)
+size = Vector3(10, 0.25, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_840bg"]
 size = Vector3(10, 0.01, 10)
@@ -142,7 +142,7 @@ mesh = SubResource("PlaneMesh_psx24")
 
 [node name="Ceiling" type="MeshInstance3D" parent="." unique_id=1528045378]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-material_override = ExtResource("6_rg5ul")
+material_override = ExtResource("6_osi8p")
 mesh = SubResource("BoxMesh_osi8p")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1997268386]

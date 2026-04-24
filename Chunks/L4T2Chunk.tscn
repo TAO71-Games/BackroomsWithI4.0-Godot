@@ -19,7 +19,7 @@ emission_energy_multiplier = 2.0
 size = Vector2(10, 10)
 
 [sub_resource type="BoxMesh" id="BoxMesh_xramr"]
-size = Vector3(9.999, 0.25, 9.999)
+size = Vector3(10, 0.25, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_840bg"]
 size = Vector3(10, 0.01, 10)
