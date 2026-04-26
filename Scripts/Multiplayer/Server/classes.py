@@ -166,7 +166,7 @@ class Player(GameEntity):
         self.Crouched: bool = False
 
         # Sounds
-        self.Whistle: str | None = None
+        self.PlayingSounds: list[str] = []
 
     def GetDictionary_Player(self) -> dict[str, Any]:
         d = super().GetDictionary_Player()

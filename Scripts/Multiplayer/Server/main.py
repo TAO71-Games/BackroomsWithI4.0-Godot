@@ -100,8 +100,8 @@ async def ClientReceive(Socket: WSConnection, Data: str, Player: classes.Player)
             Player.Crouched = arguments[0]
         elif (action == "set_lvl"):
             Player.CurrentLevel = arguments[0]
-        elif (action == "set_whistle"):
-            Player.Whistle = arguments[0]
+        elif (action == "set_sounds"):
+            Player.PlayingSounds = arguments[0]
         elif (action == "get_lvls_data"):
             result_args.append([lvl.GetDictionary_Player() for lvl in INFO.Worlds])
         elif (action == "get_all_players"):
