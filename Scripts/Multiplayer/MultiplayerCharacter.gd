@@ -64,8 +64,10 @@ func PlaySound(Type: String, Sound: AudioStream) -> void:
 		
 		Sounds[Type] = player
 	
-	if (Sounds[Type].playing):
+	if (Sounds[Type].playing && Sounds[Type].stream == Sound):
 		return
+	elif (Sounds[Type].playing):
+		Sounds[Type].stop()
 	
 	Sounds[Type].stream = Sound
 	Sounds[Type].play()
