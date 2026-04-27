@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Any, Self, Iterable
+from typing import Any, Self
 import random
 import copy
+import globals
 
 def GetRandomID() -> int:
     return random.randint(0, 2 ** 31 - 1)
@@ -31,58 +32,7 @@ class Permission(Enum):
     MOVE = 2
     INTERACT_MOVE = 3
 
-class BaseGameElement():
-    __registry__ = {}
-
-    def __init_subclass__(cls, **kwargs) -> None:
-        super().__init_subclass__(**kwargs)
-        cls.__registry__[cls.__name__] = cls
-
-    def __init__(self) -> None:
-        pass
-
-    def GetDictionary_Save(self) -> dict[str, Any]:
-        d = copy.deepcopy(self.__dict__)
-        d["__type__"] = self.__class__.__name__
-
-        for k, v in d.items():
-            if (isinstance(v, list)):
-                d[k] = [i.GetDictionary_Save() if (hasattr(i, "GetDictionary_Save")) else i for i in v]
-            elif (hasattr(v, "GetDictionary_Save")):
-                d[k] = v.GetDictionary_Save()
-
-        return d
-
-    def GetDictionary_Player(self) -> dict[str, Any]:
-        d = copy.deepcopy(self.__dict__)
-
-        for k, v in d.items():
-            if (isinstance(v, list)):
-                d[k] = [i.GetDictionary_Player() if (hasattr(i, "GetDictionary_Player")) else i for i in v]
-            elif (hasattr(v, "GetDictionary_Player")):
-                d[k] = v.GetDictionary_Player()
-
-        return d
-
-    @classmethod
-    def FromDict(cls, D: dict[str, Any]) -> Self:
-        targetCls = cls.__registry__.get(D.get("__type__", cls.__name__), cls)
-        instance = targetCls.__new__(targetCls)
-
-        for k, v in D.items():
-            if (k == "__type__"):
-                continue
-
-            if (isinstance(v, list)):
-                v = [BaseGameElement.FromDict(i) if (isinstance(i, dict) and "__type__" in i) else i for i in v]
-            elif (isinstance(v, dict) and "__type__" in v):
-                v = BaseGameElement.FromDict(v)
-            
-            setattr(instance, k, v)
-        
-        return instance
-
-class ChatMessage(BaseGameElement):
+class ChatMessage(globals.BaseGameElement):
     def __init__(self, Username: str, Content: list[dict[str, str]] | str) -> None:
         self.Username = Username
 
@@ -91,14 +41,14 @@ class ChatMessage(BaseGameElement):
         else:
             self.Content = [{"type": "text", "text": str(self.Content)}]
 
-class MapChunk(BaseGameElement):
+class MapChunk(globals.BaseGameElement):
     def __init__(self, Position: tuple[int, int, int]) -> None:
         super().__init__()
 
         self.Position: tuple[int, int, int] = Position
         self.DisabledIDs: list[str] = []  # Disabled items, entities, etc.
 
-class Map(BaseGameElement):
+class Map(globals.BaseGameElement):
     def __init__(self, Name: str, Seed: int = -1) -> None:
         super().__init__()
 
@@ -107,7 +57,7 @@ class Map(BaseGameElement):
         self.Seed: int = Seed if (Seed >= 0) else GetRandomID()
         self.ChunkData: list[MapChunk] = []
 
-class GameEntity(BaseGameElement):
+class GameEntity(globals.BaseGameElement):
     def __init__(self, ID: int, IDPreffix: str = "GENT") -> None:
         super().__init__()
 
@@ -147,6 +97,8 @@ class Player(GameEntity):
         self.AuthHash: str | None = None
 
         # Data
+        self.Running: bool = False
+        self.Crouched: bool = False
         self.CurrentLevel: str = ""
         self.Tags: list[str] = []
 
@@ -162,28 +114,32 @@ class Player(GameEntity):
         self.Items: list[str] = []
         self.ItemInHand: int | None = None  # Index of self.Items
 
-        # Crouched
-        self.Crouched: bool = False
-
         # Sounds
-        self.PlayingSounds: list[str] = []
+        self.WhistleSound: str | None = None
+        self.WalkingSound: str | None = None
 
-    def GetDictionary_Player(self) -> dict[str, Any]:
+    def GetDictionary_Player(self, IsSelf: bool) -> dict[str, Any]:
         d = super().GetDictionary_Player()
         d.pop("AuthHash")
-        d.pop("Water")
-        d.pop("Food")
-        d.pop("Health")
         d.pop("ID")
         d.pop("IDPreffix")
-        d.pop("Stamina")
-        d.pop("Items")
-
+        
+        if (IsSelf):
+            d.pop("Water")
+            d.pop("Food")
+            d.pop("Health")
+            d.pop("Stamina")
+            d.pop("Items")
+        else:
+            d.pop("WhistleSound")
+            d.pop("WalkingSound")
+        
         return d
     
     def GetDictionary_Save(self):
         d = super().GetDictionary_Save()
-        d.pop("Whistling")
+        d.pop("WhistleSound")
+        d.pop("WalkingSound")
 
         return d
 

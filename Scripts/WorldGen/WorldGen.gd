@@ -245,6 +245,8 @@ func UpdateMultiplayer() -> void:
 		)
 		SpawnedMultiplayerPlayers[p["Username"]].SetCrouched(p["Crouched"])
 		SpawnedMultiplayerPlayers[p["Username"]].SetNameTag(p["Username"])
+		SpawnedMultiplayerPlayers[p["Username"]].PlaySound("Whistle", p["WhistleSound"])
+		SpawnedMultiplayerPlayers[p["Username"]].PlaySound("Walk", p["WalkingSound"])
 		SpawnedMultiplayerPlayers[p["Username"]].UpdateParameters()
 
 func _ready() -> void:

@@ -28,9 +28,3 @@ PlayerSpawnFullRandom = false
 PlayerDieFalling = true
 
 [node name="Player" parent="." unique_id=632983521 instance=ExtResource("3_02u5l")]
-GravityMultiplier = null
-WaterDecreaseMultiplier = null
-FoodDecreaseMultiplier = null
-TiredStaminaRecover = null
-WalkStaminaLoss = null
-RunStaminaLoss = null
