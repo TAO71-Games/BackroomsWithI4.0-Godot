@@ -41,6 +41,8 @@ var InventoryItems: Array[InventoryItem] = []
 
 @export_category("Sound")
 var Sounds: Dictionary[String, AudioStreamPlayer3D] = {}
+var WhistleSound: AudioStream = null
+var WalkingSound: AudioStream = null
 
 @export_category("Other")
 @export var Head: Node3D = null
@@ -60,7 +62,7 @@ func __cast_ray__(From: Vector3, Direction: Vector3, Length: float) -> Collision
 	
 	return null
 
-func PlaySound(Type: String, Sound: AudioStream) -> void:
+func PlaySound(Type: String, Sound: Variant) -> void:
 	if (Type not in Sounds):
 		Sounds[Type] = null
 	
@@ -71,6 +73,14 @@ func PlaySound(Type: String, Sound: AudioStream) -> void:
 		add_child(player)
 		
 		Sounds[Type] = player
+	
+	if (Sound is String && ResourceLoader.exists(Sound)):
+		Sound = load(Sound)
+	elif (Sound == null):
+		return
+	elif (Sound is not AudioStream):
+		push_error("Invalid sound data type.")
+		return
 	
 	if (Sounds[Type].playing && Sounds[Type].stream == Sound):
 		return
@@ -124,7 +134,8 @@ func UpdateMultiplayer() -> void:
 	MultiplayerConnection.SetPlayerPosition(global_position)
 	MultiplayerConnection.SetPlayerRotation(global_rotation)
 	MultiplayerConnection.SetPlayerScale(scale)
-	MultiplayerConnection.SetSounds([])
+	MultiplayerConnection.SetWalkingSound("" if (WalkingSound == null) else WalkingSound.resource_path)
+	MultiplayerConnection.SetWhistleSound("" if (WhistleSound == null) else WhistleSound.resource_path)
 
 func _ready() -> void:
 	add_child(JumpTimer)
@@ -152,7 +163,8 @@ func _process(Delta: float) -> void:
 		RequestInteract()
 	
 	if (Input.is_action_just_pressed("act_whistling") && MouseCaptured):
-		PlaySound("Whistle", load("res://Audio/Whistling 1.wav"))
+		WhistleSound = WHISTLING_SOUNDS[randi() % WHISTLING_SOUNDS.size()]
+		PlaySound("Whistle", WhistleSound)
 	
 	if (MouseCaptured):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

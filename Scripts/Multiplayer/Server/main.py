@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import websockets
 import hashlib
+import traceback
 import classes
 import config
 
@@ -96,21 +97,26 @@ async def ClientReceive(Socket: WSConnection, Data: str, Player: classes.Player)
         elif (action == "set_scl"):
             x, y, z = arguments[0], arguments[1], arguments[2]
             Player.Scale = (x, y, z)
+        elif (action == "set_running"):
+            Player.Running = arguments[0]
         elif (action == "set_crouched"):
             Player.Crouched = arguments[0]
         elif (action == "set_lvl"):
             Player.CurrentLevel = arguments[0]
-        elif (action == "set_sounds"):
-            Player.PlayingSounds = arguments[0]
+        elif (action == "set_whistle_sound"):
+            Player.WhistleSound = arguments[0]
+        elif (action == "set_walking_sound"):
+            Player.WalkingSound = arguments[0]
         elif (action == "get_lvls_data"):
             result_args.append([lvl.GetDictionary_Player() for lvl in INFO.Worlds])
         elif (action == "get_all_players"):
-            result_args.append([p.GetDictionary_Player() for p in LoggedPlayers])
+            result_args.append([p.GetDictionary_Player(p == Player) for p in LoggedPlayers])
         else:
             result_code = "NOT FOUND"
 
         await SendData(Socket, json.dumps({"code": result_code, "args": result_args}))
-    except:
+    except Exception as ex:
+        traceback.print_exception(ex)
         await SendData(Socket, json.dumps({"code": "FAILED", "args": "Unknown error."}))
 
 async def ClientConnected(Socket: WSConnection) -> None:

@@ -52,7 +52,7 @@ func SetItemInHand(Item: PackedScene) -> void:
 func SetNameTag(Name: String) -> void:
 	NameTag.text = Name
 
-func PlaySound(Type: String, Sound: AudioStream) -> void:
+func PlaySound(Type: String, Sound: Variant) -> void:
 	if (Type not in Sounds):
 		Sounds[Type] = null
 	
@@ -63,6 +63,14 @@ func PlaySound(Type: String, Sound: AudioStream) -> void:
 		add_child(player)
 		
 		Sounds[Type] = player
+	
+	if (Sound is String && ResourceLoader.exists(Sound)):
+		Sound = load(Sound)
+	elif (Sound == null):
+		return
+	elif (Sound is not AudioStream):
+		push_error("Invalid sound data type.")
+		return
 	
 	if (Sounds[Type].playing && Sounds[Type].stream == Sound):
 		return
