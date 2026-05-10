@@ -22,9 +22,9 @@ LevelName = "Level 4"
 Maps = Array[Texture2D]([ExtResource("4_bfc4r")])
 MultipleFloors = false
 Player = NodePath("../Player")
-PlayerSpawnMin = Vector3i(0, 1, 0)
-PlayerSpawnMax = Vector3i(10, 1, 10)
-PlayerSpawnFullRandom = false
+PlayerSpawnMin = Vector3i(-150, 1, -150)
+PlayerSpawnMax = Vector3i(150, 1, 150)
 PlayerDieFalling = true
+PlayerDieFallingDistance = 5.0
 
 [node name="Player" parent="." unique_id=632983521 instance=ExtResource("3_02u5l")]
