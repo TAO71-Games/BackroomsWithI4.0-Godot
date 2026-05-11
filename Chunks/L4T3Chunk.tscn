@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://lxrqyunvc3fd" path="res://Scripts/WorldGen/WorldGen_RandomObject.gd" id="4_akf4n"]
 [ext_resource type="Material" uid="uid://c6ahtt5ufc7mv" path="res://Textures/Fabric039/Fabric039_4K-JPG.tres" id="5_wkoa0"]
 [ext_resource type="Material" uid="uid://doym3skxnovnp" path="res://Textures/Wallpaper001B/Wallpaper001B_2K-JPG.tres" id="6_osi8p"]
-[ext_resource type="PackedScene" uid="uid://bqukxtkm3a3o3" path="res://Meshes/CRT_Monitor/crt_monitor.glb" id="7_osi8p"]
+[ext_resource type="PackedScene" uid="uid://bwdo2ga8e4yv0" path="res://Prefabs/Cubicle.tscn" id="7_osi8p"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_3yb0d"]
 size = Vector2(1.15, 1.15)
@@ -135,6 +135,24 @@ light_volumetric_fog_energy = 2.0
 distance_fade_enabled = true
 omni_range = 8.0
 
+[node name="Cubicle 1" parent="." unique_id=2027640324 instance=ExtResource("7_osi8p")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2, 0, -1)
+
+[node name="Cubicle 2" parent="." unique_id=1022722545 instance=ExtResource("7_osi8p")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -1)
+
+[node name="Cubicle 3" parent="." unique_id=1274500199 instance=ExtResource("7_osi8p")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2, 0, -1)
+
+[node name="Cubicle 4" parent="." unique_id=751957742 instance=ExtResource("7_osi8p")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 2, 0, 0.9999999)
+
+[node name="Cubicle 5" parent="." unique_id=1172543514 instance=ExtResource("7_osi8p")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 0, 0, 1)
+
+[node name="Cubicle 6" parent="." unique_id=2010176866 instance=ExtResource("7_osi8p")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -2, 0, 1.0000002)
+
 [node name="Floor" type="MeshInstance3D" parent="." unique_id=1959883585]
 material_override = ExtResource("5_wkoa0")
 cast_shadow = 0
@@ -153,6 +171,3 @@ shape = SubResource("BoxShape3D_840bg")
 [node name="Ceiling" type="CollisionShape3D" parent="StaticBody3D" unique_id=1567630293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
 shape = SubResource("BoxShape3D_840bg")
-
-[node name="Sketchfab_Scene" parent="." unique_id=35551380 instance=ExtResource("7_osi8p")]
-transform = Transform3D(0.005, 0, 0, 0, 0.005, 0, 0, 0, 0.005, 0, 0.7107128, 0)

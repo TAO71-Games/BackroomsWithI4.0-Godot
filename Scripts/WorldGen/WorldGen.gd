@@ -289,7 +289,7 @@ func _ready() -> void:
 				Globals.User_Username = randomUser
 				Globals.User_Password = Globals.Multiplayer_Debug_Users[randomUser]
 			
-			MultiplayerConnection.Connect(Globals.Multiplayer_Server)
+			MultiplayerConnection.AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
 		
 		if (MultiplayerConnection.IsAuthorized(false) || MultiplayerConnection.Login(Globals.User_Username, Globals.User_Password, false)):
 			Generate = true
