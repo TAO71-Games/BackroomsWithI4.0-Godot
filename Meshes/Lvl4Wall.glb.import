@@ -39,6 +39,11 @@ materials/extract_format=0
 materials/extract_path=""
 _subresources={
 "materials": {
+"Material": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Textures/Glass_1.tres",
+"use_external/path": "uid://bfsmdx7raep8a"
+},
 "Material.001": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Textures/Plastic013A_4K_PaintedPlaster017_4K__COMBINED/Plastic013A_4K_PaintedPlaster017_4K__COMBINED.jpg.tres",

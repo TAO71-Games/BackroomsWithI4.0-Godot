@@ -2,7 +2,7 @@
 
 A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integration.
 
-## General in-game features
+## Roadmap
 
 - Levels
 	- [ ] Level 0
@@ -44,41 +44,41 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 - Other
 	- [X] Infinite world generation
 	- [ ] Wiki
-	- [ ] Multiplayer
+	- [X] Multiplayer
 		- [ ] Text chat
 		- [ ] Voice chat (proximity chat)
 			- [ ] Voice filters
-    - Noise maps
-        - [ ] Level 0 (x1)
-        - [ ] Level 1 (x3)
-        - [ ] Level 2 (x6)
-        - [ ] Level 3 (UNKNOWN)
-        - [ ] Level 4 (x3)
-        - [ ] Level 5 (UNKNOWN)
-        - [ ] Level 6 (UNKNOWN)
-        - [ ] Level 7 (UNKNOWN)
-        - [ ] Level 8 (UNKNOWN)
+	- Noise maps
+		- [ ] Level 0 (x1)
+		- [ ] Level 1 (x3)
+		- [ ] Level 2 (x6)
+		- [ ] Level 3 (UNKNOWN)
+		- [ ] Level 4 (x3)
+		- [ ] Level 5 (UNKNOWN)
+		- [ ] Level 6 (UNKNOWN)
+		- [ ] Level 7 (UNKNOWN)
+		- [ ] Level 8 (UNKNOWN)
 
-### Features for version v0.1.x
+### Expected features for version v0.1.x
 
 - Levels
-    - Level 0
-    - Level 4
-    - Level The Hub
+	- Level 0
+	- Level 4
+	- Level The Hub
 - Entities
-    - None
+	- None
 - Items
-    - Level keys
-    - Almond water
-    - Phone
+	- Level keys
+	- Almond water
+	- Phone
 - Habilities
-    - None
+	- None
 - Other
-    - Infinite world generation
-    - Multiplayer
-    - Noise maps for:
-        - Level 0
-        - Level 4
+	- Infinite world generation
+	- Multiplayer
+	- Noise maps for:
+		- Level 0
+		- Level 4
 
 ## Tools used
 

@@ -5,12 +5,21 @@ const LEVEL_SPAWN_OFFSET: Vector3 = Vector3(0, -1.075, 0.215)
 var BASE_CHUNK: WorldGen_Chunk = null
 var INIT_ROTATION: Vector3 = Vector3.ZERO
 
+@export_category("Level")
 @export var SpawnOnLevel: Dictionary[int, PackedScene] = {}
+@export var LevelFoundObjs: Array[Node3D] = []
+@export var LevelNotFoundObjs: Array[Node3D] = []
+
+@export_category("Level keys")
 @export var RequiresLevelKey: Dictionary[int, bool] = {}
 @export var DefaultRequiresLevelKey: bool = true
+
+@export_category("Door rotation")
+@export var RotationObj: Node3D = null
+
+@export_category("Other")
 @export var Texts: Array[Label3D] = []
 @export var Offset: int = 0
-@export var RotationObj: Node3D = null
 var Open: bool = false
 var Locked: bool = false
 var Level: int = 0
@@ -23,7 +32,7 @@ func _process(Delta: float) -> void:
 		await get_tree().process_frame
 		return
 	
-	RotationObj.rotation.y = 90 if (Open) else 0
+	RotationObj.rotation.y = 90 if (Open) else 0  # TODO: Smooth rotation
 
 func Init() -> void:
 	Level = -BASE_CHUNK.Coords.x * LEVEL_MULTIPLIER + Offset
@@ -41,6 +50,22 @@ func Init() -> void:
 		if ("Init" in levelChunk && "SetSeed" in levelChunk):
 			levelChunk.SetSeed(randi())
 			levelChunk.Init()
+		
+		for obj in LevelFoundObjs:
+			obj.process_mode = Node.PROCESS_MODE_INHERIT
+			obj.show()
+		
+		for obj in LevelNotFoundObjs:
+			obj.process_mode = Node.PROCESS_MODE_DISABLED
+			obj.hide()
+	else:
+		for obj in LevelNotFoundObjs:
+			obj.process_mode = Node.PROCESS_MODE_INHERIT
+			obj.show()
+		
+		for obj in LevelFoundObjs:
+			obj.process_mode = Node.PROCESS_MODE_DISABLED
+			obj.hide()
 
 func Interact() -> void:
 	if (Locked):
