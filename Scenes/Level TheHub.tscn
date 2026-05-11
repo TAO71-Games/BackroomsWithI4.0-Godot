@@ -14,7 +14,7 @@ volumetric_fog_albedo = Color(0.52243817, 0.33598495, 0.07997725, 1)
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_nb3b8"]
 
-[node name="LevelTheHub" type="Node3D" unique_id=1533685544]
+[node name="Level TheHub" type="Node3D" unique_id=1533685544]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=763948751]
 environment = SubResource("Environment_sty34")

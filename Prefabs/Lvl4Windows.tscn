@@ -4,7 +4,10 @@
 [ext_resource type="Material" uid="uid://bfsmdx7raep8a" path="res://Textures/Glass_1.tres" id="2_hj6c6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ibwjp"]
-size = Vector3(10, 4, 0.6)
+size = Vector3(8.5, 4, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hxo6j"]
+size = Vector3(0.75, 4, 0.8)
 
 [sub_resource type="BoxMesh" id="BoxMesh_hj6c6"]
 size = Vector3(9, 4, 0.075)
@@ -13,12 +16,22 @@ size = Vector3(9, 4, 0.075)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=959061646]
 
-[node name="Wall" type="CollisionShape3D" parent="StaticBody3D" unique_id=1822451354]
+[node name="Wall 1" type="CollisionShape3D" parent="StaticBody3D" unique_id=1822451354]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 shape = SubResource("BoxShape3D_ibwjp")
 debug_color = Color(1, 0.6, 0.69803923, 0.41960785)
 
-[node name="Lvl4Wall" parent="." unique_id=1111549946 instance=ExtResource("1_hxo6j")]
+[node name="Wall 2" type="CollisionShape3D" parent="StaticBody3D" unique_id=95625885]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.625, 2, 0)
+shape = SubResource("BoxShape3D_hxo6j")
+debug_color = Color(1.2513996e-06, 0.8831479, 0.3893185, 0.41960785)
+
+[node name="Wall 3" type="CollisionShape3D" parent="StaticBody3D" unique_id=1123532612]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.625, 2, 0)
+shape = SubResource("BoxShape3D_hxo6j")
+debug_color = Color(1.2513996e-06, 0.8831479, 0.3893185, 0.41960785)
+
+[node name="Lvl4Wall" parent="." unique_id=1498997164 instance=ExtResource("1_hxo6j")]
 
 [node name="Window" type="MeshInstance3D" parent="." unique_id=1272203416]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
