@@ -4,7 +4,7 @@ static var __expecting_response__: bool = false
 static var VisitedLevels: Array[String] = []
 static var Socket: WebSocketPeer = WebSocketPeer.new()
 
-static func Connect(URI: String) -> void:
+static func Connect(URI: String) -> Error:
 	Disconnect()
 	
 	Socket.connect_to_url(URI)
@@ -18,8 +18,16 @@ static func Connect(URI: String) -> void:
 	
 	if (IsConnected()):
 		print("Connected!")
+		return OK
 	else:
-		print("Error connecting to '" + Globals.Multiplayer_Server + "'.")
+		print("Error connecting to '" + URI + "'.")
+		return ERR_CANT_CONNECT
+
+static func AutoConnect(Host: String, Port: int) -> Error:
+	if (Connect("wss://" + Host + ":" + str(Port)) != OK):
+		return Connect("ws://" + Host + ":" + str(Port))
+	
+	return OK
 
 static func Disconnect() -> void:
 	Socket.close()
@@ -30,6 +38,7 @@ static func SendAndReceive(
 	AllowErrors: bool = true
 ) -> Dictionary:
 	if (!IsConnected()):
+		AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
 		push_error("Socket is not connected!")
 		
 		if (!AllowErrors):

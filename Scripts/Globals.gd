@@ -26,7 +26,8 @@ static var GenerationTime: float = 2
 #     MULTIPLAYER
 # ====================
 
-static var Multiplayer_Server: String = "ws://127.0.0.1:65287"
+static var Multiplayer_Host: String = "main.tao71.org"
+static var Multiplayer_Port: int = 65287
 static var Multiplayer_UpdateTime: float = 0
 
 # ====================

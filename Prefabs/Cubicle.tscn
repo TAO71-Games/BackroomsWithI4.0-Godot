@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://bwdo2ga8e4yv0"]
+
+[ext_resource type="ArrayMesh" uid="uid://bjq5tk1r0pwbg" path="res://Meshes/Lvl4Cubicle.obj" id="2_pe5ed"]
+[ext_resource type="Material" uid="uid://d0cks34txtjuk" path="res://Textures/Carpet012/Carpet012_2K-JPG.tres" id="3_mdr1i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_osi8p"]
+size = Vector3(2, 1.7, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b0j68"]
+size = Vector3(0.05, 1.7, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_akf4n"]
+size = Vector3(0.8, 0.025, 2)
+
+[node name="Cubicle" type="Node3D" unique_id=2027640324]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2737889]
+mesh = ExtResource("2_pe5ed")
+surface_material_override/1 = ExtResource("3_mdr1i")
+surface_material_override/3 = ExtResource("3_mdr1i")
+surface_material_override/5 = ExtResource("3_mdr1i")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1797933057]
+
+[node name="Wall 1" type="CollisionShape3D" parent="StaticBody3D" unique_id=1048151638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 1)
+shape = SubResource("BoxShape3D_osi8p")
+
+[node name="Wall 2" type="CollisionShape3D" parent="StaticBody3D" unique_id=833562871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -1)
+shape = SubResource("BoxShape3D_osi8p")
+
+[node name="Wall 3" type="CollisionShape3D" parent="StaticBody3D" unique_id=1145278247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.988, 0.85, 0)
+shape = SubResource("BoxShape3D_b0j68")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1373218527]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.575, 0.915, 0)
+shape = SubResource("BoxShape3D_akf4n")
+debug_color = Color(0.96862745, 0, 0, 0.41960785)

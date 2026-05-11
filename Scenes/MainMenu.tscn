@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://upk3pgwp2pnb"]
+
+[node name="MainMenu" type="Control" unique_id=149137781]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Background" type="VideoStreamPlayer" parent="." unique_id=107242190]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=661044558]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.41948783
+anchor_top = 0.42592594
+anchor_right = 0.58051217
+anchor_bottom = 0.5740741
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Play" type="Button" parent="VBoxContainer" unique_id=674639238]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Play"
+
+[node name="Options" type="Button" parent="VBoxContainer" unique_id=68935362]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Options"
+
+[node name="Exit" type="Button" parent="VBoxContainer" unique_id=159480603]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Exit"
