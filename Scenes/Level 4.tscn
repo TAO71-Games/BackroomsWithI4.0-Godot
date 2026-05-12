@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cyphh6vjjn2b0"]
 
+[ext_resource type="Texture2D" uid="uid://bcesfthocey35" path="res://Textures/HDRIs/overcast_soil_puresky_4k.exr" id="1_gi3jd"]
 [ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/WorldGen/WorldGen.gd" id="1_psx24"]
 [ext_resource type="PackedScene" uid="uid://cb6dcbs5lm0w6" path="res://Chunks/L4T1Chunk.tscn" id="2_xramr"]
 [ext_resource type="PackedScene" uid="uid://cr0taqx4d6l1m" path="res://Prefabs/Player.tscn" id="3_02u5l"]
@@ -7,7 +8,25 @@
 [ext_resource type="PackedScene" uid="uid://vvlanawg1eup" path="res://Chunks/L4T3Chunk.tscn" id="4_853rs"]
 [ext_resource type="Texture2D" uid="uid://b4ne2k6bhkygq" path="res://Textures/NoiseMaps/NoiseMapL4V1.png" id="4_bfc4r"]
 
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_edpdx"]
+panorama = ExtResource("1_gi3jd")
+energy_multiplier = 0.5
+
+[sub_resource type="Sky" id="Sky_x75jp"]
+sky_material = SubResource("PanoramaSkyMaterial_edpdx")
+
+[sub_resource type="Environment" id="Environment_yk364"]
+background_mode = 2
+sky = SubResource("Sky_x75jp")
+ambient_light_color = Color(0.72464263, 0.7246426, 0.7246426, 1)
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_1a2o4"]
+
 [node name="Level 4" type="Node3D" unique_id=291746162]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2031605785]
+environment = SubResource("Environment_yk364")
+camera_attributes = SubResource("CameraAttributesPhysical_1a2o4")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2142870487]
 transform = Transform3D(0.93301266, 0.23478948, 0.27269265, -0.3535535, 0.739199, 0.5732234, -0.066987306, -0.631236, 0.77269256, 0, 6, 0)
@@ -16,7 +35,7 @@ shadow_opacity = 0.8
 
 [node name="World" type="Node3D" parent="." unique_id=167701895 node_paths=PackedStringArray("Player")]
 script = ExtResource("1_psx24")
-ChunkSize = Vector3i(10, 4, 10)
+ChunkSize = Vector3i(10, 5, 10)
 Chunks = Array[PackedScene]([ExtResource("2_xramr"), ExtResource("3_yg3f5"), ExtResource("4_853rs")])
 LevelName = "Level 4"
 Maps = Array[Texture2D]([ExtResource("4_bfc4r")])
