@@ -276,9 +276,11 @@ func _ready() -> void:
 		
 		ChunkPool.append(instance)
 	
+	Player.Enabled = false
+	
 	if (!Multiplayer && !Generate):
-		Generate = true
 		SetSeed(randi())
+		Generate = true
 	elif (Multiplayer):
 		if (LevelName not in MultiplayerConnection.VisitedLevels):
 			MultiplayerConnection.VisitedLevels.append(LevelName)
@@ -315,8 +317,14 @@ func _ready() -> void:
 			SetSeed(randi())
 	
 	if (Generate):
-		UpdateChunks()
-		SpawnPlayer()
+		if (len(Maps) == 0):
+			SpawnPlayer()
+			UpdateChunks()
+		else:
+			UpdateChunks()
+			SpawnPlayer()
+		
+		Player.Enabled = true
 	
 	var genTimer = Timer.new()
 	genTimer.autostart = true
@@ -334,7 +342,7 @@ func _ready() -> void:
 		add_child(multiplayerTimer)
 
 func _process(_Delta: float) -> void:
-	if (Globals.Multiplayer_UpdateTime < 0.1):
+	if (Globals.Multiplayer_UpdateTime < 0.05):
 		UpdateMultiplayer()
 
 func _physics_process(_Delta: float) -> void:

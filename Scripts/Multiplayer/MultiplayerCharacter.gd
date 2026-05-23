@@ -61,10 +61,14 @@ func PlaySound(Type: String, Sound: AudioStream) -> void:
 	elif (Sounds[Type].playing):
 		StopSound(Type)
 	
-	if (!Sounds[Type].finished.is_connected(StopSound)):
-		Sounds[Type].finished.connect(StopSound.bind(Type))
+	var BindedStopSound = StopSound.bind(Type)
 	
-	print("Playing sound.")
+	if (Sounds[Type].finished.is_connected(BindedStopSound)):
+		Sounds[Type].finished.disconnect(BindedStopSound)
+	
+	Sounds[Type].finished.connect(BindedStopSound)
+	
+	print("Playing sound " + Type)
 	
 	Sounds[Type].stream = Sound
 	Sounds[Type].play()

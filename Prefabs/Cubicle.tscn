@@ -1,7 +1,59 @@
 [gd_scene format=3 uid="uid://bwdo2ga8e4yv0"]
 
+[ext_resource type="Texture2D" uid="uid://bb7gyc5ybtwvw" path="res://Textures/Carpet012/Carpet012_2K-JPG_Color.jpg" id="2_huh82"]
 [ext_resource type="ArrayMesh" uid="uid://bjq5tk1r0pwbg" path="res://Meshes/Lvl4Cubicle.obj" id="2_pe5ed"]
-[ext_resource type="Material" uid="uid://d0cks34txtjuk" path="res://Textures/Carpet012/Carpet012_2K-JPG.tres" id="3_mdr1i"]
+[ext_resource type="Texture2D" uid="uid://chtt1p077m3jb" path="res://Textures/Carpet012/Carpet012_2K-JPG_AmbientOcclusion.jpg" id="3_2ikdc"]
+[ext_resource type="Texture2D" uid="uid://bduhs0owtrl74" path="res://Textures/Carpet012/Carpet012_2K-JPG_Displacement.jpg" id="4_xaevm"]
+[ext_resource type="Texture2D" uid="uid://c02odcvxulgm" path="res://Textures/Carpet012/Carpet012_2K-JPG_NormalGL.jpg" id="5_cvqbk"]
+[ext_resource type="Texture2D" uid="uid://dd7g3joshodx8" path="res://Textures/Carpet012/Carpet012_2K-JPG_Roughness.jpg" id="6_ghry0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_au8w6"]
+albedo_texture = ExtResource("2_huh82")
+metallic_specular = 0.1
+roughness_texture = ExtResource("6_ghry0")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("5_cvqbk")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("3_2ikdc")
+ao_texture_channel = 4
+heightmap_enabled = true
+heightmap_scale = 1.0
+heightmap_texture = ExtResource("4_xaevm")
+uv1_scale = Vector3(0.35, 0.35, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ja86s"]
+albedo_texture = ExtResource("2_huh82")
+metallic_specular = 0.1
+roughness_texture = ExtResource("6_ghry0")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("5_cvqbk")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("3_2ikdc")
+ao_texture_channel = 4
+heightmap_enabled = true
+heightmap_scale = 1.0
+heightmap_texture = ExtResource("4_xaevm")
+uv1_scale = Vector3(0.35, 0.35, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sk7gy"]
+albedo_texture = ExtResource("2_huh82")
+metallic_specular = 0.1
+roughness_texture = ExtResource("6_ghry0")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("5_cvqbk")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("3_2ikdc")
+ao_texture_channel = 4
+heightmap_enabled = true
+heightmap_scale = 1.0
+heightmap_texture = ExtResource("4_xaevm")
+uv1_scale = Vector3(0.35, 0.35, 0.35)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_osi8p"]
 size = Vector3(2, 1.7, 0.05)
@@ -16,9 +68,9 @@ size = Vector3(0.8, 0.025, 2)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2737889]
 mesh = ExtResource("2_pe5ed")
-surface_material_override/1 = ExtResource("3_mdr1i")
-surface_material_override/3 = ExtResource("3_mdr1i")
-surface_material_override/5 = ExtResource("3_mdr1i")
+surface_material_override/1 = SubResource("StandardMaterial3D_au8w6")
+surface_material_override/3 = SubResource("StandardMaterial3D_ja86s")
+surface_material_override/5 = SubResource("StandardMaterial3D_sk7gy")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1797933057]
 

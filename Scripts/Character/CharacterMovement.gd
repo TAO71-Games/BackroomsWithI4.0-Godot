@@ -2,7 +2,10 @@ class_name CharacterMovement extends CharacterBody3D
 
 const INTERACTION_MAX_LENGTH: float = 5
 const INTERACTION_PARENT_LENGTH: int = 4
-var WHISTLING_SOUNDS: Array[AudioStream] = [load("res://Audio/Whistling 1.wav")]
+var WHISTLING_SOUNDS: Dictionary[Globals.SoundID, AudioStream] = {
+	Globals.SoundID.WHISTLE_1: load("res://Audio/Whistling 1.wav"),
+	Globals.SoundID.WHISTLE_2: load("res://Audio/Whistling 2.wav")
+}
 var INIT_SCALE_SKIN: Vector3 = Vector3.ZERO
 var INIT_SCALE_COLLIDER: Vector2 = Vector2.ZERO
 
@@ -15,6 +18,8 @@ const TiredSpeed: float = 3
 const WalkSpeed: float = 5
 const RunSpeed: float = 8
 const JumpSpeed: float = 5
+var CurrentSpeed: float = 1
+var CurrentDirection: Vector3 = Vector3.ZERO
 
 @export_category("Health")
 var Health: float = 100
@@ -33,7 +38,13 @@ var Stamina: float = 100
 @export var TiredStaminaRecover: float = 8
 @export var WalkStaminaLoss: float = 0.5
 @export var RunStaminaLoss: float = 1.5
+@export var JumpStaminaLoss: float = 0.15
 var Tired: bool = false
+
+@export_category("Sanity")
+var Sanity: float = 100
+@export var SanityDecreaseMultiplier: float = 0.075
+@export var SanityIncreasyMultiplier: float = 1
 
 @export_category("Inventory")
 var InventoryOpen: bool = false
@@ -42,10 +53,14 @@ var InventoryItems: Array[InventoryItem] = []
 @export_category("Sound")
 var Sounds: Dictionary[String, AudioStreamPlayer3D] = {}
 var MultiplayerSounds: Array[Globals.SoundID] = []
-var WhistleSound: AudioStream = null
-var WalkingSound: AudioStream = null
+
+@export_category("GUI")
+@export var WaterGUI: ProgressBar = null
+@export var FoodGUI: ProgressBar = null
+@export var StaminaGUI: ProgressBar = null
 
 @export_category("Other")
+var Enabled: bool = true
 @export var Head: Node3D = null
 var MouseCaptured: bool = true
 var Spawned: bool = false
@@ -75,8 +90,12 @@ func PlaySound(Type: String, Sound: AudioStream, ID: Globals.SoundID) -> void:
 	if (ID not in MultiplayerSounds):
 		MultiplayerSounds.append(ID)
 	
-	if (!Sounds[Type].finished.is_connected(StopSound)):
-		Sounds[Type].finished.connect(StopSound.bind(Type, ID))
+	var BindedStopSound = StopSound.bind(Type, ID)
+	
+	if (Sounds[Type].finished.is_connected(BindedStopSound)):
+		Sounds[Type].finished.disconnect(BindedStopSound)
+	
+	Sounds[Type].finished.connect(BindedStopSound)
 	
 	Sounds[Type].stream = Sound
 	Sounds[Type].play()
@@ -154,11 +173,21 @@ func _ready() -> void:
 	)
 
 func _input(Event: InputEvent) -> void:
+	if (!Enabled):
+		return
+	
 	if (Event is InputEventMouseMotion && MouseCaptured):
 		rotate_y(-Event.relative.x * (Globals.Sensibility * 0.01))
 		Head.rotate_x(-Event.relative.y * (Globals.Sensibility * 0.01))
 
 func _process(Delta: float) -> void:
+	if (!Enabled):
+		await get_tree().process_frame
+	
+	WaterGUI.value = Water
+	FoodGUI.value = Food
+	StaminaGUI.value = Stamina
+	
 	if (Input.is_action_just_pressed("toggle_mouse")):
 		MouseCaptured = !MouseCaptured
 	
@@ -166,8 +195,8 @@ func _process(Delta: float) -> void:
 		RequestInteract()
 	
 	if (Input.is_action_just_pressed("act_whistling") && MouseCaptured):
-		WhistleSound = WHISTLING_SOUNDS[randi() % WHISTLING_SOUNDS.size()]
-		PlaySound("Whistle", WhistleSound, Globals.SoundID.WHISTLE_1)
+		var id = WHISTLING_SOUNDS.keys()[randi() % WHISTLING_SOUNDS.size()]
+		PlaySound("Whistle", WHISTLING_SOUNDS[id], id)
 	
 	if (MouseCaptured):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -184,20 +213,45 @@ func _process(Delta: float) -> void:
 	if (Food <= 0):
 		Health -= FoodDecreaseMultiplier / 2 * Delta
 	
+	if (Stamina <= 0):
+		Tired = true
+	elif (Stamina > 10 && Tired):
+		Tired = false
+	
 	Health = clampf(Health, 0, 100)
 	
 	if (Health <= 0):
 		Die()
 
 func _physics_process(Delta: float) -> void:
+	if (!Enabled):
+		await get_tree().process_frame
+	
+	var inputDir = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards") * int(MouseCaptured)
+	
 	if (is_on_floor()):
 		FallTime = 0
+		CurrentDirection = (transform.basis * Vector3(inputDir.x, 0, inputDir.y)).normalized()
+		
+		if (Input.is_action_pressed("move_sprint") and !Tired):
+			CurrentSpeed = RunSpeed
+			Running = true
+		elif (!Tired):
+			CurrentSpeed = WalkSpeed
+			Running = false
+		else:
+			CurrentSpeed = TiredSpeed
+			Running = false
 	else:
 		velocity += get_gravity() * GravityMultiplier * (FallTime + 1) * Delta
 		FallTime = clampf(FallTime + Delta, 0, clampf(GravityMultiplier, 0.001, 9999) * 9.81)
+		
+		CurrentDirection = CurrentDirection.lerp(Vector3.ZERO, 0.35 * Delta)
 	
 	if (Input.is_action_pressed("move_jump") && is_on_floor() && JumpTimer.is_stopped()):
 		velocity.y = JumpSpeed
+		Stamina -= JumpStaminaLoss
+		
 		JumpTimer.start()
 	
 	if (Input.is_action_pressed("toggle_crouch")):
@@ -209,24 +263,9 @@ func _physics_process(Delta: float) -> void:
 		$PlayerCollider.shape.radius = INIT_SCALE_COLLIDER.x
 		$PlayerCollider.shape.height = INIT_SCALE_COLLIDER.y
 	
-	var speed = 0
-	
-	if (Input.is_action_pressed("move_sprint") and !Tired):
-		speed = RunSpeed
-		Running = true
-	elif (!Tired):
-		speed = WalkSpeed
-		Running = false
-	else:
-		speed = TiredSpeed
-		Running = false
-	
-	var inputDir = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards") * int(MouseCaptured)
-	var direction = (transform.basis * Vector3(inputDir.x, 0, inputDir.y)).normalized()
-	
-	if (direction):
-		velocity.x = direction.x * speed
-		velocity.z = direction.z * speed
+	if (CurrentDirection):
+		velocity.x = CurrentDirection.x * CurrentSpeed
+		velocity.z = CurrentDirection.z * CurrentSpeed
 		
 		Stamina -= (RunStaminaLoss if (Running) else WalkStaminaLoss) * Delta
 	else:

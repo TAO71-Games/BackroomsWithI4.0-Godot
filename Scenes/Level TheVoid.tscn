@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cr0taqx4d6l1m" path="res://Prefabs/Player.tscn" id="1_nnpjy"]
 [ext_resource type="PackedScene" uid="uid://3sdmy3x0nly7" path="res://Chunks/L4T2Chunk.tscn" id="2_6qp5g"]
+[ext_resource type="PackedScene" uid="uid://cw1xeylt2lkj" path="res://Prefabs/Lvl0Wall.tscn" id="3_ivg4n"]
 [ext_resource type="PackedScene" uid="uid://cnrnmh0w5ewfm" path="res://Prefabs/TheHub_Door.tscn" id="3_jleqo"]
 
 [sub_resource type="Environment" id="Environment_nnpjy"]
@@ -66,6 +67,7 @@ camera_attributes = SubResource("CameraAttributesPhysical_6qp5g")
 
 [node name="DEBUG LIGHT" type="DirectionalLight3D" parent="." unique_id=840727696]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 5, 0)
+visible = false
 
 [node name="Decorations" type="Node3D" parent="." unique_id=1931170406]
 
@@ -83,6 +85,9 @@ visible = false
 
 [node name="Door" parent="Decorations" unique_id=655882244 instance=ExtResource("3_jleqo")]
 transform = Transform3D(0.65621126, -0.6414564, 0.39739206, 0.75, 0.6123724, -0.2500001, -0.08298779, 0.46209684, 0.88293797, 0, -42, 20)
+
+[node name="Lvl0Wall" parent="Decorations" unique_id=2083741031 instance=ExtResource("3_ivg4n")]
+transform = Transform3D(0.45257998, -0.5400909, -0.7095584, 0.7664706, 0.6422794, 0, 0.45573476, -0.54385567, 0.7046466, -59, -64, 0)
 
 [node name="Player" parent="." unique_id=632983521 instance=ExtResource("1_nnpjy")]
 WaterDecreaseMultiplier = 0.0

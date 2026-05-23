@@ -44,6 +44,11 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Options"
 
+[node name="Credits" type="Button" parent="VBoxContainer" unique_id=2038905072]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Credits"
+
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=159480603]
 layout_mode = 2
 size_flags_vertical = 3
