@@ -44,12 +44,15 @@ static var User_Password: String = ""
 enum SoundID
 {
 	NO_SOUND = -1,
-	WHISTLE_1 = 0
+	WHISTLE_1 = 0,
+	WHISTLE_2 = 1
 }
 
 static func ParseSound(ID: SoundID) -> Array:
 	if (ID == SoundID.WHISTLE_1):
 		return ["Whistle", load("res://Audio/Whistling 1.wav")]
+	elif (ID == SoundID.WHISTLE_2):
+		return ["Whistle", load("res://Audio/Whistling 2.wav")]
 	
 	return ["", null]
 
@@ -57,7 +60,7 @@ static func CreateSoundPlayers(Self: bool, Parent: Node3D) -> Dictionary[String,
 	var whistlePlayer = AudioStreamPlayer3D.new()
 	whistlePlayer.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
 	whistlePlayer.unit_size = 25
-	whistlePlayer.max_distance = 750
+	whistlePlayer.max_distance = 400
 	whistlePlayer.autoplay = false
 	whistlePlayer.doppler_tracking = AudioStreamPlayer3D.DOPPLER_TRACKING_PHYSICS_STEP
 	Parent.add_child(whistlePlayer)
