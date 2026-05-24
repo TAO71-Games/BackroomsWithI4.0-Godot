@@ -66,6 +66,7 @@ var MouseCaptured: bool = true
 var Spawned: bool = false
 var Running: bool = false
 var JumpTimer: Timer = Timer.new()
+var MUL: MultiplayerConnection = null
 
 func __cast_ray__(From: Vector3, Direction: Vector3, Length: float) -> CollisionObject3D:
 	var hit = get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
@@ -151,10 +152,10 @@ func RequestInteract() -> void:
 		interactibleObj.Interact()
 
 func UpdateMultiplayer() -> void:
-	MultiplayerConnection.SetPlayerPosition(global_position)
-	MultiplayerConnection.SetPlayerRotation(global_rotation)
-	MultiplayerConnection.SetPlayerScale(scale)
-	MultiplayerConnection.SetSounds(MultiplayerSounds)
+	MUL.SetPlayerPosition(global_position)
+	MUL.SetPlayerRotation(global_rotation)
+	MUL.SetPlayerScale(scale)
+	MUL.SetSounds(MultiplayerSounds)
 
 func _init() -> void:
 	Sounds = Globals.CreateSoundPlayers(true, self)

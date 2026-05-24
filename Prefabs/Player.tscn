@@ -26,7 +26,6 @@ bg_color = Color(0.6789437, 0.6789437, 0.6789436, 1)
 
 [node name="Player" type="CharacterBody3D" unique_id=632983521 node_paths=PackedStringArray("WaterGUI", "FoodGUI", "StaminaGUI", "Head")]
 script = ExtResource("1_x3d5u")
-StaminaRecover = 10.0
 WaterGUI = NodePath("GUI/Stats/Water/ProgressBar")
 FoodGUI = NodePath("GUI/Stats/Food/ProgressBar")
 StaminaGUI = NodePath("GUI/Stats/Stamina/ProgressBar")
@@ -61,9 +60,10 @@ size_flags_vertical = 3
 [node name="Stats" type="VBoxContainer" parent="GUI" unique_id=849277437]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.9382716
+anchor_top = 0.88117284
 anchor_right = 0.1736111
 anchor_bottom = 1.0
+offset_top = 37.0
 grow_vertical = 0
 metadata/_edit_use_anchors_ = true
 
