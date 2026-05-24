@@ -1,10 +1,10 @@
 class_name MultiplayerConnection extends Node
 
-static var __expecting_response__: bool = false
 static var VisitedLevels: Array[String] = []
 static var Socket: WebSocketPeer = WebSocketPeer.new()
+var __expecting_response__: bool = false
 
-static func Connect(URI: String) -> Error:
+func Connect(URI: String) -> Error:
 	Disconnect()
 	
 	Socket.connect_to_url(URI)
@@ -23,28 +23,33 @@ static func Connect(URI: String) -> Error:
 		print("Error connecting to '" + URI + "'.")
 		return ERR_CANT_CONNECT
 
-static func AutoConnect(Host: String, Port: int) -> Error:
-	if (Connect("wss://" + Host + ":" + str(Port)) != OK):
-		return Connect("ws://" + Host + ":" + str(Port))
+func AutoConnect(Host: String, Port: int) -> Error:
+	if (await Connect("wss://" + Host + ":" + str(Port)) != OK):
+		return await Connect("ws://" + Host + ":" + str(Port))
 	
 	return OK
 
-static func Disconnect() -> void:
+func Disconnect() -> void:
 	Socket.close()
 
-static func SendAndReceive(
+func SendAndReceive(
 	Action: String,
 	Arguments: Array = [],
 	AllowErrors: bool = true
 ) -> Dictionary:
 	if (!IsConnected()):
-		AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
+		await AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
 		push_error("Socket is not connected!")
 		
 		if (!AllowErrors):
 			push_error("FAILED result code for multiplayer command.")
 		
 		return {"code": "FAILED", "args": []}
+	
+	while (__expecting_response__):
+		await get_tree().process_frame
+	
+	__expecting_response__ = true
 	
 	var txt = JSON.stringify({"action": Action, "arguments": Arguments})
 	var sendData = []
@@ -91,20 +96,21 @@ static func SendAndReceive(
 		
 		if (!AllowErrors && result["code"] in ["FAILED", "NOT FOUND"]):
 			push_error("FAILED result code for multiplayer command.")
-		
-		return result
 	else:
 		if (!AllowErrors):
 			push_error("FAILED result code for multiplayer command.")
 		
-		return {"code": "FAILED", "args": []}
+		result = {"code": "FAILED", "args": []}
+	
+	__expecting_response__ = false
+	return result
 
-static func IsConnected() -> bool:
+func IsConnected() -> bool:
 	Socket.poll()
 	return Socket.get_ready_state() == WebSocketPeer.STATE_OPEN
 
-static func IsAuthorized(AllowErrors: bool = true) -> bool:
-	var authResult = MultiplayerConnection.SendAndReceive("is_authorized", [], AllowErrors)
+func IsAuthorized(AllowErrors: bool = true) -> bool:
+	var authResult = await SendAndReceive("is_authorized", [], AllowErrors)
 	
 	if (authResult["code"] != "OK"):
 		push_error("Result code != OK")
@@ -112,34 +118,34 @@ static func IsAuthorized(AllowErrors: bool = true) -> bool:
 	
 	return authResult["args"][0]
 
-static func Login(Username: String, Password: String, AllowErrors: bool = true) -> bool:
-	var loginResult = MultiplayerConnection.SendAndReceive("connect", [Username, Password], AllowErrors)
+func Login(Username: String, Password: String, AllowErrors: bool = true) -> bool:
+	var loginResult = await SendAndReceive("connect", [Username, Password], AllowErrors)
 	print(loginResult)
 	return loginResult["code"] == "OK"
 
-static func SetPlayerPosition(V: Vector3, AllowErrors: bool = true) -> void:
-	MultiplayerConnection.SendAndReceive("set_pos", [V.x, V.y, V.z], AllowErrors)
+func SetPlayerPosition(V: Vector3, AllowErrors: bool = true) -> void:
+	await SendAndReceive("set_pos", [V.x, V.y, V.z], AllowErrors)
 
-static func SetPlayerRotation(V: Vector3, AllowErrors: bool = true) -> void:
-	MultiplayerConnection.SendAndReceive("set_rot", [V.x, V.y, V.z], AllowErrors)
+func SetPlayerRotation(V: Vector3, AllowErrors: bool = true) -> void:
+	await SendAndReceive("set_rot", [V.x, V.y, V.z], AllowErrors)
 
-static func SetPlayerScale(V: Vector3, AllowErrors: bool = true) -> void:
-	MultiplayerConnection.SendAndReceive("set_scl", [V.x, V.y, V.z], AllowErrors)
+func SetPlayerScale(V: Vector3, AllowErrors: bool = true) -> void:
+	await SendAndReceive("set_scl", [V.x, V.y, V.z], AllowErrors)
 
-static func SetCurrentLevel(Name: String, AllowErrors: bool = true) -> void:
-	MultiplayerConnection.SendAndReceive("set_lvl", [Name], AllowErrors)
+func SetCurrentLevel(Name: String, AllowErrors: bool = true) -> void:
+	await SendAndReceive("set_lvl", [Name], AllowErrors)
 
-static func SetRunning(Value: bool, AllowErrors: bool = true) -> void:
-	MultiplayerConnection.SendAndReceive("set_running", [Value], AllowErrors)
+func SetRunning(Value: bool, AllowErrors: bool = true) -> void:
+	await SendAndReceive("set_running", [Value], AllowErrors)
 
-static func SetCrouched(Value: bool, AllowErrors: bool = true) -> void:
-	MultiplayerConnection.SendAndReceive("set_crouched", [Value], AllowErrors)
+func SetCrouched(Value: bool, AllowErrors: bool = true) -> void:
+	await SendAndReceive("set_crouched", [Value], AllowErrors)
 
-static func SetSounds(Value: Array[Globals.SoundID], AllowErrors: bool = true) -> void:
-	MultiplayerConnection.SendAndReceive("set_sounds", [Value], AllowErrors)
+func SetSounds(Value: Array[Globals.SoundID], AllowErrors: bool = true) -> void:
+	await SendAndReceive("set_sounds", [Value], AllowErrors)
 
-static func GetAllPlayers(AllowErrors: bool = true) -> Array:
-	var players = MultiplayerConnection.SendAndReceive("get_all_players", [], AllowErrors)
+func GetAllPlayers(AllowErrors: bool = true) -> Array:
+	var players = await SendAndReceive("get_all_players", [], AllowErrors)
 	
 	if (players["code"] != "OK"):
 		push_error("Result code != OK")
@@ -147,10 +153,17 @@ static func GetAllPlayers(AllowErrors: bool = true) -> Array:
 	
 	return players["args"][0]
 
-static func GetLevelsData(AllowErrors: bool = true) -> Array:
-	var levels = MultiplayerConnection.SendAndReceive("get_lvls_data", [], AllowErrors)
+func GetLevelsData(AllowErrors: bool = true) -> Array:
+	var levels = await SendAndReceive("get_lvls_data", [], AllowErrors)
 	
 	if (levels["code"] != "OK"):
+		push_error("Result code != OK")
+		return []
+	
+	if (levels["args"][0] is String):
+		if ("not logged in" in levels["args"][0].to_lower()):
+			push_error("Not logged in/invalid credentials.")
+		
 		push_error("Result code != OK")
 		return []
 	

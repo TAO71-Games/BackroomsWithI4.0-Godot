@@ -2,6 +2,9 @@
 
 A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integration.
 
+> [!IMPORTANT]
+> This game is still in development. Expect bugs.
+
 ## Roadmap
 
 - Levels

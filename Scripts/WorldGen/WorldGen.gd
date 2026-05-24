@@ -37,6 +37,7 @@ var Generate: bool = false
 var GenerationCompleted: bool = true
 var RNG: RandomNumberGenerator = RandomNumberGenerator.new()
 var FNL: FastNoiseLite = FastNoiseLite.new()
+var MUL: MultiplayerConnection = null
 
 func SetSeed(Seed: int) -> void:
 	RNG.seed = Seed
@@ -213,9 +214,21 @@ func UpdateMultiplayer() -> void:
 		return
 	
 	Player.UpdateMultiplayer()
-	MultiplayerConnection.SetCurrentLevel(LevelName)
+	await MUL.SetCurrentLevel(LevelName)
 	
-	var players = MultiplayerConnection.GetAllPlayers()
+	var players = await MUL.GetAllPlayers()
+	
+	for sp in SpawnedMultiplayerPlayers.keys():
+		var usernameFound = false
+		
+		for p in players:
+			if (p["Username"] == sp):
+				usernameFound = true
+				break
+		
+		if (!usernameFound):
+			SpawnedMultiplayerPlayers[sp].queue_free()
+			SpawnedMultiplayerPlayers.erase(sp)
 	
 	for p in players:
 		if (p["Username"] == Globals.User_Username || p["CurrentLevel"] != LevelName):
@@ -256,6 +269,14 @@ func UpdateMultiplayer() -> void:
 			SpawnedMultiplayerPlayers[p["Username"]].PlaySound(soundStream[0], soundStream[1])
 
 func _ready() -> void:
+	if (MUL == null):
+		MUL = MultiplayerConnection.new()
+		MUL.name = "Multiplayer"
+		
+		add_child(MUL)
+	
+	Player.MUL = MUL
+	
 	FNL.noise_type = FastNoiseLite.TYPE_PERLIN
 	FNL.frequency = 0.02
 	FNL.fractal_type = FastNoiseLite.FRACTAL_FBM
@@ -284,22 +305,22 @@ func _ready() -> void:
 	elif (Multiplayer):
 		if (LevelName not in MultiplayerConnection.VisitedLevels):
 			MultiplayerConnection.VisitedLevels.append(LevelName)
-		if (!MultiplayerConnection.IsConnected()):
+		if (!MUL.IsConnected()):
 			if (Globals.Multiplayer_Debug):
 				var randomUser = Globals.Multiplayer_Debug_Users.keys()[randi() % Globals.Multiplayer_Debug_Users.size()]
 				
 				Globals.User_Username = randomUser
 				Globals.User_Password = Globals.Multiplayer_Debug_Users[randomUser]
 			
-			MultiplayerConnection.AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
+			await MUL.AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
 		
-		if (MultiplayerConnection.IsAuthorized(false) || MultiplayerConnection.Login(Globals.User_Username, Globals.User_Password, false)):
+		if (await MUL.IsAuthorized(false) || await MUL.Login(Globals.User_Username, Globals.User_Password, false)):
 			Generate = true
 		else:
 			print("NOT LOGGED IN.")
 			pass  # TODO: Error when logging in (probably incorrect credentials)
 		
-		var levelsData = MultiplayerConnection.GetLevelsData(false)
+		var levelsData = await MUL.GetLevelsData(false)
 		var levelFound = false
 		
 		for level in levelsData:
@@ -317,11 +338,12 @@ func _ready() -> void:
 			SetSeed(randi())
 	
 	if (Generate):
-		if (len(Maps) == 0):
-			SpawnPlayer()
-			UpdateChunks()
-		else:
-			UpdateChunks()
+		var hasMaps = len(Maps) > 0
+		
+		SpawnPlayer()
+		UpdateChunks()
+		
+		if (hasMaps):
 			SpawnPlayer()
 		
 		Player.Enabled = true
@@ -343,7 +365,7 @@ func _ready() -> void:
 
 func _process(_Delta: float) -> void:
 	if (Globals.Multiplayer_UpdateTime < 0.05):
-		UpdateMultiplayer()
+		await UpdateMultiplayer()
 
 func _physics_process(_Delta: float) -> void:
 	if (PlayerDieFalling && Player.position.y <= -PlayerDieFallingDistance):
