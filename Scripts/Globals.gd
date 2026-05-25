@@ -1,41 +1,29 @@
-class_name Globals extends Node
+class_name Globals extends Resource
 
-# ====================
-#        DEBUG
-# ====================
-
-const Multiplayer_Debug: bool = true
-const Multiplayer_Debug_Users: Dictionary[String, String] = {
-	"test1": "test1",
-	"test2": "test2",
-	"test3": "test3",
-	"test4": "test4",
-	"test5": "test5",
-	"test6": "test6"
-}
+static var Instance: Globals = null
 
 # ====================
 #       GRAPHICS
 # ====================
 
-static var ViewDistance: int = 50
-static var Sensibility: float = 3
-static var GenerationTime: float = 2
+var ViewDistance: int = 50
+var Sensibility: float = 3
+var GenerationTime: float = 2
 
 # ====================
 #     MULTIPLAYER
 # ====================
 
-static var Multiplayer_Host: String = "main.tao71.org"
-static var Multiplayer_Port: int = 65287
-static var Multiplayer_UpdateTime: float = 0
+var Multiplayer_Host: String = "main.tao71.org"
+var Multiplayer_Port: int = 65287
+var Multiplayer_UpdateTime: float = 0
 
 # ====================
 #       ACCOUNT
 # ====================
 
-static var User_Username: String = "Player"
-static var User_Password: String = ""
+var User_Username: String = "Player"
+var User_Password: String = ""
 
 # ====================
 #       SOUND ID
@@ -68,3 +56,101 @@ static func CreateSoundPlayers(Self: bool, Parent: Node3D) -> Dictionary[String,
 	return {
 		"Whistle": whistlePlayer
 	}
+
+static func GetGameConfigDirPath() -> String:
+	var d = OS.get_data_dir() + "/BackroomsWithI4.0"
+	
+	if (!DirAccess.dir_exists_absolute(d)):
+		DirAccess.make_dir_recursive_absolute(d)
+	
+	return d
+
+static func ParsePath(Path: String) -> String:
+	var path = Path.strip_edges()
+	path = path.replace("[$GAME_CONFIG_DIR]", GetGameConfigDirPath())
+	
+	return path
+
+static func __load_config_parser__(Ins: Variant, D: Dictionary) -> void:
+	for paramName in D.keys():
+		var paramValue = D[paramName]
+		
+		if (typeof(paramValue) == TYPE_DICTIONARY):
+			if (paramName in Ins):
+				__load_config_parser__(Ins.get(paramName), paramValue)
+			else:
+				Ins.set(paramName, paramValue)
+		else:
+			Ins.set(paramName, paramValue)
+
+static func LoadConfig(ConfigPath: String = "[$GAME_CONFIG]/config.json", SetGlobal: bool = true) -> Globals:
+	var parsedPath = ParsePath(ConfigPath)
+	var instance = Globals.new()
+	
+	if (SetGlobal):
+		Instance = instance
+	
+	if (!FileAccess.file_exists(parsedPath)):
+		push_warning("Config does not exist. Creating.")
+		instance.SaveConfig(ConfigPath)
+		
+		return instance
+	
+	var file = FileAccess.open(parsedPath, FileAccess.READ)
+	
+	if (file == null):
+		push_error("Could not open config file. Returning default config.")
+		return instance
+	
+	var json = file.get_as_text()
+	file.close()
+	
+	json = JSON.parse_string(json)
+	__load_config_parser__(instance, json)
+	
+	return instance
+
+func __save_config_parser__(Properties: Dictionary) -> Dictionary[String, Variant]:
+	var json = {}
+	
+	for propName in Properties.keys():
+		var propValue = get(propName)
+		
+		if (typeof(propValue) not in [TYPE_NIL, TYPE_BOOL] && "get_property_list" in propValue):
+			var properties2 = propValue.get_property_list()
+			var json2 = {}
+			
+			for prop2 in properties2:
+				var prop2Name = prop2["name"]
+				var prop2Value = get(prop2Name)
+				
+				json2[prop2Name] = prop2Value
+			
+			json[propName] = __save_config_parser__(json2)
+		else:
+			json[propName] = propValue
+	
+	return json
+
+func SaveConfig(ConfigPath: String = "[$GAME_CONFIG]/config.json") -> Dictionary[String, Variant]:
+	var parsedPath = ParsePath(ConfigPath)
+	var properties = get_property_list()
+	var json = {}
+	
+	for prop in properties:
+		var propName = prop["name"]
+		var propValue = get(propName)
+		
+		json[propName] = propValue
+	
+	json = __save_config_parser__(json)
+	var file = FileAccess.open(parsedPath, FileAccess.WRITE)
+	
+	if (file == null):
+		push_error("Could not open config file. Could not save config.")
+		return properties
+	
+	file.store_string(JSON.stringify(json))
+	file.close()
+	
+	return json
