@@ -4,6 +4,8 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 
 > [!IMPORTANT]
 > This game is still in development. Expect bugs.
+> 
+> Official server is still not running. To connect to multiplayer levels, please, host your own server.
 
 ## Roadmap
 
@@ -67,3 +69,4 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 - Godot: Game engine
 - GIMP: Texture creation and modification
 - Blender: 3D modeling
+
