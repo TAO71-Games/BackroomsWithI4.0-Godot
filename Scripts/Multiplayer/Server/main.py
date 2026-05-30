@@ -23,7 +23,6 @@ async def SendData(Socket: WSConnection, Data: str) -> None:
     for d in chunks:
         await Socket.send(d)
 
-    #print("> --END--")
     await Socket.send("--END--")
 
 async def RecvData(Socket: WSConnection) -> str:
@@ -32,8 +31,6 @@ async def RecvData(Socket: WSConnection) -> str:
     while (True):
         recv = await Socket.recv(decode = True)
         recv = recv.strip()
-
-        #print(f"< {recv}")
 
         if (len(recv) == 0):
             return ""
@@ -119,7 +116,6 @@ async def ClientReceive(Socket: WSConnection, Data: str, Player: classes.Player)
 
         await SendData(Socket, json.dumps({"code": result_code, "args": result_args}))
     except Exception as ex:
-        traceback.print_exception(ex)
         await SendData(Socket, json.dumps({"code": "FAILED", "args": "Unknown error."}))
 
 async def ClientConnected(Socket: WSConnection) -> None:
@@ -144,9 +140,6 @@ async def ClientConnected(Socket: WSConnection) -> None:
     finally:
         if (player in LoggedPlayers):
             LoggedPlayers.remove(player)
-            print("Removed player")
-
-        print("Player disconnected")
 
         Clients.remove(Socket)
         await Socket.close()
