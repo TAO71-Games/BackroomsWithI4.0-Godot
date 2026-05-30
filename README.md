@@ -8,11 +8,11 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 ## Roadmap
 
 - Levels
-	- [ ] Level 0
+	- [X] Level 0
 	- [ ] Level 1
 	- [ ] Level 2
 	- [ ] Level 3
-	- [ ] Level 4
+	- [X] Level 4
 	- [ ] Level 5
 	- [ ] Level 6
 	- [ ] Level 7
@@ -61,27 +61,6 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 		- [ ] Level 6 (UNKNOWN)
 		- [ ] Level 7 (UNKNOWN)
 		- [ ] Level 8 (UNKNOWN)
-
-### Expected features for version v0.1.x
-
-- Levels
-	- Level 0
-	- Level 4
-	- Level The Hub
-- Entities
-	- None
-- Items
-	- Level keys
-	- Almond water
-	- Phone
-- Habilities
-	- None
-- Other
-	- Infinite world generation
-	- Multiplayer
-	- Noise maps for:
-		- Level 0
-		- Level 4
 
 ## Tools used
 

@@ -77,11 +77,6 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Credits"
 
-[node name="Exit" type="Button" parent="VBoxContainer" unique_id=159480603]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Exit"
-
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=906972168]
 visible = false
 layout_mode = 1
@@ -123,7 +118,7 @@ layout_mode = 2
 [node name="HSlider" type="HSlider" parent="PanelContainer/Options/TabContainer/Graphics/View distance/Slider" unique_id=794077893]
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 5.0
+min_value = 10.0
 max_value = 500.0
 value = 30.0
 rounded = true
@@ -315,6 +310,10 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 5
 
+[node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/I4_0" unique_id=2087109437]
+layout_mode = 2
+text = "No I4.0 configuration yet."
+
 [node name="Save" type="Button" parent="PanelContainer/Options" unique_id=690432085]
 layout_mode = 2
 text = "Save"
@@ -322,6 +321,35 @@ text = "Save"
 [node name="Credits" type="Control" parent="PanelContainer" unique_id=513204999]
 visible = false
 layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/Credits" unique_id=693973886]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[b]3D models[/b]
+- Level keys (modified) ([url=https://sketchfab.com/3d-models/key-ad78fc71092849ca9cd2f264e14a8167]Sketchfab[/url]) by [i]Mr NISHKE[/i].
+- CRT monitor ([url=https://sketchfab.com/3d-models/crt-monitor-e2dd2887a8904e4fa3d5a32e2935adb9]Sketchfab[/url]) by [i]James.Harness[/i].
+- Hazmat guy (modified) ([url=https://sketchfab.com/3d-models/hazmat-suit-explorer-a4d3f69280f04389a86cd3c073e18f38]Sketchfab[/url]) by [i]antuamgamer0503[/i].
+- Other 3D models made by [i]Alcoft[/i] and [i]Jlmr08[/i].
+
+[b]Textures and images[/b]
+- Mostly from [url=https://ambientcg.com/]AmbientCG[/url].
+- Level 4 HDRI ([url=https://polyhaven.com/a/overcast_soil_puresky]Poly Haven[/url]) by [i]Jarod Guest[/i] and [i]Sergej Majboroda[/i].
+- Noise maps made by [i]Alcoft[/i].
+- Other textures and images made by [i]Alcoft[/i].
+
+[b]Audio[/b]
+- Whistles by [i]Jlmr08[/i] and [i]Alcoft[/i].
+
+[b]Scripts[/b]
+- All code made by [i]Alcoft[/i].
+
+[b]Video[/b]
+- Main menu video (render) made by [i]Jlmr08[/i]."
 
 [connection signal="pressed" from="VBoxContainer/Play" to="Scripts/MainMenu" method="StartGame"]
 [connection signal="pressed" from="VBoxContainer/Options" to="Scripts/MainMenu" method="ToggleConfigWindow" binds= ["options"]]
