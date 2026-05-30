@@ -38,7 +38,7 @@ func SendAndReceive(
 	AllowErrors: bool = true
 ) -> Dictionary:
 	if (!IsConnected()):
-		await AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
+		await AutoConnect(Globals.Instance.Multiplayer_Host, Globals.Instance.Multiplayer_Port)
 		push_error("Socket is not connected!")
 		
 		if (!AllowErrors):
@@ -120,7 +120,6 @@ func IsAuthorized(AllowErrors: bool = true) -> bool:
 
 func Login(Username: String, Password: String, AllowErrors: bool = true) -> bool:
 	var loginResult = await SendAndReceive("connect", [Username, Password], AllowErrors)
-	print(loginResult)
 	return loginResult["code"] == "OK"
 
 func SetPlayerPosition(V: Vector3, AllowErrors: bool = true) -> void:

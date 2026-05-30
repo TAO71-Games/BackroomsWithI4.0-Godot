@@ -24,7 +24,7 @@ bg_color = Color(0.33288053, 0.33288074, 0.33288068, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_javds"]
 bg_color = Color(0.6789437, 0.6789437, 0.6789436, 1)
 
-[node name="Player" type="CharacterBody3D" unique_id=632983521 node_paths=PackedStringArray("WaterGUI", "FoodGUI", "StaminaGUI", "Head")]
+[node name="Player" type="CharacterBody3D" unique_id=632983521 node_paths=PackedStringArray("WaterGUI", "FoodGUI", "StaminaGUI", "Head") groups=["Player"]]
 script = ExtResource("1_x3d5u")
 WaterGUI = NodePath("GUI/Stats/Water/ProgressBar")
 FoodGUI = NodePath("GUI/Stats/Food/ProgressBar")

@@ -72,7 +72,9 @@ async def ClientReceive(Socket: WSConnection, Data: str, Player: classes.Player)
                     playerFound = True
 
                     if (player.AuthHash == passwdHash):
-                        Player = player
+                        for k, v in player.GetDictionary_Save().items():
+                            setattr(Player, k, v)
+
                         LoggedPlayers.append(Player)
 
                     break
@@ -80,13 +82,16 @@ async def ClientReceive(Socket: WSConnection, Data: str, Player: classes.Player)
             if (Player not in LoggedPlayers and playerFound):
                 result_code = "FAILED"
                 result_args.append("Incorrect credentials.")
-            else:
+            elif (Player not in LoggedPlayers and not playerFound):
                 Player.Username = username
                 Player.AuthHash = passwdHash
 
-                INFO.Players.append(Player)
+                if (Player not in INFO.Players):
+                    INFO.Players.append(Player)
+
                 LoggedPlayers.append(Player)
         elif (Player not in LoggedPlayers):
+            result_code = "FAILED"
             result_args.append("Player is not logged in.")  # Make sure the player exists
         elif (action == "set_pos"):
             x, y, z = arguments[0], arguments[1], arguments[2]
@@ -139,6 +144,9 @@ async def ClientConnected(Socket: WSConnection) -> None:
     finally:
         if (player in LoggedPlayers):
             LoggedPlayers.remove(player)
+            print("Removed player")
+
+        print("Player disconnected")
 
         Clients.remove(Socket)
         await Socket.close()

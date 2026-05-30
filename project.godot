@@ -11,9 +11,15 @@ config_version=5
 [application]
 
 config/name="BackroomsWithI4.0"
-run/main_scene="uid://cyphh6vjjn2b0"
+config/version="0.1.0"
+run/main_scene="uid://upk3pgwp2pnb"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/show_image=false
+config/icon="uid://cyemyoma11115"
+
+[global_group]
+
+Player=""
 
 [input]
 

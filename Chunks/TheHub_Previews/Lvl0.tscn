@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://dlmjsy70xtmy8"]
+
+[ext_resource type="PackedScene" uid="uid://b1dp1nklctvn4" path="res://Chunks/L0T1Chunk.tscn" id="1_d0ybh"]
+[ext_resource type="Script" uid="uid://dvkwan58ylmnw" path="res://Scripts/Character/ChangeLevelOnEnter.gd" id="2_naidu"]
+[ext_resource type="PackedScene" uid="uid://cg4u7qmh4d0bi" path="res://Scenes/Level 0.tscn" id="3_pc1uc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d0ybh"]
+size = Vector3(30, 5, 10)
+
+[node name="Lvl0" type="Node3D" unique_id=1328546486]
+
+[node name="L0T1Chunk" parent="." unique_id=1126622542 instance=ExtResource("1_d0ybh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="FrontWall" parent="L0T1Chunk" index="0" unique_id=2083741031]
+process_mode = 4
+visible = false
+
+[node name="BackWall" parent="L0T1Chunk" index="1" unique_id=170359967]
+process_mode = 4
+visible = false
+
+[node name="LeftWall" parent="L0T1Chunk" index="2" unique_id=402103639]
+process_mode = 4
+visible = false
+
+[node name="L0T1Chunk2" parent="." unique_id=964390316 instance=ExtResource("1_d0ybh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 5)
+
+[node name="FrontWall" parent="L0T1Chunk2" index="0" unique_id=2083741031]
+process_mode = 4
+visible = false
+
+[node name="LeftWall" parent="L0T1Chunk2" index="2" unique_id=402103639]
+process_mode = 4
+visible = false
+
+[node name="L0T1Chunk3" parent="." unique_id=1909521864 instance=ExtResource("1_d0ybh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5)
+
+[node name="RightWall" parent="L0T1Chunk3" index="3" unique_id=2008620529]
+process_mode = 4
+visible = false
+
+[node name="L0T1Chunk7" parent="." unique_id=1394141090 instance=ExtResource("1_d0ybh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5)
+
+[node name="RightWall" parent="L0T1Chunk7" index="3" unique_id=2008620529]
+process_mode = 4
+visible = false
+
+[node name="L0T1Chunk4" parent="." unique_id=311801230 instance=ExtResource("1_d0ybh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
+
+[node name="BackWall" parent="L0T1Chunk4" index="1" unique_id=170359967]
+process_mode = 4
+visible = false
+
+[node name="LeftWall" parent="L0T1Chunk4" index="2" unique_id=402103639]
+process_mode = 4
+visible = false
+
+[node name="RightWall" parent="L0T1Chunk4" index="3" unique_id=2008620529]
+process_mode = 4
+visible = false
+
+[node name="L0T1Chunk5" parent="." unique_id=1346336013 instance=ExtResource("1_d0ybh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 15)
+
+[node name="BackWall" parent="L0T1Chunk5" index="1" unique_id=170359967]
+process_mode = 4
+visible = false
+
+[node name="LeftWall" parent="L0T1Chunk5" index="2" unique_id=402103639]
+process_mode = 4
+visible = false
+
+[node name="L0T1Chunk6" parent="." unique_id=983376272 instance=ExtResource("1_d0ybh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 15)
+
+[node name="RightWall" parent="L0T1Chunk6" index="3" unique_id=2008620529]
+process_mode = 4
+visible = false
+
+[node name="Area3D" type="Area3D" parent="." unique_id=719924140]
+script = ExtResource("2_naidu")
+GoTo = ExtResource("3_pc1uc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1421072411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 15)
+shape = SubResource("BoxShape3D_d0ybh")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+
+[editable path="L0T1Chunk"]
+[editable path="L0T1Chunk2"]
+[editable path="L0T1Chunk3"]
+[editable path="L0T1Chunk7"]
+[editable path="L0T1Chunk4"]
+[editable path="L0T1Chunk5"]
+[editable path="L0T1Chunk6"]

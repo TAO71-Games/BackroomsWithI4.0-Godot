@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/WorldGen/WorldGen_Chunk.gd" id="1_ssiog"]
 [ext_resource type="PackedScene" uid="uid://3sdmy3x0nly7" path="res://Chunks/L4T2Chunk.tscn" id="2_epx7w"]
+[ext_resource type="Script" uid="uid://dvkwan58ylmnw" path="res://Scripts/Character/ChangeLevelOnEnter.gd" id="3_fgu07"]
+[ext_resource type="PackedScene" uid="uid://cyphh6vjjn2b0" path="res://Scenes/Level 4.tscn" id="4_sfvte"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ssiog"]
 size = Vector3(30, 4, 15)
@@ -170,6 +172,8 @@ visible = false
 script = null
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1527559726]
+script = ExtResource("3_fgu07")
+GoTo = ExtResource("4_sfvte")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=859140139]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 12.5)
@@ -197,6 +201,8 @@ mesh = SubResource("QuadMesh_epx7w")
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2, 20)
 material_override = SubResource("StandardMaterial3D_ssiog")
 mesh = SubResource("QuadMesh_fgu07")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 
 [editable path="L4T2Chunk"]
 [editable path="L4T2Chunk2"]

@@ -60,13 +60,16 @@ var MultiplayerSounds: Array[Globals.SoundID] = []
 @export var StaminaGUI: ProgressBar = null
 
 @export_category("Other")
-var Enabled: bool = true
 @export var Head: Node3D = null
 var MouseCaptured: bool = true
 var Spawned: bool = false
 var Running: bool = false
 var JumpTimer: Timer = Timer.new()
 var MUL: MultiplayerConnection = null
+
+func ChangeLevel(Level: PackedScene) -> void:
+	Globals.LevelToLoad = Level
+	get_tree().change_scene_to_file("res://Scenes/LevelLoader.tscn")
 
 func __cast_ray__(From: Vector3, Direction: Vector3, Length: float) -> CollisionObject3D:
 	var hit = get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
@@ -174,17 +177,11 @@ func _ready() -> void:
 	)
 
 func _input(Event: InputEvent) -> void:
-	if (!Enabled):
-		return
-	
 	if (Event is InputEventMouseMotion && MouseCaptured):
-		rotate_y(-Event.relative.x * (Globals.Sensibility * 0.01))
-		Head.rotate_x(-Event.relative.y * (Globals.Sensibility * 0.01))
+		rotate_y(-Event.relative.x * (Globals.Instance.Sensibility * 0.01))
+		Head.rotate_x(-Event.relative.y * (Globals.Instance.Sensibility * 0.01))
 
 func _process(Delta: float) -> void:
-	if (!Enabled):
-		await get_tree().process_frame
-	
 	WaterGUI.value = Water
 	FoodGUI.value = Food
 	StaminaGUI.value = Stamina
@@ -225,9 +222,6 @@ func _process(Delta: float) -> void:
 		Die()
 
 func _physics_process(Delta: float) -> void:
-	if (!Enabled):
-		await get_tree().process_frame
-	
 	var inputDir = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards") * int(MouseCaptured)
 	
 	if (is_on_floor()):

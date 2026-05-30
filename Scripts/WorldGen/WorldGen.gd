@@ -61,20 +61,41 @@ func GetPixelInImage(
 	
 	return Img.get_pixel(texturePixelPos.x, texturePixelPos.y)
 
-func UpdateChunks() -> void:
+func UpdateChunks(
+	SizeX: int = 0,
+	SizeZ: int = 0
+) -> void:
 	if (!Generate && !GenerationCompleted):
 		return
 	
 	GenerationCompleted = false
-	
 	var currentChunk = Vector3i(
 		roundi(Player.global_position.x / ChunkSize.x),
 		roundi(Player.global_position.y / ChunkSize.y),
 		roundi(Player.global_position.z / ChunkSize.z)
 	)
+	
+	for coords in LoadedChunks.keys():
+		if (coords.distance_to(currentChunk) > Globals.Instance.ViewDistance):
+			var chunkToRemove = LoadedChunks[coords]
+			
+			ClonedChunkParent.remove_child(chunkToRemove)
+			chunkToRemove.queue_free()
+			LoadedChunks.erase(coords)
+	
+	for floorID in LoadedMaps.keys():
+		if (abs(floorID - currentChunk.y) > 5):
+			LoadedMaps.erase(floorID)
+	
 	var floors = []
 	var genX = []
 	var genZ = []
+	
+	if (SizeX <= 0):
+		SizeX = Globals.Instance.ViewDistance
+	
+	if (SizeZ <= 0):
+		SizeZ = Globals.Instance.ViewDistance
 	
 	if (MultipleFloors):
 		floors = [-1, 0, 1]
@@ -82,12 +103,12 @@ func UpdateChunks() -> void:
 		floors = [0]
 	
 	if (GenerateX):
-		genX = range(-Globals.ViewDistance / 2, Globals.ViewDistance / 2 + 1)
+		genX = range(-SizeX / 2, SizeX / 2 + 1)
 	else:
 		genX = [0]
 	
 	if (GenerateZ):
-		genZ = range(-Globals.ViewDistance / 2, Globals.ViewDistance / 2 + 1)
+		genZ = range(-SizeZ / 2, SizeZ / 2 + 1)
 	else:
 		genZ = [0]
 	
@@ -179,18 +200,6 @@ func UpdateChunks() -> void:
 					if (chunk.IsPlayerSpawn):
 						PlayerSpawns.append(chunk.position)
 	
-	for coords in LoadedChunks.keys():
-		if (coords.distance_to(currentChunk) > Globals.ViewDistance):
-			var chunkToRemove = LoadedChunks[coords]
-			
-			ClonedChunkParent.remove_child(chunkToRemove)
-			chunkToRemove.queue_free()
-			LoadedChunks.erase(coords)
-	
-	for floorID in LoadedMaps.keys():
-		if (abs(floorID - currentChunk.y) > 5):
-			LoadedMaps.erase(floorID)
-	
 	GenerationCompleted = true
 
 func SpawnPlayer() -> void:
@@ -231,7 +240,7 @@ func UpdateMultiplayer() -> void:
 			SpawnedMultiplayerPlayers.erase(sp)
 	
 	for p in players:
-		if (p["Username"] == Globals.User_Username || p["CurrentLevel"] != LevelName):
+		if (p["Username"] == Globals.Instance.User_Username || p["CurrentLevel"] != LevelName):
 			continue
 		
 		if (p["Username"] not in SpawnedMultiplayerPlayers):
@@ -297,7 +306,7 @@ func _ready() -> void:
 		
 		ChunkPool.append(instance)
 	
-	Player.Enabled = false
+	Player.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	if (!Multiplayer && !Generate):
 		SetSeed(randi())
@@ -306,65 +315,66 @@ func _ready() -> void:
 		if (LevelName not in MultiplayerConnection.VisitedLevels):
 			MultiplayerConnection.VisitedLevels.append(LevelName)
 		if (!MUL.IsConnected()):
-			if (Globals.Multiplayer_Debug):
-				var randomUser = Globals.Multiplayer_Debug_Users.keys()[randi() % Globals.Multiplayer_Debug_Users.size()]
-				
-				Globals.User_Username = randomUser
-				Globals.User_Password = Globals.Multiplayer_Debug_Users[randomUser]
-			
-			await MUL.AutoConnect(Globals.Multiplayer_Host, Globals.Multiplayer_Port)
+			await MUL.AutoConnect(Globals.Instance.Multiplayer_Host, Globals.Instance.Multiplayer_Port)
 		
-		if (await MUL.IsAuthorized(false) || await MUL.Login(Globals.User_Username, Globals.User_Password, false)):
+		var isAuthorized = await MUL.IsAuthorized(false)
+		
+		if (!isAuthorized):
+			isAuthorized = await MUL.Login(Globals.Instance.User_Username, Globals.Instance.User_Password, false)
+		
+		if (isAuthorized):
 			Generate = true
+			
+			var levelsData = await MUL.GetLevelsData(false)
+			var levelFound = false
+			
+			for level in levelsData:
+				if (level["Name"] == LevelName):
+					levelFound = true
+					
+					if (level["NoiseMaps"] != null):
+						pass  # TODO: Download noise maps from server and set
+					
+					SetSeed(level["Seed"])
+					# TODO: Set chunks disabled IDs
+			
+			if (!levelFound):
+				push_error("Level NOT found in server. Setting random seed.")
+				SetSeed(randi())
 		else:
 			print("NOT LOGGED IN.")
 			pass  # TODO: Error when logging in (probably incorrect credentials)
-		
-		var levelsData = await MUL.GetLevelsData(false)
-		var levelFound = false
-		
-		for level in levelsData:
-			if (level["Name"] == LevelName):
-				levelFound = true
-				
-				if (level["NoiseMaps"] != null):
-					pass  # TODO: Download noise maps from server and set
-				
-				SetSeed(level["Seed"])
-				# TODO: Set chunks disabled IDs
-		
-		if (!levelFound):
-			push_error("Level NOT found in server. Setting random seed.")
-			SetSeed(randi())
 	
 	if (Generate):
-		var hasMaps = len(Maps) > 0
+		var hasMaps = Maps.size() > 0
 		
-		SpawnPlayer()
-		UpdateChunks()
+		if (!hasMaps):
+			SpawnPlayer()
+		
+		UpdateChunks(20, 20)
 		
 		if (hasMaps):
 			SpawnPlayer()
 		
-		Player.Enabled = true
+		Player.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	var genTimer = Timer.new()
 	genTimer.autostart = true
 	genTimer.one_shot = false
-	genTimer.wait_time = clampf(Globals.GenerationTime, 0.5, 20)
+	genTimer.wait_time = clampf(Globals.Instance.GenerationTime, 0.5, 20)
 	genTimer.timeout.connect(UpdateChunks)
 	add_child(genTimer)
 	
-	if (Globals.Multiplayer_UpdateTime >= 0.1):
+	if (Globals.Instance.Multiplayer_UpdateTime >= 0.1):
 		var multiplayerTimer = Timer.new()
 		multiplayerTimer.autostart = true
 		multiplayerTimer.one_shot = false
-		multiplayerTimer.wait_time = clampf(Globals.Multiplayer_UpdateTime, 0.05, 1)
+		multiplayerTimer.wait_time = clampf(Globals.Instance.Multiplayer_UpdateTime, 0.05, 1)
 		multiplayerTimer.timeout.connect(UpdateMultiplayer)
 		add_child(multiplayerTimer)
 
 func _process(_Delta: float) -> void:
-	if (Globals.Multiplayer_UpdateTime < 0.05):
+	if (Globals.Instance.Multiplayer_UpdateTime < 0.05):
 		await UpdateMultiplayer()
 
 func _physics_process(_Delta: float) -> void:

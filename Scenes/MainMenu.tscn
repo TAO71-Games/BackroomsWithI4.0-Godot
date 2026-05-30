@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://upk3pgwp2pnb"]
 
-[ext_resource type="Script" path="res://Scripts/ConfigManager.gd" id="1_853f1"]
+[ext_resource type="Script" uid="uid://ba1jv1aiwc8mr" path="res://Scripts/ConfigManager.gd" id="1_853f1"]
 [ext_resource type="VideoStream" uid="uid://dify0hp4kgbv2" path="res://Video/MainMenu.ogv" id="1_tt5f1"]
+[ext_resource type="Script" uid="uid://cqlahu55orylb" path="res://Scripts/MainMenu.gd" id="2_ghw46"]
+[ext_resource type="Script" uid="uid://f7xo621spsj2" path="res://Scripts/SetLabelValue.gd" id="3_8saeu"]
 
 [node name="MainMenu" type="Control" unique_id=149137781]
 layout_mode = 3
@@ -28,6 +30,12 @@ GUI_Elements = {
 "ViewDistance": NodePath("../../PanelContainer/Options/TabContainer/Graphics/View distance/Slider/HSlider")
 }
 
+[node name="MainMenu" type="Node" parent="Scripts" unique_id=1672166350 node_paths=PackedStringArray("SidePanelGUI", "OptionsGUI", "CreditsGUI")]
+script = ExtResource("2_ghw46")
+SidePanelGUI = NodePath("../../PanelContainer")
+OptionsGUI = NodePath("../../PanelContainer/Options")
+CreditsGUI = NodePath("../../PanelContainer/Credits")
+
 [node name="Background" type="VideoStreamPlayer" parent="." unique_id=107242190]
 layout_mode = 1
 anchors_preset = 15
@@ -53,6 +61,10 @@ metadata/_edit_use_anchors_ = true
 [node name="Play" type="Button" parent="VBoxContainer" unique_id=674639238]
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "NOTE:
+This game is still in development. Since most levels doesn't have any exits yet, this will take you to The Hub (level selector).
+
+Make sure your multiplayer username and password are correct and that nobody is connected as the same user. The game might crash if there is a multiplayer error."
 text = "Play"
 
 [node name="Options" type="Button" parent="VBoxContainer" unique_id=68935362]
@@ -71,6 +83,7 @@ size_flags_vertical = 3
 text = "Exit"
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=906972168]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.28125
@@ -81,6 +94,7 @@ grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="Options" type="VBoxContainer" parent="PanelContainer" unique_id=1832151714]
+visible = false
 layout_mode = 2
 
 [node name="TabContainer" type="TabContainer" parent="PanelContainer/Options" unique_id=1790443144]
@@ -94,6 +108,10 @@ metadata/_tab_index = 0
 
 [node name="View distance" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/Graphics" unique_id=1166238926]
 layout_mode = 2
+tooltip_text = "Radius where the chunks will render.
+Big values will require more CPU, GPU, RAM, and will take longer to load the level.
+
+Performance impact: High"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Graphics/View distance" unique_id=1628722076]
 layout_mode = 2
@@ -110,14 +128,20 @@ max_value = 500.0
 value = 30.0
 rounded = true
 
-[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Graphics/View distance/Slider" unique_id=566133038]
+[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Graphics/View distance/Slider" unique_id=566133038 node_paths=PackedStringArray("Sl")]
 layout_mode = 2
 text = "99999"
+script = ExtResource("3_8saeu")
+Sl = NodePath("../HSlider")
 
 [node name="Sound" type="VBoxContainer" parent="PanelContainer/Options/TabContainer" unique_id=1242150788]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Sound" unique_id=1152162224]
+layout_mode = 2
+text = "No sound configuration yet."
 
 [node name="Controls" type="VBoxContainer" parent="PanelContainer/Options/TabContainer" unique_id=1235675205]
 visible = false
@@ -126,6 +150,9 @@ metadata/_tab_index = 2
 
 [node name="Mouse sensibility" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/Controls" unique_id=715289006]
 layout_mode = 2
+tooltip_text = "This affect how fast the camera moves.
+
+Performance impact: None"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Controls/Mouse sensibility" unique_id=1433975125]
 layout_mode = 2
@@ -142,9 +169,11 @@ max_value = 10.0
 step = 0.1
 value = 1.5
 
-[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Controls/Mouse sensibility/Slider" unique_id=566627232]
+[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Controls/Mouse sensibility/Slider" unique_id=566627232 node_paths=PackedStringArray("Sl")]
 layout_mode = 2
 text = "99999"
+script = ExtResource("3_8saeu")
+Sl = NodePath("../HSlider")
 
 [node name="Game" type="VBoxContainer" parent="PanelContainer/Options/TabContainer" unique_id=1848517393]
 visible = false
@@ -153,6 +182,10 @@ metadata/_tab_index = 3
 
 [node name="Map update time" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/Game" unique_id=2042669863]
 layout_mode = 2
+tooltip_text = "This affects how much the map will update.
+Smaller values will require more CPU, but might reduce frame drops.
+
+Performance impact: Low"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Game/Map update time" unique_id=298324381]
 layout_mode = 2
@@ -168,9 +201,11 @@ max_value = 5.0
 step = 0.01
 value = 2.0
 
-[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Game/Map update time/Slider" unique_id=431148799]
+[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Game/Map update time/Slider" unique_id=431148799 node_paths=PackedStringArray("Sl")]
 layout_mode = 2
 text = "99999"
+script = ExtResource("3_8saeu")
+Sl = NodePath("../HSlider")
 
 [node name="Multiplayer" type="VBoxContainer" parent="PanelContainer/Options/TabContainer" unique_id=1411616556]
 visible = false
@@ -179,6 +214,9 @@ metadata/_tab_index = 4
 
 [node name="Server" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/Multiplayer" unique_id=1985408275]
 layout_mode = 2
+tooltip_text = "Server to connect to in the multiplayer.
+
+Performace impact: None"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Multiplayer/Server" unique_id=1664619760]
 layout_mode = 2
@@ -207,6 +245,10 @@ emoji_menu_enabled = false
 
 [node name="Sync time" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/Multiplayer" unique_id=220875713]
 layout_mode = 2
+tooltip_text = "Velocity when the multiplayer will be updated. If 0, it will update for each frame.
+Smaller values might require a better internet connection, but will look more smooth.
+
+Performance impact: None"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Multiplayer/Sync time" unique_id=1802256849]
 layout_mode = 2
@@ -222,12 +264,20 @@ max_value = 1.0
 step = 0.01
 value = 0.1
 
-[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Multiplayer/Sync time/Slider" unique_id=446206087]
+[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/Multiplayer/Sync time/Slider" unique_id=446206087 node_paths=PackedStringArray("Sl")]
 layout_mode = 2
 text = "99999"
+script = ExtResource("3_8saeu")
+Sl = NodePath("../HSlider")
 
 [node name="Username" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/Multiplayer" unique_id=2117010615]
 layout_mode = 2
+tooltip_text = "Username for the multiplayer.
+
+Make sure it's unique and nobody is connected with the same username.
+Must not be empty nor larger than 15 characters.
+
+Performance impact: None"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Multiplayer/Username" unique_id=1315451371]
 layout_mode = 2
@@ -241,6 +291,14 @@ placeholder_text = "Your username here"
 
 [node name="Password" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/Multiplayer" unique_id=1572380700]
 layout_mode = 2
+tooltip_text = "Password for the multiplayer.
+
+If the combination of username and password doesn't exist in the server, a new account will be created.
+If the username is stored in the server, but the password incorrect, it will not log in.
+
+Must not be empty, at least 8 characters, and not larger than 60 characters.
+
+Performance impact: None"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/Multiplayer/Password" unique_id=1580570871]
 layout_mode = 2
@@ -264,3 +322,8 @@ text = "Save"
 [node name="Credits" type="Control" parent="PanelContainer" unique_id=513204999]
 visible = false
 layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/Play" to="Scripts/MainMenu" method="StartGame"]
+[connection signal="pressed" from="VBoxContainer/Options" to="Scripts/MainMenu" method="ToggleConfigWindow" binds= ["options"]]
+[connection signal="pressed" from="VBoxContainer/Credits" to="Scripts/MainMenu" method="ToggleConfigWindow" binds= ["credits"]]
+[connection signal="pressed" from="PanelContainer/Options/Save" to="Scripts/ConfigManager" method="Save"]

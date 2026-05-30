@@ -1,13 +1,14 @@
 class_name Globals extends Resource
 
 static var Instance: Globals = null
+static var LevelToLoad: PackedScene = null
 
 # ====================
 #       GRAPHICS
 # ====================
 
-var ViewDistance: int = 50
-var Sensibility: float = 3
+var ViewDistance: int = 15
+var Sensibility: float = 1.5
 var GenerationTime: float = 2
 
 # ====================
@@ -24,6 +25,13 @@ var Multiplayer_UpdateTime: float = 0
 
 var User_Username: String = "Player"
 var User_Password: String = ""
+
+# ====================
+#         I4.0
+# ====================
+
+var I4_Servers: Array[String] = ["main.tao71.org:8060", "main.tao71.org:8061", "alt1.tao71.org:8060"]
+var I4_Chatbots: Array[String] = ["chatbot-lastest-best", "chatbot-latest-decent", "chatbot-latest-cheap", "chatbot-latest-free"]
 
 # ====================
 #       SOUND ID
@@ -83,7 +91,7 @@ static func __load_config_parser__(Ins: Variant, D: Dictionary) -> void:
 		else:
 			Ins.set(paramName, paramValue)
 
-static func LoadConfig(ConfigPath: String = "[$GAME_CONFIG]/config.json", SetGlobal: bool = true) -> Globals:
+static func LoadConfig(ConfigPath: String = "[$GAME_CONFIG_DIR]/config.json", SetGlobal: bool = true) -> Globals:
 	var parsedPath = ParsePath(ConfigPath)
 	var instance = Globals.new()
 	
@@ -110,30 +118,19 @@ static func LoadConfig(ConfigPath: String = "[$GAME_CONFIG]/config.json", SetGlo
 	
 	return instance
 
-func __save_config_parser__(Properties: Dictionary, Obj: Object = null) -> Dictionary:
-	var ctx = self if (Obj == null) else Obj
-	var json = {}
+func __save_config_parser__(Obj: Object = null) -> Dictionary:
+	var d = {}
 	
-	for propName in Properties.keys():
-		var propValue = ctx.get(propName)
-		
-		if (propValue is Node || (propValue is Object && propValue is not Resource)):
-			continue
-		
-		if (typeof(propValue) == TYPE_OBJECT && propValue.has_method("get_property_list")):
-			var subProps = {}
-			
-			for p in propValue.get_property_list():
-				if ((p["usage"] & PROPERTY_USAGE_STORAGE) && !p["name"].begins_with("_")):
-					subProps[p["name"]] = true
-			
-			json[propName] = __save_config_parser__(subProps, propValue)
-		else:
-			json[propName] = propValue
+	if (Obj == null):
+		Obj = self
 	
-	return json
+	for prop in Obj.get_property_list():
+		if (prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
+			d[prop.name] = Obj.get(prop.name)
+	
+	return d
 
-func SaveConfig(ConfigPath: String = "[$GAME_CONFIG]/config.json") -> Dictionary[String, Variant]:
+func SaveConfig(ConfigPath: String = "[$GAME_CONFIG_DIR]/config.json") -> Dictionary:
 	var parsedPath = ParsePath(ConfigPath)
 	var properties = get_property_list()
 	var json = {}
@@ -144,12 +141,12 @@ func SaveConfig(ConfigPath: String = "[$GAME_CONFIG]/config.json") -> Dictionary
 		
 		json[propName] = propValue
 	
-	json = __save_config_parser__(json)
+	json = __save_config_parser__()
 	var file = FileAccess.open(parsedPath, FileAccess.WRITE)
 	
 	if (file == null):
 		push_error("Could not open config file. Could not save config.")
-		return properties
+		return json
 	
 	file.store_string(JSON.stringify(json))
 	file.close()
