@@ -123,17 +123,15 @@ theme = ExtResource("4_8um5k")
 metadata/_edit_use_anchors_ = true
 
 [node name="Options" type="VBoxContainer" parent="PanelContainer" unique_id=1832151714]
-visible = false
 layout_mode = 2
 
 [node name="TabContainer" type="TabContainer" parent="PanelContainer/Options" unique_id=1790443144]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("4_df05h")
-current_tab = 5
+current_tab = 0
 
 [node name="TAB_GRAPHICS" type="VBoxContainer" parent="PanelContainer/Options/TabContainer" unique_id=475599867]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -298,38 +296,6 @@ text = "65287"
 placeholder_text = "Port"
 emoji_menu_enabled = false
 
-[node name="Sync time" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER" unique_id=220875713]
-layout_mode = 2
-tooltip_text = "Velocity when the multiplayer will be updated. If 0, it will update for each frame.
-Smaller values might require a better internet connection, but will look more smooth.
-
-Performance impact: None"
-
-[node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time" unique_id=1802256849]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_df05h")
-theme_override_styles/normal = SubResource("StyleBoxLine_loo7a")
-text = "LBL_MULTIPLAYER_SYNC"
-
-[node name="Slider" type="HBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time" unique_id=1009457711]
-layout_mode = 2
-
-[node name="HSlider" type="HSlider" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time/Slider" unique_id=925646147]
-layout_mode = 2
-size_flags_horizontal = 3
-max_value = 1.0
-step = 0.01
-value = 0.1
-
-[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time/Slider" unique_id=446206087 node_paths=PackedStringArray("Sl")]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.78431374, 0.65882355, 0.19607843, 1)
-theme_override_fonts/font = ExtResource("4_df05h")
-theme_override_styles/normal = SubResource("StyleBoxLine_8um5k")
-text = "99999"
-script = ExtResource("3_8saeu")
-Sl = NodePath("../HSlider")
-
 [node name="Username" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER" unique_id=2117010615]
 layout_mode = 2
 tooltip_text = "Username for the multiplayer.
@@ -376,7 +342,40 @@ size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("4_df05h")
 placeholder_text = "Your password here"
 
+[node name="Sync time" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER" unique_id=220875713]
+layout_mode = 2
+tooltip_text = "Velocity when the multiplayer will be updated. If 0, it will update for each frame.
+Smaller values might require a better internet connection, but will look more smooth.
+
+Performance impact: None"
+
+[node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time" unique_id=1802256849]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_df05h")
+theme_override_styles/normal = SubResource("StyleBoxLine_loo7a")
+text = "LBL_MULTIPLAYER_SYNC"
+
+[node name="Slider" type="HBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time" unique_id=1009457711]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time/Slider" unique_id=925646147]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.1
+
+[node name="Value" type="Label" parent="PanelContainer/Options/TabContainer/TAB_MULTIPLAYER/Sync time/Slider" unique_id=446206087 node_paths=PackedStringArray("Sl")]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78431374, 0.65882355, 0.19607843, 1)
+theme_override_fonts/font = ExtResource("4_df05h")
+theme_override_styles/normal = SubResource("StyleBoxLine_8um5k")
+text = "99999"
+script = ExtResource("3_8saeu")
+Sl = NodePath("../HSlider")
+
 [node name="TAB_I40" type="VBoxContainer" parent="PanelContainer/Options/TabContainer" unique_id=1026671379]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 5
 
@@ -392,6 +391,7 @@ theme_override_fonts/font = ExtResource("4_df05h")
 text = "BTN_SAVE_CONFIG"
 
 [node name="Credits" type="Control" parent="PanelContainer" unique_id=513204999]
+visible = false
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/Credits" unique_id=693973886]
@@ -403,26 +403,26 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_8um5k")
 bbcode_enabled = true
-text = "[b]3D models[/b]
+text = "[color=#c8a832][b]3D models[/b][/color]
 - Level keys (modified) ([url=https://sketchfab.com/3d-models/key-ad78fc71092849ca9cd2f264e14a8167]Sketchfab[/url]) by [i]Mr NISHKE[/i].
 - CRT monitor ([url=https://sketchfab.com/3d-models/crt-monitor-e2dd2887a8904e4fa3d5a32e2935adb9]Sketchfab[/url]) by [i]James.Harness[/i].
 - Hazmat guy (modified) ([url=https://sketchfab.com/3d-models/hazmat-suit-explorer-a4d3f69280f04389a86cd3c073e18f38]Sketchfab[/url]) by [i]antuamgamer0503[/i].
-- Other 3D models made by [i]Alcoft[/i] and [i]Jlmr08[/i].
+- Other 3D models made by [color=#c8a832][i]Alcoft[/i][/color] and [color=#c8a832][i]Zetta713[/i][/color].
 
-[b]Textures and images[/b]
+[color=#c8a832][b]Textures and images[/b][/color]
 - Mostly from [url=https://ambientcg.com/]AmbientCG[/url].
 - Level 4 HDRI ([url=https://polyhaven.com/a/overcast_soil_puresky]Poly Haven[/url]) by [i]Jarod Guest[/i] and [i]Sergej Majboroda[/i].
-- Noise maps made by [i]Alcoft[/i].
-- Other textures and images made by [i]Alcoft[/i].
+- Noise maps made by [color=#c8a832][i]Alcoft[/i][/color].
+- Other textures and images made by [color=#c8a832][i]Alcoft[/i][/color].
 
-[b]Audio[/b]
-- Whistles by [i]Jlmr08[/i] and [i]Alcoft[/i].
+[color=#c8a832][b]Audio[/b][/color]
+- Whistles by [color=#c8a832][i]Zetta713[/i][/color] and [color=#c8a832][i]Alcoft[/i][/color].
 
-[b]Scripts[/b]
-- All code made by [i]Alcoft[/i].
+[color=#c8a832][b]Scripts[/b][/color]
+- All code made by [color=#c8a832][i]Alcoft[/i][/color].
 
-[b]Video[/b]
-- Main menu video (render) made by [i]Jlmr08[/i]."
+[color=#c8a832][b]Video[/b][/color]
+- Main menu video (render) made by [color=#c8a832][i]Zetta713[/i][/color]."
 
 [connection signal="pressed" from="VBoxContainer/Play" to="Scripts/MainMenu" method="StartGame"]
 [connection signal="pressed" from="VBoxContainer/Options" to="Scripts/MainMenu" method="ToggleConfigWindow" binds= ["options"]]
