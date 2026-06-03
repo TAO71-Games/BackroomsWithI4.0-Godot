@@ -6,10 +6,10 @@ uid="uid://bhh5g4oftpgck"
 
 [deps]
 
-files=["res://Locales/Locales.en.translation", "res://Locales/Locales.es.translation", "res://Locales/Locales.en.translation", "res://Locales/Locales.en.translation"]
+files=["res://Locales/Locales.en.translation", "res://Locales/Locales.es.translation", "res://Locales/Locales.en.translation", "res://Locales/Locales.en.translation", "res://Locales/Locales.en.translation"]
 
 source_file="res://Locales/Locales.csv"
-dest_files=["res://Locales/Locales.en.translation", "res://Locales/Locales.es.translation", "res://Locales/Locales.en.translation", "res://Locales/Locales.en.translation"]
+dest_files=["res://Locales/Locales.en.translation", "res://Locales/Locales.es.translation", "res://Locales/Locales.en.translation", "res://Locales/Locales.en.translation", "res://Locales/Locales.en.translation"]
 
 [params]
 

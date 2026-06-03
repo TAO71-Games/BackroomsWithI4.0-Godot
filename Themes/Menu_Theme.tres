@@ -2,6 +2,9 @@
 
 [ext_resource type="FontFile" uid="uid://bajsv1yybayep" path="res://Themes/Fonts/BetterVCR 25.09.ttf" id="1_x3ynw"]
 [ext_resource type="Texture2D" uid="uid://3uqi7nw2dss2" path="res://Themes/Icons/Icon_btn.png" id="2_svdd5"]
+[ext_resource type="Texture2D" uid="uid://c4q3jx1uejvyj" path="res://Themes/Icons/Icon_Slider1.png" id="3_svdd5"]
+[ext_resource type="Texture2D" uid="uid://b5q1oijvjamkx" path="res://Themes/Icons/Icon_Slider3.png" id="4_lgkij"]
+[ext_resource type="Texture2D" uid="uid://2dorpna2xm6s" path="res://Themes/Icons/Icon_Slider2.png" id="4_wv7et"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svdd5"]
 bg_color = Color(0.06235102, 0.13805032, 0.21753097, 1)
@@ -68,6 +71,16 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.26666668, 0.33333334, 0.4, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uyxbx"]
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.128468, 0.20140234, 0.2743569, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.29962206, 0.3717127, 0.4438401, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ci23t"]
 content_margin_top = 5.0
@@ -157,7 +170,11 @@ Button/styles/disabled = SubResource("StyleBoxFlat_svdd5")
 Button/styles/hover = SubResource("StyleBoxFlat_x3ynw")
 Button/styles/normal = SubResource("StyleBoxFlat_m1sou")
 Button/styles/pressed = SubResource("StyleBoxFlat_wv7et")
+HSlider/icons/grabber = ExtResource("3_svdd5")
+HSlider/icons/grabber_disabled = ExtResource("4_lgkij")
+HSlider/icons/grabber_highlight = ExtResource("4_wv7et")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_0nwsn")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_uyxbx")
 HSlider/styles/slider = SubResource("StyleBoxFlat_ci23t")
 Label/colors/font_color = Color(0.53333336, 0.6, 0.6666667, 1)
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_kk023")
