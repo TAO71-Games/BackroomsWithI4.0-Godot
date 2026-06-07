@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bi8kmqe2bgt7g"]
+
+[ext_resource type="PackedScene" uid="uid://c41y5lvp8o108" path="res://Meshes/I4.0/I4.0-1.vrm" id="1_ihi1k"]
+
+[node name="Level 867" type="Node3D" unique_id=2006164325]
+
+[node name="README" type="Node" parent="." unique_id=719275114]
+editor_description = "This level is to test things with the VRM models for now."
+
+[node name="I4_0" parent="." unique_id=81294745 instance=ExtResource("1_ihi1k")]
+
+[node name="Head" parent="I4_0/GeneralSkeleton" parent_id_path=PackedInt32Array(81294745, 19474684) index="3" unique_id=1245896133]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0025288905, 21.088055, 0.27716386)
+
+[editable path="I4_0"]

@@ -112,6 +112,7 @@ theme_override_fonts/font = ExtResource("4_df05h")
 text = "BTN_EXIT"
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=906972168]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.28125
@@ -123,6 +124,7 @@ theme = ExtResource("4_8um5k")
 metadata/_edit_use_anchors_ = true
 
 [node name="Options" type="VBoxContainer" parent="PanelContainer" unique_id=1832151714]
+visible = false
 layout_mode = 2
 
 [node name="TabContainer" type="TabContainer" parent="PanelContainer/Options" unique_id=1790443144]
