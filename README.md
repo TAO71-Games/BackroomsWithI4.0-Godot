@@ -64,9 +64,3 @@ A Backrooms simulator with [I4.0](https://github.com/TAO71-AI/I4.0-NEW) integrat
 		- [ ] Level 7 (UNKNOWN)
 		- [ ] Level 8 (UNKNOWN)
 
-## Tools used
-
-- Godot: Game engine
-- GIMP: Texture creation and modification
-- Blender: 3D modeling
-
