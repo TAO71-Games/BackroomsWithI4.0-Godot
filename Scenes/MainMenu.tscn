@@ -257,6 +257,15 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_bsxhc")
 
+[sub_resource type="QuadMesh" id="QuadMesh_2x1g0"]
+flip_faces = true
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7n2d"]
+metallic_specular = 0.0
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_loo7a"]
 content_margin_top = 20.0
 grow_begin = 0.0
@@ -456,10 +465,30 @@ transform = Transform3D(0.8328673, -0.21054354, -0.5118627, 0.08418597, 0.962250
 current = true
 fov = 56.0
 
-[node name="Plane" type="MeshInstance3D" parent="Scene" unique_id=863840765]
+[node name="Smiler" type="MeshInstance3D" parent="Scene" unique_id=863840765]
 transform = Transform3D(45.41706, -7.946377, -56.5414, 0, 72.247406, -10.153709, 57.097065, 6.3208337, 44.975063, 2.2142653, 1.7087802, 0.03697598)
 material_override = SubResource("StandardMaterial3D_pjscj")
 mesh = SubResource("ArrayMesh_wluni")
+
+[node name="CeilingLight" type="MeshInstance3D" parent="Scene" unique_id=344776018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 3.74, -1.95)
+mesh = SubResource("QuadMesh_2x1g0")
+surface_material_override/0 = SubResource("StandardMaterial3D_m7n2d")
+
+[node name="CeilingLight2" type="MeshInstance3D" parent="Scene" unique_id=739760853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.98, 3.74, -1.95)
+mesh = SubResource("QuadMesh_2x1g0")
+surface_material_override/0 = SubResource("StandardMaterial3D_m7n2d")
+
+[node name="CeilingLight3" type="MeshInstance3D" parent="Scene" unique_id=1333030496]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.94, 3.74, -1.965)
+mesh = SubResource("QuadMesh_2x1g0")
+surface_material_override/0 = SubResource("StandardMaterial3D_m7n2d")
+
+[node name="CeilingLight4" type="MeshInstance3D" parent="Scene" unique_id=152872926]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.98, 3.74, 5.04)
+mesh = SubResource("QuadMesh_2x1g0")
+surface_material_override/0 = SubResource("StandardMaterial3D_m7n2d")
 
 [node name="Background" type="VideoStreamPlayer" parent="." unique_id=107242190]
 visible = false
