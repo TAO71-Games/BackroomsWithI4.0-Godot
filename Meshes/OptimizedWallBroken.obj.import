@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://civql8u6pjy7r"
+path="res://.godot/imported/OptimizedWallBroken.obj-5cb0f50d5fb05fd973e6dfa38e1b95ad.mesh"
+
+[deps]
+
+files=["res://.godot/imported/OptimizedWallBroken.obj-5cb0f50d5fb05fd973e6dfa38e1b95ad.mesh"]
+
+source_file="res://Meshes/OptimizedWallBroken.obj"
+dest_files=["res://.godot/imported/OptimizedWallBroken.obj-5cb0f50d5fb05fd973e6dfa38e1b95ad.mesh", "res://.godot/imported/OptimizedWallBroken.obj-5cb0f50d5fb05fd973e6dfa38e1b95ad.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

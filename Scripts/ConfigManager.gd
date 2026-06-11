@@ -2,7 +2,7 @@ extends Node
 
 @export var GUI_Elements: Dictionary[String, Control] = {
 	"ViewDistance": null,
-	"ShadowDistance": null,
+	"ShadowViewDistance": null,
 	"Sensibility": null,
 	"GenerationTime": null,
 	"Multiplayer_Host": null,
