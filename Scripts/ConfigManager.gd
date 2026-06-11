@@ -2,13 +2,14 @@ extends Node
 
 @export var GUI_Elements: Dictionary[String, Control] = {
 	"ViewDistance": null,
+	"ShadowDistance": null,
 	"Sensibility": null,
 	"GenerationTime": null,
 	"Multiplayer_Host": null,
 	"Multiplayer_Port": null,
 	"Multiplayer_UpdateTime": null,
 	"User_Username": null,
-	"User_Password": null
+	"User_Password": null,
 }
 
 func _ready() -> void:
