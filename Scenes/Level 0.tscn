@@ -6,6 +6,7 @@
 
 [sub_resource type="Environment" id="Environment_fjb22"]
 background_mode = 1
+background_color = Color(0.0885599, 0.0885599, 0.0885599, 1)
 background_energy_multiplier = 0.0
 
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_1a2o4"]
