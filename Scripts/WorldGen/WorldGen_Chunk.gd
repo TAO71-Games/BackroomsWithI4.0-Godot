@@ -29,3 +29,15 @@ func Init() -> void:
 		
 		if ("Init" in script):
 			script.Init()
+	
+	var lightFadeScale = 1
+	
+	if (BASE_WORLD_GENERATOR != null):
+		lightFadeScale = (BASE_WORLD_GENERATOR.ChunkSize.x + BASE_WORLD_GENERATOR.ChunkSize.y + BASE_WORLD_GENERATOR.ChunkSize.z) / 3.0
+	
+	for child in Globals.GetAllChildren(self):
+		if (child is Light3D):
+			child.distance_fade_enabled = true
+			child.distance_fade_begin = clampf(Globals.Instance.ViewDistance * lightFadeScale - lightFadeScale, 5, 200)
+			child.distance_fade_length = lightFadeScale
+			child.distance_fade_shadow = Globals.Instance.ShadowViewDistance

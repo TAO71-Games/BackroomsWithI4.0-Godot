@@ -8,6 +8,7 @@ static var LevelToLoad: String = ""
 # ====================
 
 var ViewDistance: int = 15
+var ShadowViewDistance: int = 10
 var Sensibility: float = 1.5
 var GenerationTime: float = 2
 
@@ -87,6 +88,15 @@ static func CheckInstance() -> void:
 		return
 	
 	LoadConfig()
+
+static func GetAllChildren(Obj: Node) -> Array[Node]:
+	var children: Array[Node] = []
+	
+	for child in Obj.get_children():
+		children.append(child)
+		children.append_array(GetAllChildren(child))
+	
+	return children
 
 static func __load_config_parser__(Ins: Variant, D: Dictionary) -> void:
 	for paramName in D.keys():

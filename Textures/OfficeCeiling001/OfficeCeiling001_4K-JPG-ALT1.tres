@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://ds6ysubxkmd88" path="res://Textures/OfficeCeiling001/OfficeCeiling001_4K-JPG_Roughness.jpg" id="7_dn5hf"]
 
 [resource]
+albedo_color = Color(0.9019608, 0.9019608, 0.36078432, 1)
 albedo_texture = ExtResource("1_r2vdv")
 metallic = 1.0
 metallic_specular = 0.1
