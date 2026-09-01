@@ -49,6 +49,7 @@ var Sanity: float = 100
 @export_category("Inventory")
 var InventoryOpen: bool = false
 var InventoryItems: Array[InventoryItem] = []
+@export var InventoryGUI: Control
 
 @export_category("Sound")
 var Sounds: Dictionary[String, AudioStreamPlayer3D] = {}
@@ -191,7 +192,7 @@ func _process(Delta: float) -> void:
 	FoodGUI.value = Food
 	StaminaGUI.value = Stamina
 	
-	if (Input.is_action_just_pressed("toggle_mouse")):
+	if (Input.is_action_just_pressed("toggle_mouse") && !InventoryOpen):
 		MouseCaptured = !MouseCaptured
 	
 	if (Input.is_action_just_pressed("act_interact") && MouseCaptured):
@@ -200,6 +201,12 @@ func _process(Delta: float) -> void:
 	if (Input.is_action_just_pressed("act_whistling") && MouseCaptured):
 		var id = WHISTLING_SOUNDS.keys()[randi() % WHISTLING_SOUNDS.size()]
 		PlaySound("Whistle", WHISTLING_SOUNDS[id], id)
+	
+	if (Input.is_action_just_pressed("act_inventory")):
+		InventoryOpen = !InventoryOpen
+		InventoryGUI.visible = InventoryOpen
+		
+		MouseCaptured = !InventoryOpen
 	
 	if (MouseCaptured):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

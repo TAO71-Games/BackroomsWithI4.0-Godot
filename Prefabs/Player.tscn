@@ -11,6 +11,22 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yg3f5"]
 radius = 0.45
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ygst"]
+bg_color = Color(0.14406255, 0.14406255, 0.14406249, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhekp"]
+bg_color = Color(0.10747974, 0.10747974, 0.10747967, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gg3t4"]
+bg_color = Color(0.33288053, 0.33288074, 0.33288068, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_javds"]
+bg_color = Color(0.6789437, 0.6789437, 0.6789436, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x3d5u"]
 bg_color = Color(0.2227425, 0.00037917405, 0.64979076, 1)
 
@@ -23,28 +39,13 @@ bg_color = Color(0.315787, 0.21888843, 2.4065375e-07, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxq8l"]
 bg_color = Color(0.6081111, 0.4479072, 5.7756904e-07, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gg3t4"]
-bg_color = Color(0.33288053, 0.33288074, 0.33288068, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_javds"]
-bg_color = Color(0.6789437, 0.6789437, 0.6789436, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ygst"]
-bg_color = Color(0.14406255, 0.14406255, 0.14406249, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhekp"]
-bg_color = Color(0.10747974, 0.10747974, 0.10747967, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-
-[node name="Player" type="CharacterBody3D" unique_id=632983521 node_paths=PackedStringArray("WaterGUI", "FoodGUI", "StaminaGUI", "Head") groups=["Player"]]
+[node name="Player" type="CharacterBody3D" unique_id=632983521 node_paths=PackedStringArray("InventoryGUI", "WaterGUI", "FoodGUI", "StaminaGUI", "Head") groups=["Player"]]
 floor_max_angle = 0.87266463
 script = ExtResource("1_x3d5u")
-WaterGUI = NodePath("GUI/Stats/Water/ProgressBar")
-FoodGUI = NodePath("GUI/Stats/Food/ProgressBar")
-StaminaGUI = NodePath("GUI/Stats/Stamina/ProgressBar")
+InventoryGUI = NodePath("GUI/Inventory")
+WaterGUI = NodePath("GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Water/ProgressBar")
+FoodGUI = NodePath("GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Food/ProgressBar")
+StaminaGUI = NodePath("GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Stamina/ProgressBar")
 Head = NodePath("Camera3D")
 
 [node name="Scripts" type="Node" parent="." unique_id=1109398633]
@@ -101,79 +102,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Stats" type="VBoxContainer" parent="GUI" unique_id=849277437]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.88117284
-anchor_right = 0.1736111
-anchor_bottom = 1.0
-offset_top = 37.0
-grow_vertical = 0
-metadata/_edit_use_anchors_ = true
-
-[node name="Water" type="HBoxContainer" parent="GUI/Stats" unique_id=1600349898]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="GUI/Stats/Water" unique_id=1515634512]
-layout_mode = 2
-size_flags_vertical = 1
-text = "Water:    "
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ProgressBar" type="ProgressBar" parent="GUI/Stats/Water" unique_id=1992842226]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_x3d5u")
-theme_override_styles/fill = SubResource("StyleBoxFlat_b43ah")
-step = 0.0
-value = 50.0
-rounded = true
-
-[node name="Food" type="HBoxContainer" parent="GUI/Stats" unique_id=742500898]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="GUI/Stats/Food" unique_id=649904084]
-layout_mode = 2
-size_flags_vertical = 1
-text = "Food:      "
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ProgressBar" type="ProgressBar" parent="GUI/Stats/Food" unique_id=1106502451]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_shmu5")
-theme_override_styles/fill = SubResource("StyleBoxFlat_vxq8l")
-step = 0.0
-value = 50.0
-rounded = true
-
-[node name="Stamina" type="HBoxContainer" parent="GUI/Stats" unique_id=1006991126]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="GUI/Stats/Stamina" unique_id=1245810081]
-layout_mode = 2
-size_flags_vertical = 1
-text = "Stamina:"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ProgressBar" type="ProgressBar" parent="GUI/Stats/Stamina" unique_id=1608413288]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_gg3t4")
-theme_override_styles/fill = SubResource("StyleBoxFlat_javds")
-step = 0.0
-value = 50.0
-rounded = true
 
 [node name="Phone" type="Control" parent="GUI" unique_id=923565049]
 layout_mode = 1
@@ -408,6 +336,167 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_lhekp")
 metadata/_edit_use_anchors_ = true
+
+[node name="Inventory" type="PanelContainer" parent="GUI" unique_id=1921782567]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/Inventory" unique_id=1921054980]
+layout_mode = 2
+
+[node name="Equipment" type="PanelContainer" parent="GUI/Inventory/HBoxContainer" unique_id=1812636059]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/Inventory/HBoxContainer/Equipment" unique_id=1444403023]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GUI/Inventory/HBoxContainer/Equipment/VBoxContainer" unique_id=1010768085]
+layout_mode = 2
+text = "LBL_EQUIPMENT"
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI/Inventory/HBoxContainer/Equipment/VBoxContainer" unique_id=346228230]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Inventory" type="PanelContainer" parent="GUI/Inventory/HBoxContainer" unique_id=1063998150]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/Inventory/HBoxContainer/Inventory" unique_id=914819078]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GUI/Inventory/HBoxContainer/Inventory/VBoxContainer" unique_id=406978206]
+layout_mode = 2
+text = "LBL_INVENTORY"
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI/Inventory/HBoxContainer/Inventory/VBoxContainer" unique_id=2001890753]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="GUI/Inventory/HBoxContainer/Inventory/VBoxContainer/MarginContainer" unique_id=1142663746]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 10
+
+[node name="Parameters" type="PanelContainer" parent="GUI/Inventory/HBoxContainer" unique_id=864522143]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/Inventory/HBoxContainer/Parameters" unique_id=965328559]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer" unique_id=1602467899]
+layout_mode = 2
+text = "LBL_PARAMETERS"
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer" unique_id=2066253057]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 20
+
+[node name="Stats" type="VBoxContainer" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer" unique_id=849277437]
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Sanity" type="HBoxContainer" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats" unique_id=1173618699]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Sanity" unique_id=1768288662]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Sanity:    "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Sanity" unique_id=1213476032]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_gg3t4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_javds")
+step = 0.0
+value = 50.0
+rounded = true
+
+[node name="Water" type="HBoxContainer" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats" unique_id=1600349898]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Water" unique_id=1515634512]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Water:    "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Water" unique_id=1992842226]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_x3d5u")
+theme_override_styles/fill = SubResource("StyleBoxFlat_b43ah")
+step = 0.0
+value = 50.0
+rounded = true
+
+[node name="Food" type="HBoxContainer" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats" unique_id=742500898]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Food" unique_id=649904084]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Food:      "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Food" unique_id=1106502451]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_shmu5")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vxq8l")
+step = 0.0
+value = 50.0
+rounded = true
+
+[node name="Stamina" type="HBoxContainer" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats" unique_id=1006991126]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Stamina" unique_id=1245810081]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Stamina:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="GUI/Inventory/HBoxContainer/Parameters/VBoxContainer/MarginContainer/Stats/Stamina" unique_id=1608413288]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_gg3t4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_javds")
+step = 0.0
+value = 50.0
+rounded = true
 
 [node name="CameraGUI" type="Control" parent="." unique_id=235178087]
 visible = false
