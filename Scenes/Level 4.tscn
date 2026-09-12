@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cyphh6vjjn2b0"]
 
 [ext_resource type="Texture2D" uid="uid://bcesfthocey35" path="res://Textures/HDRIs/overcast_soil_puresky_4k.exr" id="1_gi3jd"]
-[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/WorldGen/WorldGen.gd" id="1_psx24"]
+[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen.gd" id="1_psx24"]
 [ext_resource type="PackedScene" uid="uid://cb6dcbs5lm0w6" path="res://Chunks/L4T1Chunk.tscn" id="2_xramr"]
 [ext_resource type="PackedScene" uid="uid://cr0taqx4d6l1m" path="res://Prefabs/Player.tscn" id="3_02u5l"]
 [ext_resource type="PackedScene" uid="uid://3sdmy3x0nly7" path="res://Chunks/L4T2Chunk.tscn" id="3_yg3f5"]

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://p0a57l34k4ke"]
 
-[ext_resource type="Script" uid="uid://bvj88ppwyfhsw" path="res://Scripts/Multiplayer/MultiplayerCharacter.gd" id="1_s4o3v"]
+[ext_resource type="Script" uid="uid://bvj88ppwyfhsw" path="res://Scripts/OLD CODE - TO BE REFACTORED/Multiplayer/MultiplayerCharacter.gd" id="1_s4o3v"]
 [ext_resource type="PackedScene" uid="uid://du4qj6k5pomli" path="res://Prefabs/PlayerSkin.tscn" id="1_tkcd7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_io8m4"]

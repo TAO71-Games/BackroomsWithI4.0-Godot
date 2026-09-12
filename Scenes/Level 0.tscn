@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cg4u7qmh4d0bi"]
 
 [ext_resource type="PackedScene" uid="uid://b1dp1nklctvn4" path="res://Chunks/L0T1Chunk.tscn" id="2_dp2pb"]
-[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/WorldGen/WorldGen.gd" id="2_x0cd5"]
+[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen.gd" id="2_x0cd5"]
 [ext_resource type="PackedScene" uid="uid://5614f2th5nyr" path="res://Prefabs/SimpleFollowPlayer.tscn" id="4_fjb22"]
 [ext_resource type="PackedScene" uid="uid://cr0taqx4d6l1m" path="res://Prefabs/Player.tscn" id="7_oc5sq"]
 

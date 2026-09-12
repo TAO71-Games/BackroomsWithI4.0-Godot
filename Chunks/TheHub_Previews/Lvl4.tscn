@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://70orurvc7nd"]
 
-[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/WorldGen/WorldGen_Chunk.gd" id="1_ssiog"]
+[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen_Chunk.gd" id="1_ssiog"]
 [ext_resource type="PackedScene" uid="uid://3sdmy3x0nly7" path="res://Chunks/L4T2Chunk.tscn" id="2_epx7w"]
-[ext_resource type="Script" uid="uid://dvkwan58ylmnw" path="res://Scripts/Character/ChangeLevelOnEnter.gd" id="3_fgu07"]
+[ext_resource type="Script" uid="uid://dvkwan58ylmnw" path="res://Scripts/OLD CODE - TO BE REFACTORED/Character/ChangeLevelOnEnter.gd" id="3_fgu07"]
 [ext_resource type="PackedScene" uid="uid://cyphh6vjjn2b0" path="res://Scenes/Level 4.tscn" id="4_sfvte"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ssiog"]

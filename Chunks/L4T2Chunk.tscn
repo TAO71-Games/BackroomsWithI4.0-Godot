@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://3sdmy3x0nly7"]
 
-[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/WorldGen/WorldGen_Chunk.gd" id="1_840bg"]
-[ext_resource type="Script" uid="uid://cxtgu1qc3g1ie" path="res://Scripts/WorldGen/WorldGen_Chunk_SideObject.gd" id="2_17f1q"]
+[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen_Chunk.gd" id="1_840bg"]
+[ext_resource type="Script" uid="uid://cxtgu1qc3g1ie" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen_Chunk_SideObject.gd" id="2_17f1q"]
 [ext_resource type="PackedScene" uid="uid://bkyrh6ch3o2pf" path="res://Prefabs/Lvl4Windows.tscn" id="3_840bg"]
-[ext_resource type="Script" uid="uid://lxrqyunvc3fd" path="res://Scripts/WorldGen/WorldGen_RandomObject.gd" id="4_ciw46"]
+[ext_resource type="Script" uid="uid://lxrqyunvc3fd" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen_RandomObject.gd" id="4_ciw46"]
 [ext_resource type="Material" uid="uid://c6ahtt5ufc7mv" path="res://Textures/Fabric039/Fabric039_4K-JPG.tres" id="4_mgtyh"]
 [ext_resource type="Material" uid="uid://d0ierphi8iorm" path="res://Textures/OfficeCeiling006/OfficeCeiling006_4K-JPG.tres" id="5_3yb0d"]
 

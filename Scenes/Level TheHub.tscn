@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bceh5xt123txb"]
 
-[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/WorldGen/WorldGen.gd" id="1_sty34"]
+[ext_resource type="Script" uid="uid://b4o0ne3il63m4" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen.gd" id="1_sty34"]
 [ext_resource type="PackedScene" uid="uid://metvq0i54e2q" path="res://Chunks/LHT1Chunk.tscn" id="2_nb3b8"]
 [ext_resource type="PackedScene" uid="uid://cr0taqx4d6l1m" path="res://Prefabs/Player.tscn" id="3_85dbq"]
 

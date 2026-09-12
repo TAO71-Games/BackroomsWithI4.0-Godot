@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dlmjsy70xtmy8"]
 
 [ext_resource type="PackedScene" uid="uid://b1dp1nklctvn4" path="res://Chunks/L0T1Chunk.tscn" id="1_d0ybh"]
-[ext_resource type="Script" uid="uid://dvkwan58ylmnw" path="res://Scripts/Character/ChangeLevelOnEnter.gd" id="2_naidu"]
+[ext_resource type="Script" uid="uid://dvkwan58ylmnw" path="res://Scripts/OLD CODE - TO BE REFACTORED/Character/ChangeLevelOnEnter.gd" id="2_naidu"]
 [ext_resource type="PackedScene" uid="uid://cg4u7qmh4d0bi" path="res://Scenes/Level 0.tscn" id="3_pc1uc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d0ybh"]

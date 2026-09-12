@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://metvq0i54e2q"]
 
-[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/WorldGen/WorldGen_Chunk.gd" id="1_31lem"]
+[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen_Chunk.gd" id="1_31lem"]
 [ext_resource type="PackedScene" uid="uid://cui7ljqqftgkv" path="res://Meshes/TheHub_Chunk.glb" id="1_v308s"]
 [ext_resource type="PackedScene" uid="uid://cnrnmh0w5ewfm" path="res://Prefabs/TheHub_Door.tscn" id="3_v308s"]
 

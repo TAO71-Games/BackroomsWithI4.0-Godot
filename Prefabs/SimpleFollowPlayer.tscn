@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://5614f2th5nyr"]
 
-[ext_resource type="Script" uid="uid://b47nsqkdjiwgb" path="res://Scripts/Entities/SimpleFollowPlayer.gd" id="1_g0gp4"]
+[ext_resource type="Script" uid="uid://b47nsqkdjiwgb" path="res://Scripts/OLD CODE - TO BE REFACTORED/Entities/SimpleFollowPlayer.gd" id="1_g0gp4"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_bfmbs"]
 

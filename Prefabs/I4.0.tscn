@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bv06w6qcpkh0f"]
 
-[ext_resource type="Script" uid="uid://dk474sb6guehj" path="res://Scripts/I4.0/I4CharController.gd" id="1_tj7od"]
+[ext_resource type="Script" uid="uid://dk474sb6guehj" path="res://Scripts/OLD CODE - TO BE REFACTORED/I4.0/I4CharController.gd" id="1_tj7od"]
 [ext_resource type="PackedScene" uid="uid://c41y5lvp8o108" path="res://Meshes/I4.0/I4.0-1.vrm" id="1_tjtcn"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tj7od"]

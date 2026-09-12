@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cnrnmh0w5ewfm"]
 
-[ext_resource type="Script" uid="uid://dce8t4p5kh1b8" path="res://Scripts/WorldGen/Levels/TheHub_Door.gd" id="1_n44da"]
+[ext_resource type="Script" uid="uid://dce8t4p5kh1b8" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/Levels/TheHub_Door.gd" id="1_n44da"]
 [ext_resource type="PackedScene" uid="uid://70orurvc7nd" path="res://Chunks/TheHub_Previews/Lvl4.tscn" id="2_f3gbo"]
 [ext_resource type="PackedScene" uid="uid://dlmjsy70xtmy8" path="res://Chunks/TheHub_Previews/Lvl0.tscn" id="3_f3gbo"]
 

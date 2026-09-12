@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cyhl2dm0asi8f"]
 
-[ext_resource type="Script" uid="uid://bb0mqkil8ftv7" path="res://Scripts/WorldGen/LoadLevel.gd" id="1_1r3m6"]
+[ext_resource type="Script" uid="uid://bb0mqkil8ftv7" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/LoadLevel.gd" id="1_1r3m6"]
 
 [node name="LevelLoader" type="Control" unique_id=2073376274]
 layout_mode = 3

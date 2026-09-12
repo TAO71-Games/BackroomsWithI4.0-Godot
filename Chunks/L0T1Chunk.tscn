@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://b1dp1nklctvn4"]
 
 [ext_resource type="Material" uid="uid://dvyagsyulanr" path="res://Textures/Level 0 Carpet/Level 0 Carpet.tres" id="1_iykq2"]
-[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/WorldGen/WorldGen_Chunk.gd" id="1_nprm1"]
+[ext_resource type="Script" uid="uid://c0chw321hkyx5" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen_Chunk.gd" id="1_nprm1"]
 [ext_resource type="PackedScene" uid="uid://cw1xeylt2lkj" path="res://Prefabs/Lvl0Wall.tscn" id="2_wb14u"]
-[ext_resource type="Script" uid="uid://lxrqyunvc3fd" path="res://Scripts/WorldGen/WorldGen_RandomObject.gd" id="3_860ss"]
+[ext_resource type="Script" uid="uid://lxrqyunvc3fd" path="res://Scripts/OLD CODE - TO BE REFACTORED/WorldGen/WorldGen_RandomObject.gd" id="3_860ss"]
 [ext_resource type="Material" uid="uid://dyqykcnprjxfv" path="res://Textures/OfficeCeiling001/OfficeCeiling001_4K-JPG-ALT1.tres" id="5_ifqt8"]
 [ext_resource type="Material" uid="uid://bnk5g2awrc44" path="res://Textures/Level 0 Wall/Level 0 Wall.tres" id="6_b1j1q"]
 [ext_resource type="ArrayMesh" uid="uid://do11nafhcctkg" path="res://Meshes/OptimizedPillar.obj" id="7_ksysk"]

@@ -71,6 +71,10 @@ var Running: bool = false
 var JumpTimer: Timer = Timer.new()
 var MUL: MultiplayerConnection = null
 
+func UpdateInventory() -> void:
+	InventoryGUI.visible = InventoryOpen
+	InventoryGUI.process_mode = Node.PROCESS_MODE_INHERIT if (InventoryOpen) else Node.PROCESS_MODE_DISABLED
+
 func ChangeLevel(Level: PackedScene) -> void:
 	Globals.LevelToLoad = Level.resource_path
 	get_tree().change_scene_to_file.call_deferred("res://Scenes/LevelLoader.tscn")
@@ -205,6 +209,7 @@ func _process(Delta: float) -> void:
 	if (Input.is_action_just_pressed("act_inventory")):
 		InventoryOpen = !InventoryOpen
 		InventoryGUI.visible = InventoryOpen
+		InventoryGUI.process_mode = Node.PROCESS_MODE_INHERIT if (InventoryOpen) else Node.PROCESS_MODE_DISABLED
 		
 		MouseCaptured = !InventoryOpen
 	
