@@ -9,11 +9,32 @@ using FileAccess = Godot.FileAccess;
 
 public partial class Conn : Node
 {
+	// Scripts
 	private static Resource Globals = ResourceLoader.Load("res://Scripts/Globals.gd");
+	
+	// Configuration and socket
 	private static ClientConfiguration? Config = null;
 	private static ClientSocket? Socket = null;
-	private static string ConfigPath;
+	public const string ConfigPath = "user://I4.0_config.json";
+	
+	// Other
 	[Export] public Control ErrorContainer;
+	
+	private static Dictionary<string, object> ParseTool(Dictionary<string, object> Tool)
+	{
+		return new Dictionary<string, object>() {
+			{"type", "function"},
+			{"function", new Dictionary<string, object>() {
+				{"name", Tool["name"]},
+				{"description", Tool["description"]},
+				{"parameters", new Dictionary<string, object>() {
+					{"type", "object"},
+					{"properties", Tool["parameters"]},
+					{"required", Tool["required"]}
+				}}
+			}}
+		};
+	}
 
 	private static async Task ConnectToServer(List<string> Models)
 	{
@@ -92,12 +113,19 @@ public partial class Conn : Node
 	public override async void _Ready()
 	{
 		Globals.Call("CheckInstance");
-		ConfigPath = (string)Globals.Call("ParsePath", "[$GAME_CONFIG_DIR]/I4.0_config.json");
 
 		if (Config == null)
 		{
-			Config = FileAccess.FileExists(ConfigPath) ? ClientConfiguration.FromDict(JsonConvert.DeserializeObject<Dictionary<string, object?>>(File.ReadAllText(ConfigPath))) : new ClientConfiguration();
-			File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(Config.ToDict(false)));
+			if (FileAccess.FileExists(ConfigPath))
+			{
+				FileAccess file = FileAccess.Open(ConfigPath, FileAccess.ModeFlags.Read);
+				Config = ClientConfiguration.FromDict(JsonConvert.DeserializeObject<Dictionary<string, object?>>(file.GetAsText()));
+			}
+			else
+			{
+				FileAccess file = FileAccess.Open(ConfigPath, FileAccess.ModeFlags.Write);
+				file.StoreString(JsonConvert.SerializeObject(Config.ToDict(false)));
+			}
 		}
 
 		if (Socket == null)
@@ -106,7 +134,7 @@ public partial class Conn : Node
 		}
 	}
 
-	public override void _Process(double delta)
+	public override void _Process(double Delta)
 	{
 	}
 }

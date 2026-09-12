@@ -3,6 +3,9 @@ class_name Globals extends Resource
 static var Instance: Globals = null
 static var LevelToLoad: String = ""
 
+const SCREENSHOTS_DIR = "user://Screenshots"
+const I40_LOCAL_DB_DIR = "user://I4.0_LocalDB"
+
 # ====================
 #       GRAPHICS
 # ====================
@@ -68,9 +71,9 @@ enum SoundID
 
 static func ParseSound(ID: SoundID) -> Array:
 	if (ID == SoundID.WHISTLE_1):
-		return ["Whistle", load("res://Audio/Whistling 1.wav")]
+		return ["Whistle", preload("res://Audio/Whistling 1.wav")]
 	elif (ID == SoundID.WHISTLE_2):
-		return ["Whistle", load("res://Audio/Whistling 2.wav")]
+		return ["Whistle", preload("res://Audio/Whistling 2.wav")]
 	
 	return ["", null]
 
@@ -90,23 +93,9 @@ static func CreateSoundPlayers(Self: bool, Parent: Node3D) -> Dictionary[String,
 		"Whistle": whistlePlayer
 	}
 
-static func GetGameConfigDirPath() -> String:
-	var d = OS.get_data_dir() + "/BackroomsWithI4.0"
-	
-	if (!DirAccess.dir_exists_absolute(d)):
-		DirAccess.make_dir_recursive_absolute(d)
-	
-	if (!DirAccess.dir_exists_absolute(d + "/Screenshots")):
-		DirAccess.make_dir_recursive_absolute(d + "/Screenshots")
-	
-	return d
-
-static func ParsePath(Path: String) -> String:
-	var path = Path.strip_edges()
-	path = path.replace("[$GAME_CONFIG_DIR]", GetGameConfigDirPath())
-	path = path.replace("[$GAME_SCREENSHOTS_DIR]", GetGameConfigDirPath() + "/Screenshots")
-	
-	return path
+static func CheckFiles() -> void:
+	DirAccess.make_dir_absolute(SCREENSHOTS_DIR)
+	DirAccess.make_dir_absolute(I40_LOCAL_DB_DIR)
 
 static func CheckInstance() -> void:
 	if (Instance != null):
@@ -146,20 +135,20 @@ static func __load_config_parser__(Ins: Variant, D: Dictionary) -> void:
 		else:
 			Ins.set(paramName, paramValue)
 
-static func LoadConfig(ConfigPath: String = "[$GAME_CONFIG_DIR]/config.json", SetGlobal: bool = true) -> Globals:
-	var parsedPath = ParsePath(ConfigPath)
+static func LoadConfig(ConfigPath: String = "user://config.json", SetGlobal: bool = true) -> Globals:
+	CheckFiles()
 	var instance = Globals.new()
 	
 	if (SetGlobal):
 		Instance = instance
 	
-	if (!FileAccess.file_exists(parsedPath)):
+	if (!FileAccess.file_exists(ConfigPath)):
 		push_warning("Config does not exist. Creating.")
 		instance.SaveConfig(ConfigPath)
 		
 		return instance
 	
-	var file = FileAccess.open(parsedPath, FileAccess.READ)
+	var file = FileAccess.open(ConfigPath, FileAccess.READ)
 	
 	if (file == null):
 		push_error("Could not open config file. Returning default config.")
@@ -185,8 +174,9 @@ func __save_config_parser__(Obj: Object = null) -> Dictionary:
 	
 	return d
 
-func SaveConfig(ConfigPath: String = "[$GAME_CONFIG_DIR]/config.json") -> Dictionary:
-	var parsedPath = ParsePath(ConfigPath)
+func SaveConfig(ConfigPath: String = "user://config.json") -> Dictionary:
+	CheckFiles()
+	
 	var properties = get_property_list()
 	var json = {}
 	
@@ -197,7 +187,7 @@ func SaveConfig(ConfigPath: String = "[$GAME_CONFIG_DIR]/config.json") -> Dictio
 		json[propName] = propValue
 	
 	json = __save_config_parser__()
-	var file = FileAccess.open(parsedPath, FileAccess.WRITE)
+	var file = FileAccess.open(ConfigPath, FileAccess.WRITE)
 	
 	if (file == null):
 		push_error("Could not open config file. Could not save config.")
@@ -207,3 +197,12 @@ func SaveConfig(ConfigPath: String = "[$GAME_CONFIG_DIR]/config.json") -> Dictio
 	file.close()
 	
 	return json
+
+static func RecursiveRemoveDir(Dir: String) -> void:
+	for file in DirAccess.get_files_at(Dir):
+		DirAccess.remove_absolute(Dir.path_join(file))
+	
+	for dir in DirAccess.get_directories_at(Dir):
+		RecursiveRemoveDir(Dir.path_join(dir))
+	
+	DirAccess.remove_absolute(Dir)

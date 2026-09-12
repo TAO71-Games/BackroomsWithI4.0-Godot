@@ -564,44 +564,44 @@ loop = true
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=661044558]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.08680555
-anchor_top = 0.4220679
-anchor_right = 0.2170139
-anchor_bottom = 0.5779321
-offset_top = -61.5
-offset_right = 6.0
-offset_bottom = 61.5
+anchor_left = 0.06336805
+anchor_top = 0.28549376
+anchor_right = 0.2578125
+anchor_bottom = 0.65586424
+offset_top = 3.0517578e-05
+offset_bottom = -3.0517578e-05
+grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_8um5k")
 metadata/_edit_use_anchors_ = true
 
 [node name="Play" type="Button" parent="VBoxContainer" unique_id=674639238]
 layout_mode = 2
-size_flags_vertical = 3
 tooltip_text = "NOTE:
 This game is still in development. Since most levels doesn't have any exits yet, this will take you to The Hub (level selector).
 
 Make sure your multiplayer username and password are correct and that nobody is connected as the same user. The game might crash if there is a multiplayer error."
 theme_override_fonts/font = ExtResource("4_df05h")
 text = "BTN_PLAY"
+autowrap_mode = 3
 
 [node name="Options" type="Button" parent="VBoxContainer" unique_id=68935362]
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("4_df05h")
 text = "BTN_OPTIONS"
+autowrap_mode = 3
 
 [node name="Credits" type="Button" parent="VBoxContainer" unique_id=2038905072]
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("4_df05h")
 text = "BTN_CREDITS"
+autowrap_mode = 3
 
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=1426430398]
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("4_df05h")
 text = "BTN_EXIT"
+autowrap_mode = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=906972168]
 visible = false
@@ -637,10 +637,7 @@ size_flags_vertical = 3
 
 [node name="View distance" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_GRAPHICS/VBoxContainer" unique_id=1166238926]
 layout_mode = 2
-tooltip_text = "Radius where the chunks will render.
-Big values will require more CPU, GPU, RAM, and will take longer to load the level.
-
-Performance impact: High"
+tooltip_text = "TT_VIEW_DISTANCE"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_GRAPHICS/VBoxContainer/View distance" unique_id=1628722076]
 layout_mode = 2
@@ -673,9 +670,7 @@ Sl = NodePath("../HSlider")
 
 [node name="Shadow distance" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_GRAPHICS/VBoxContainer" unique_id=77928174]
 layout_mode = 2
-tooltip_text = "Radius where the shadows will render.
-
-Performance impact: Medium"
+tooltip_text = "TT_SHADOW_DISTANCE"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_GRAPHICS/VBoxContainer/Shadow distance" unique_id=1709497717]
 layout_mode = 2
@@ -718,10 +713,7 @@ size_flags_vertical = 3
 
 [node name="Master volume" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer" unique_id=1348008524]
 layout_mode = 2
-tooltip_text = "Master volume. Will affect every sound in the game.
-Volume is in dB, 0 is 100%.
-
-Performance impact: None"
+tooltip_text = "TT_VOL_MASTER"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer/Master volume" unique_id=1006288422]
 layout_mode = 2
@@ -753,10 +745,7 @@ Sl = NodePath("../HSlider")
 
 [node name="Entity volume" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer" unique_id=1126934914]
 layout_mode = 2
-tooltip_text = "Sound for entity scream and jumpscare.
-Volume is in dB, 0 is 100%.
-
-Performance impact: None"
+tooltip_text = "TT_VOL_ENTITY"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer/Entity volume" unique_id=361929149]
 layout_mode = 2
@@ -788,10 +777,7 @@ Sl = NodePath("../HSlider")
 
 [node name="Music volume" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer" unique_id=1153932175]
 layout_mode = 2
-tooltip_text = "Music and ambience volume.
-Volume is in dB, 0 is 100%.
-
-Performance impact: None"
+tooltip_text = "TT_VOL_MUSIC"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer/Music volume" unique_id=2133360577]
 layout_mode = 2
@@ -823,10 +809,7 @@ Sl = NodePath("../HSlider")
 
 [node name="SFX volume" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer" unique_id=538169302]
 layout_mode = 2
-tooltip_text = "Volume of sound effects.
-Volume is in dB, 0 is 100%.
-
-Performance impact: None"
+tooltip_text = "TT_VOL_SFX"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer/SFX volume" unique_id=1161299717]
 layout_mode = 2
@@ -858,10 +841,7 @@ Sl = NodePath("../HSlider")
 
 [node name="Player voice volume" type="VBoxContainer" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer" unique_id=479282889]
 layout_mode = 2
-tooltip_text = "Voice volume of all players (proximity voice chat). This setting can also be changed for each player individually.
-Volume is in dB, 0 is 100%.
-
-Performance impact: None"
+tooltip_text = "TT_VOL_PLAYER_VOICE"
 
 [node name="Label" type="Label" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer/Player voice volume" unique_id=86502433]
 layout_mode = 2
@@ -928,6 +908,7 @@ Sl = NodePath("../HSlider")
 
 [node name="Players volumes" type="FoldableContainer" parent="PanelContainer/Options/TabContainer/TAB_SOUND/VBoxContainer" unique_id=874595458]
 layout_mode = 2
+tooltip_text = "TT_VOL_CUSTOMPLAYER"
 folded = true
 title = "LBL_VOL_CUSTOMPLAYER"
 

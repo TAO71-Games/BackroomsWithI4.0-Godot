@@ -43,7 +43,7 @@ func __on_pressed_utilities_btn__(PressedIdx: int) -> void:
 		filesManager.display_mode = FileDialog.DISPLAY_THUMBNAILS
 		filesManager.filters = ["*.webp", "*.png", "*.jpg", "*.jpeg", "*.bmp"]
 		filesManager.use_native_dialog = true
-		filesManager.root_subfolder = Globals.ParsePath("[$GAME_SCREENSHOTS_DIR]")
+		filesManager.root_subfolder = ProjectSettings.globalize_path(Globals.SCREENSHOTS_DIR)
 		filesManager.files_selected.connect(func(selectedImages):
 			for imgPath in selectedImages:
 				var img = Image.load_from_file(imgPath)
@@ -113,9 +113,11 @@ func __create_file__(Path: String, PreviewImg: Image = null, Attach: bool = true
 	var file = VBoxContainer.new()
 	
 	var filePreview = TextureRect.new()
-	filePreview.expand_mode = TextureRect.EXPAND_FIT_HEIGHT_PROPORTIONAL
-	filePreview.stretch_mode = TextureRect.STRETCH_SCALE
+	filePreview.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	filePreview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	filePreview.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	filePreview.custom_minimum_size = Vector2(75, 75)
+	filePreview.custom_maximum_size = Vector2(75, 75)
 	filePreview.texture = previewImg
 	file.add_child(filePreview)
 	
@@ -151,7 +153,7 @@ func __create_message__(Role: StringName, TextContent: String, Files: Array[Pack
 	
 	MessagesContainer.add_child(clonedMsg)
 
-func __send_to_I40__(Conversation: Array) -> void:
+func __send_to_I40__(Conv: Array) -> void:
 	pass  # TODO
 
 func _ready() -> void:

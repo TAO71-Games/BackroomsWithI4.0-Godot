@@ -56,18 +56,30 @@ func __camera_take_picture__() -> void:
 		var img = get_viewport().get_texture().get_image()
 		GlobalGUI.show()
 		
+		var winSize = get_viewport().get_visible_rect().size
+		var resMultiplier = Vector2.ONE
+		var resBase = 0
+		
+		if (winSize.x > winSize.y):
+			resMultiplier = Vector2(1, winSize.y / winSize.x)
+		elif (winSize.x < winSize.y):
+			resMultiplier = Vector2(winSize.x / winSize.y, 1)
+		
 		if (Globals.Instance.CameraQualityLevel == 1):
-			img.resize(1024, 1024)
+			resBase = 1024
 		elif (Globals.Instance.CameraQualityLevel == 2):
-			img.resize(768, 768)
+			resBase = 768
 		elif (Globals.Instance.CameraQualityLevel == 3):
-			img.resize(512, 512)
+			resBase = 512
 		elif (Globals.Instance.CameraQualityLevel == 4):
-			img.resize(256, 256)
+			resBase = 256
 		elif (Globals.Instance.CameraQualityLevel == 5):
-			img.resize(128, 128)
+			resBase = 128
 		elif (Globals.Instance.CameraQualityLevel == 6):
-			img.resize(64, 64)
+			resBase = 64
+		
+		if (resBase > 0):
+			img.resize(int(resBase * resMultiplier.x), int(resBase * resMultiplier.y))
 		
 		OnCameraTakePicture.emit(img)
 		t.queue_free()
@@ -98,11 +110,11 @@ func CameraWaitForPicture(SavePicture: bool = false) -> Array:
 	
 	if (SavePicture):
 		var imgID = 0
-		imgPath = Globals.ParsePath("[$GAME_SCREENSHOTS_DIR]/" + str(imgID) + ".webp")
+		imgPath = Globals.SCREENSHOTS_DIR.path_join(str(imgID) + ".webp")
 		
 		while (FileAccess.file_exists(imgPath)):
 			imgID += 1
-			imgPath = Globals.ParsePath("[$GAME_SCREENSHOTS_DIR]/" + str(imgID) + ".webp")
+			imgPath = Globals.SCREENSHOTS_DIR.path_join(str(imgID) + ".webp")
 		
 		var saveQuality = 1
 		
