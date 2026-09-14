@@ -8,13 +8,13 @@ var _NearbyChunkIdxs: PackedInt32Array = [0, 0, 0, 0]  # [left, right, back, fro
 @export_category("Modules configuration")
 
 ## Modules of the chunk. Modules are extra scripts that the chunk executes when generated or updated
-@export var Modules: Array[ChunkModuleBase] = []
+@export var Modules: Array[ChunkModule_Base] = []
 
 ## The way the modules are randomized.
 ## The key is the index of the module, while the value is the randomized mode.
 ## -1 = Default (if not specified otherwise, will use this)
 @export var ModulesSeedRandomize: Dictionary[int, LevelGeneration.RandomizeMode] = {
-	-1: LevelGeneration.RandomizeMode.RNG
+	-1: LevelGeneration.RandomizeMode.INDEX_RNG
 }
 
 func _UpdateParameters() -> void:
@@ -29,8 +29,7 @@ func _UpdateModulesParameters() -> void:
 			ModulesSeedRandomize.get(Modules.find(module), ModulesSeedRandomize.get(-1, LevelGeneration.RandomizeMode.RNG)),  # Tries to get the value for the module index. If not found, tries to get the value -1 (default). It -1 is also not found, fallback to RandomizeMode.RNG
 			module,
 			_RNG,
-			Modules.find(module),
-			Vector3.ZERO
+			Modules.find(module)
 		)
 		
 		# Set the seed of the module

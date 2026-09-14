@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bcwf40e62fkbm"]
 
 [ext_resource type="Script" uid="uid://bm42e0trq3xtm" path="res://Scripts/World Generation/LevelGeneration.gd" id="1_57tcy"]
-[ext_resource type="PackedScene" uid="uid://7j15j5ibd40e" path="res://Testing/TestChunk.tscn" id="2_tgxqw"]
+[ext_resource type="PackedScene" uid="uid://dou806dxs8f86" path="res://Testing/L0T1Chunk TEST.tscn" id="2_fxccv"]
+[ext_resource type="PackedScene" uid="uid://7j15j5ibd40e" path="res://Testing/TestChunk.tscn" id="3_a8b6f"]
 [ext_resource type="Script" uid="uid://bjp4qwrgse5nm" path="res://Testing/Test Generation.gd" id="3_fxccv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fxccv"]
@@ -16,6 +17,7 @@ material = SubResource("StandardMaterial3D_fxccv")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=977315520]
 transform = Transform3D(0.61237246, -0.5, -0.61237234, 0.7071067, -3.7855173e-08, 0.7071068, -0.35355344, -0.8660254, 0.35355335, 0, 53, 0)
+visible = false
 shadow_enabled = true
 
 [node name="Player 1" type="MeshInstance3D" parent="." unique_id=1849381377]
@@ -31,14 +33,15 @@ mesh = SubResource("BoxMesh_fbnsm")
 
 [node name="Generator" type="Node" parent="." unique_id=1060627458]
 script = ExtResource("1_57tcy")
-DefaultNoiseMapType = 0
-MaxFloors = Vector2i(10, 10)
-GeneralChunkSize = Vector3i(21, 20, 21)
+GeneralChunkSize = Vector3i(10, 20, 10)
 
-[node name="TestChunk" parent="Generator" unique_id=900214872 instance=ExtResource("2_tgxqw")]
+[node name="L0T1Chunk" parent="Generator" unique_id=1126622542 instance=ExtResource("2_fxccv")]
+visible = false
+
+[node name="TestChunk" parent="Generator" unique_id=900214872 instance=ExtResource("3_a8b6f")]
 visible = false
 
 [node name="Test" type="Node" parent="." unique_id=1641871588 node_paths=PackedStringArray("Gen", "Players")]
 script = ExtResource("3_fxccv")
 Gen = NodePath("../Generator")
-Players = [NodePath("../Player 3"), NodePath("../Player 2"), NodePath("../Player 1")]
+Players = [NodePath("../Player 1"), NodePath("../Player 2"), NodePath("../Player 3")]

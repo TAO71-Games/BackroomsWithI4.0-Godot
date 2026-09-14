@@ -3,44 +3,55 @@ class_name LevelGeneration extends Node
 enum NoiseMapType
 {
 	## Creates a fully black noise map (only first chunk will be used)
-	ALL_BLACK = 0,
+	ALL_BLACK,
 	
 	## Creates a fully white noise map (only last chunk will be used)
-	ALL_WHITE = 1,
+	ALL_WHITE,
 	
 	## Creates a noise map using Perlin noise
-	PERLIN_NOISE = 2
+	PERLIN_NOISE
 }
 
 enum RandomizeMode
 {
 	## Uses `randi()` to randomize
-	RANDOM = 0,
+	RANDOM,
 	
 	## Uses `RandomNumberGenerator.randi()` to randomize
-	RNG = 1,
+	RNG,
+	
+	## RNG but resets the RandomNumberGenerator state
+	RNG_RESET,
 	
 	## Position-based (level generator) or index-based (chunk modules) [read the code for more details]
-	INDEX = 2,
+	INDEX,
 	# About INDEX:
-	# For chunks, it uses `pos.y * pos.x + pos.y * pos.z + pos.x - pos.z + pos.y * 5`, where `pos` is the global position of the chunk
+	# For chunks, it uses hashes
 	# For chunk modules, it uses the module index in the list
 	
+	## INDEX + RNG
+	INDEX_RNG,
+	
+	## INDEX_RNG but resets the RandomNumberGenerator state
+	INDEX_RNG_RESET,
+	
 	## Uses the parent's seed (will always be 0 for the level generator)
-	PARENT = 3
+	PARENT
 }
 
 var _GeneratedChunksContainer: Node
 var _ChunkConstants: Node
 var _Seed: int = 0
 var _RNG: RandomNumberGenerator = RandomNumberGenerator.new()
+var _IsBusy: bool = false
 
 @export_category("Generation")
-## Radius where the chunks will be generated
-var GenerationRadius: int = 20
-
 ## Avoids the chunks in this range
 @export var AvoidChunks: Array[Vector3Range] = []  # TODO
+
+## Noise configuration.
+## Avoid setting the seed, since it will be reset
+@export var NoiseConfiguration: FastNoiseLite = FastNoiseLite.new()
 
 @export_group("Noise maps")
 ## Noise map textures. The key is a comma-separated string of the floors where the noise map will be applied. The value is the noise map image.
@@ -72,16 +83,15 @@ var GenerationRadius: int = 20
 ## All chunks MUST be this size
 @export var GeneralChunkSize: Vector3i = Vector3i(20, 6, 20)
 
-## Mode of randomizing for the chunks.
-## For multiplayer or saved games, it is recommended to use either `RNG` or `INDEX`
-@export var ChunkRandomizeMode: RandomizeMode = RandomizeMode.INDEX
+## Chunk generation type.
+## It is recommended to use `INDEX` for multiplayer levels, and `RNG` for SINGLEPLAYER, confusing levels
+@export var GenerationType: RandomizeMode = RandomizeMode.INDEX
 
 static func CalculateSeedForObject(
 	Mode: RandomizeMode,
 	Obj: Node,
 	RNG: RandomNumberGenerator = null,
-	ModuleIdx: int = -1,
-	Position: Vector3 = Vector3.ZERO
+	ModuleIdx: int = -1
 ) -> int:
 	# Check the randomize mode
 	match Mode:
@@ -97,20 +107,47 @@ static func CalculateSeedForObject(
 			
 			# Return a random number from the RandomNumberGenerator
 			return RNG.randi()
+		RandomizeMode.RNG_RESET:
+			# Save the previous state
+			var state = RNG.state
+			
+			# Generate the random number
+			var n = CalculateSeedForObject(RandomizeMode.RNG, Obj, RNG, ModuleIdx)
+			
+			# Reset the state
+			RNG.state = state
+			
+			# Return the generated number
+			return n
 		RandomizeMode.INDEX:
 			# NOT random seed, based of the position (if it's a level generator) or the modules index (if it's a chunk generator module)
 			# Check the object type
 			if (Obj is LevelChunk):
 				# The object is a chunk
 				# Return a position-based seed
-				return absi(int(Position.y * Position.x + Position.y * Position.z + Position.x - Position.z + Position.y * 5))
-			elif (Obj is ChunkModuleBase):
+				return hash(Obj.global_position.x * 75) + hash(Obj.global_position * 100) + hash(Obj.global_position.z * 5)
+			elif (Obj is ChunkModule_Base):
 				# The object is expected to be a chunk module
 				# Return an index-based seed (module index)
 				return ModuleIdx
 			
 			# Invalid object type, push error
 			push_error("Invalid object type for index-based randomization.")
+		RandomizeMode.INDEX_RNG:
+			# Random seed based of the RNG mode + INDEX mode
+			return CalculateSeedForObject(RandomizeMode.INDEX, Obj, RNG, ModuleIdx) + CalculateSeedForObject(RandomizeMode.RNG, Obj, RNG, ModuleIdx)
+		RandomizeMode.INDEX_RNG_RESET:
+			# Save the previous state
+			var state = RNG.state
+			
+			# Generate the random number
+			var n = CalculateSeedForObject(RandomizeMode.INDEX_RNG, Obj, RNG, ModuleIdx)
+			
+			# Reset the state
+			RNG.state = state
+			
+			# Return the generated number
+			return n
 		RandomizeMode.PARENT:
 			# NOT random seed, the same as the parent of the object
 			# Check the object type
@@ -143,10 +180,7 @@ func CreateFloorImage() -> Image:
 			img.fill(Color.WHITE)
 		NoiseMapType.PERLIN_NOISE:
 			# Create an image with perlin noise
-			var perlin = FastNoiseLite.new()
-			perlin.noise_type = FastNoiseLite.TYPE_PERLIN
-			
-			img = perlin.get_image(DefaultNoiseMapSize.x, DefaultNoiseMapSize.y, false, false, true)
+			img = NoiseConfiguration.get_image(DefaultNoiseMapSize.x, DefaultNoiseMapSize.y, false, false, true)
 		_:
 			# Invalid option; push error
 			push_error("Invalid NoiseMapType. Image will not be generated (null will be returned instead).")
@@ -185,7 +219,7 @@ func GetFloorTexture(Floor: int) -> Image:
 	return img
 
 func GetChunkIndexFromFloorTexture(Floor: Image, ChunkPosXZ: Vector2i) -> int:
-	# ChunkPosXZ must be the GLOBAL POSITION (x, z)
+	# ChunkPosXZ must be the CHUNK RELATIVE POSITION (x, z)
 	# Get the texture size
 	var texSize = Floor.get_size()
 	
@@ -203,7 +237,7 @@ func GetChunkIndexFromFloorTexture(Floor: Image, ChunkPosXZ: Vector2i) -> int:
 	
 	# Get the G (RGBA) parameter from the pixel's color in the image, then multiply it by the size of the chunk constants, and round it
 	# This returns the exact chunk index
-	return roundi(int(Floor.get_pixel(pixelPos.x, pixelPos.y).g * (_ChunkConstants.get_children(false).size() - 1)))
+	return roundi(int(Floor.get_pixelv(pixelPos).g * _ChunkConstants.get_children(false).size()))
 
 func GenerateChunk(Position: Vector3i, ChunkIdx: int, NearbyChunks: PackedInt32Array) -> Node3D:
 	# Position must be the CHUNK RELATIVE POSITION
@@ -222,7 +256,7 @@ func GenerateChunk(Position: Vector3i, ChunkIdx: int, NearbyChunks: PackedInt32A
 	generatedChunk.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	# Set chunk script parameters
-	generatedChunk._Seed = CalculateSeedForObject(ChunkRandomizeMode, generatedChunk, _RNG, -1, generatedChunk.global_position)
+	generatedChunk._Seed = CalculateSeedForObject(GenerationType, generatedChunk, _RNG, -1)
 	generatedChunk._NearbyChunkIdxs = NearbyChunks
 	generatedChunk._UpdateParameters()
 	generatedChunk._UpdateModulesParameters()
@@ -235,6 +269,13 @@ func GenerateNearbyChunks(PlayerPosition: Vector3) -> void:
 	# NOTE: This function is VERY computational expensive, please avoid calling it a lot
 	
 	# PlayerPosition must be the GLOBAL POSITION
+	# Stop until it's not busy
+	while (_IsBusy):
+		await get_tree().process_frame
+	
+	# Set to busy
+	_IsBusy = true
+	
 	# Get the chunk where the player is
 	var playerChunk = GetPlayerCurrentChunk(PlayerPosition)
 	
@@ -285,12 +326,15 @@ func GenerateNearbyChunks(PlayerPosition: Vector3) -> void:
 		# Create a dictionary with the chunks to generate
 		var chunksToGenerate = {}
 		
+		# Create a variable to control the number of chunks to be generated this frame
+		var toGenerateThisFrame = 0
+		
 		# From -x to +x (relative to the player)
 		@warning_ignore("integer_division")
-		for x in range(-GenerationRadius / 2, GenerationRadius / 2 + 1):
+		for x in range(-Utilities.GetInstance().Generation_Radius / 2, Utilities.GetInstance().Generation_Radius / 2 + 1):
 			# From -z to +z (relative to the player)
 			@warning_ignore("integer_division")
-			for z in range(-GenerationRadius / 2, GenerationRadius / 2 + 1):
+			for z in range(-Utilities.GetInstance().Generation_Radius / 2, Utilities.GetInstance().Generation_Radius / 2 + 1):
 				# Convert chunk position to vector
 				var chunkPos = Vector3i(x, y - playerChunk.y, z) + playerChunk
 				
@@ -308,6 +352,15 @@ func GenerateNearbyChunks(PlayerPosition: Vector3) -> void:
 				
 				# Add to the chunks to generate dictionary the chunk position (key) and the chunk index (value)
 				chunksToGenerate[chunkPos] = GetChunkIndexFromFloorTexture(floorImage, Vector2i(x, z))
+				toGenerateThisFrame += 1
+				
+				# Pause the generation to the next frame if it exceeds the limit
+				if (toGenerateThisFrame >= Utilities.GetInstance().Generation_NumChunksPerFrame):
+					await get_tree().process_frame
+					toGenerateThisFrame = 0
+		
+		# Create a variable to control the number of chunks generated in this frame
+		var generatedThisFrame = 0
 		
 		# For every chunk position in the dictionary of the chunks to generate
 		for chunkPos in chunksToGenerate.keys():
@@ -325,6 +378,12 @@ func GenerateNearbyChunks(PlayerPosition: Vector3) -> void:
 			
 			# Generate the chunk
 			GenerateChunk(chunkPos, chunksToGenerate[chunkPos], [leftChunk, rightChunk, backChunk, frontChunk])
+			generatedThisFrame += 1
+			
+			# Pause the generation to the next frame if it exceeds the limit
+			if (generatedThisFrame >= Utilities.GetInstance().Generation_NumChunksPerFrame):
+				await get_tree().process_frame
+				generatedThisFrame = 0
 		
 		# Clear the dictionary
 		chunksToGenerate.clear()
@@ -335,11 +394,21 @@ func GenerateNearbyChunks(PlayerPosition: Vector3) -> void:
 	# Clear all of the arrays
 	floorsToGenerate.clear()
 	generatedFloors.clear()
+	
+	# Set to not busy
+	_IsBusy = false
 
 func DeleteChunks(PlayerPositions: Array[Vector3i]) -> void:
 	# NOTE: This function is VERY computational expensive, please avoid calling it a lot
 	
 	# PlayerPositions must have the GLOBAL POSITION of every player
+	# Stop until it's not busy
+	while (_IsBusy):
+		await get_tree().process_frame
+	
+	# Set to busy
+	_IsBusy = true
+	
 	# For each generated chunk
 	for chunk in _GeneratedChunksContainer.get_children(false):
 		# Create new variable and set to to true by default. This variable controls wether the chunk should be deleted or not
@@ -348,6 +417,9 @@ func DeleteChunks(PlayerPositions: Array[Vector3i]) -> void:
 		# Get the chunk position
 		var chunkPos = chunk.name.split(" ")
 		chunkPos = Vector3i(int(chunkPos[0]), int(chunkPos[1]), int(chunkPos[2]))
+		
+		# Create a variable to control the number of chunks are checked for deletion in this frame
+		var checkedThisFrame = 0
 		
 		# For each player
 		for playerRealPos in PlayerPositions:
@@ -359,10 +431,20 @@ func DeleteChunks(PlayerPositions: Array[Vector3i]) -> void:
 				# The chunk is nearby a player (or preloaded); do not delete
 				delete = false
 				break
+			
+			checkedThisFrame += 1
+			
+			# Pause the checking to the next frame if it exceeds the limit
+			if (checkedThisFrame >= Utilities.GetInstance().Generation_NumChunksPerFrame):
+				await get_tree().process_frame
+				checkedThisFrame = 0
 		
 		# Delete the chunk if it should be deleted
 		if (delete):
-			chunk.queue_free()
+			chunk.free()
+	
+	# Set to not busy
+	_IsBusy = false
 
 func GetPlayerCurrentChunk(PlayerPosititon: Vector3) -> Vector3i:
 	# PlayerPosition must be the GLOBAL POSITION
@@ -378,8 +460,8 @@ func IsChunkInRenderRadius(ChunkIdx: Vector3i, PlayerChunkIdx: Vector3i, Include
 	@warning_ignore("integer_division")
 	return (
 		# Ensure the chunk relative position is in the generation radius (X and Z)
-		absi(ChunkIdx.x - PlayerChunkIdx.x) <= GenerationRadius / 2 &&
-		absi(ChunkIdx.z - PlayerChunkIdx.z) <= GenerationRadius / 2
+		absi(ChunkIdx.x - PlayerChunkIdx.x) <= Utilities.GetInstance().Generation_Radius / 2 &&
+		absi(ChunkIdx.z - PlayerChunkIdx.z) <= Utilities.GetInstance().Generation_Radius / 2
 	) && (
 		true if (!IncludeFloors) else (
 			ChunkIdx.y == PlayerChunkIdx.y ||  # In the same floor as the player
@@ -391,6 +473,7 @@ func IsChunkInRenderRadius(ChunkIdx: Vector3i, PlayerChunkIdx: Vector3i, Include
 func _UpdateParameters() -> void:
 	# Set the seed of the RandomNumberGenerator to match the seed
 	_RNG.seed = _Seed
+	NoiseConfiguration.seed = _Seed
 
 func _ready() -> void:
 	# Get chunk constants (all children nodes, MUST BE Node3D or derivated)

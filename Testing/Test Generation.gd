@@ -1,9 +1,8 @@
 extends Node
 
-@export var Gen: LevelGeneration
-@export var Players: Array[Node3D]
+@export var Gen: LevelGeneration = null
+@export var Players: Array[Node3D] = []
 @export var Generate: bool = true
-var i = 0
 
 func _Gen() -> void:
 	if (!Generate):
@@ -12,25 +11,24 @@ func _Gen() -> void:
 	var playerPositions: Array[Vector3i] = []
 	
 	for player in Players:
-		Gen.GenerateNearbyChunks(player.global_position)
+		await Gen.GenerateNearbyChunks(player.global_position)
 		playerPositions.append(player.global_position)
 	
-	Gen.DeleteChunks(playerPositions)
+	await Gen.DeleteChunks(playerPositions)
 
 func _ready() -> void:
 	if (Gen != null):
-		Gen.GenerationRadius = 25
-		_Gen()
+		Gen._Seed = 10
+		Gen._UpdateParameters()
+		
+		await _Gen()
 		
 		var timer = Timer.new()
 		add_child(timer)
-		timer.wait_time = 5
+		timer.wait_time = 1
 		timer.one_shot = false
 		timer.autostart = false
 		timer.timeout.connect(func() -> void:
-			_Gen()
-			
-			if (i > 4):
-				timer.stop()
+			await _Gen()
 		)
 		timer.start()

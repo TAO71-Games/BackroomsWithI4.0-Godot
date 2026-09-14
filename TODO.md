@@ -10,6 +10,9 @@
 ## Visuals
 
 - Redesign some chunks
+- Better translations (EN, ES, JA, FR, IT)
+- Update I4.0 3D model
+- Add animations
 
 ## Audio
 
@@ -18,4 +21,5 @@
 ## Other
 
 - Remove Godot icon
+- Controller support
 

@@ -2,8 +2,12 @@
 
 [ext_resource type="Script" uid="uid://d3kbudb3h5sxm" path="res://Scripts/World Generation/LevelChunk.gd" id="1_1whbn"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fxccv"]
+albedo_color = Color(0.88235295, 0.88235295, 0.54901963, 1)
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_fbnsm"]
-size = Vector2(20, 20)
+material = SubResource("StandardMaterial3D_fxccv")
+size = Vector2(10, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fbnsm"]
 size = Vector3(10, 0.001, 10)
